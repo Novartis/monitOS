@@ -54,7 +54,7 @@ Check:
     paths:
       - monitOS.Rcheck/
 
-release-source:
+Deploy:
   stage: deploy
   only:
     - main
