@@ -41,7 +41,7 @@ Build:
     paths:
        - monitOS-source-fast.tar.gz
 
-Check:   
+Check:
   stage: test
   script:
     - tar xf "monitOS-source-fast.tar.gz"

@@ -18,7 +18,7 @@
 #' probabilities.
 #' @param col (Optional) A character vector with color names for the stopping
 #' probabilities plot, must have same length to hrs.
-#' @import tidyverse
+#' @import dplyr ggplot2
 #' @return (list): Returns a list with two dataframes and three plots. The
 #' dataframes include information on the stopping probabilities based on the
 #' scenarios specified by the user and the plots include visualizations of these
@@ -161,6 +161,7 @@ tf_ocs <- function(thres1, thres2 = NULL, events, hrr, hrs, col = NULL) {
     dplyr::group_by(true_hr_num) %>%
     dplyr::summarise(oprob_flag = sum(flag_prob),
                      oprob_stop = sum(prob_stop))
+
 
   # Find the overall probability to flag a safety issue/stop the trial for the
   # range of HRs inserted by the user
