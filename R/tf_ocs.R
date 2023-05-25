@@ -206,12 +206,12 @@ tf_ocs <- function(thres1, thres2 = NULL, events, hrr, hrs, col = NULL) {
       labs(y = "P{ A | HR}",
            x = "HR",
            col = "") +
-      scale_x_continuous(breaks = seq(min(hrr), max(hrr), by = 0.1)) +
-      scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.1))+
-      theme(legend.position = "top")+
+      scale_x_continuous(breaks = seq(min(hrr), max(hrr), by = 0.1) ) +
+      scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.1) ) +
+      theme(legend.position = "top") +
       scale_color_manual(values = c("A = Flag safety issue at any stage" = "darkgrey",
                                     "A = Stop at any stage" = "red",
-                                    "A = Claim accelarated approval" = "steelblue"))
+                                    "A = Claim accelarated approval" = "steelblue") )
   }
 
 
@@ -231,7 +231,7 @@ sanity_checks <- function(thres1, thres2, events, hrr, hrs, col) {
   # Hazard ratios should be > 0
   stopifnot("thres1 must be positive." = all(thres1 > 0))
 
-  if ( ! is.null(thres2)) {
+  if (! is.null(thres2)) {
     # Hazard ratios should be > 0
     stopifnot("thres2 must be positive." = all(thres2 > 0))
     # thres2 values should be greater than thres1 for all trial stages

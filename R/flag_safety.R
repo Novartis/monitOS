@@ -31,7 +31,7 @@ safprob <- function(logthres, events, loghr) {
       }
     }
   } else {
-    sigma <- matrix(1/info)
+    sigma <- matrix(1 / info)
   }
 
   sprob <- 0
@@ -228,7 +228,7 @@ flagprob <- function(logthres1, logthres2, events, loghr = log(1)) {
   }
 
   sprob <- vector(mode = "numeric", length = nstage)
-  sprob[1] <- pnorm(logthres2[1], mean = mnloghr[1],sd = sqrt(sigma[1, 1])) -
+  sprob[1] <- pnorm(logthres2[1], mean = mnloghr[1], sd = sqrt(sigma[1, 1])) -
     pnorm(logthres1[1], mean = mnloghr[1], sd = sqrt(sigma[1, 1]))
 
   for (j in 2:nstage) {
