@@ -21,29 +21,51 @@ stages:          # List of stages for jobs, and their order of execution
   - test
   - deploy
 
-build-job:       # This job runs in the build stage, which runs first.
+before_script: ## Check this part
+
+  - export http_proxy=http://proxy.eu.novartis.net:2010/
+  - export https_proxy=http://proxy.eu.novartis.net:2010/
+  - export NOT_CRAN=true
+  - export CCACHE_DIR=/tmp
+  - export PATH=/usr/lib/ccache:$PATH
+
+Build:
   stage: build
   script:
-    - echo "Compiling the code..."
-    - echo "Compile complete."
+    - R CMD build . --no-build-vignettes --no-manual
+    - PKG_FILE_NAME=$(ls -1t *.tar.gz | head -n 1) && echo ${PKG_FILE_NAME}
+    - mv "${PKG_FILE_NAME}" monitOS-source-fast.tar.gz
+  artifacts:
+    name: "build-fast"
+    expire_in: 1 day
+    paths:
+       - monitOS-source-fast.tar.gz
 
-unit-test-job:   # This job runs in the test stage.
-  stage: test    # It only starts when the job in the build stage completes successfully.
+Check:   
+  stage: test
   script:
-    - echo "Running unit tests... This will take about 60 seconds."
-    - sleep 60
-    - echo "Code coverage is 90%"
+    - tar xf "monitOS-source-fast.tar.gz"
+    - export NOT_CRAN=false
+    - R CMD check monitOS --no-build-vignettes --no-manual
+    - rm -rf monitOS.Rcheck/monitOS
+  artifacts:
+    name: "Rcheck-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
+    expire_in: 1 week
+    paths:
+      - monitOS.Rcheck/
 
-lint-test-job:   # This job also runs in the test stage.
-  stage: test    # It can run at the same time as unit-test-job (in parallel).
+release-source:
+  stage: deploy
+  only:
+    - main
   script:
-    - echo "Linting code... This will take about 10 seconds."
-    - sleep 10
-    - echo "No lint issues found."
+    - R CMD build . --as-cran
+    - PKG_FILE_NAME=$(ls -1t *.tar.gz | head -n 1) && echo ${PKG_FILE_NAME}
+    - mv "${PKG_FILE_NAME}" monitOS-source.tar.gz
+  dependencies: []
+  artifacts:
+    name: "monitOS_source"
+    expire_in: 1 month
+    paths:
+      - monitOS_*.tar.gz
 
-deploy-job:      # This job runs in the deploy stage.
-  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
-  environment: production
-  script:
-    - echo "Deploying application..."
-    - echo "Application successfully deployed."
