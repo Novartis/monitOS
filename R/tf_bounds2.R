@@ -16,12 +16,8 @@
 #' prints a table with the computed thresholds
 #' @export
 #' @examples
-#' events1 <- c(68, 135, 220, 340) # sample size at each analysis stage
-#' procs <- tf_bounds2(events1)
-#'
-#' events2 <- c(15, 30, 50, 69)
-#' procs <- tf_bounds2(events1, low = TRUE, nullfin = log(1.33))
-#'
+#' events <- c(15, 30, 50, 69)
+#' procs <- tf_bounds2(events, low = TRUE, nullfin = log(1.33))
 tf_bounds2 <- function(events, power = 0.9, t1error = 0.025, low = FALSE,
                        nullfin = NULL) {
 

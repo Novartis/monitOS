@@ -44,17 +44,3 @@ continuation at different stages of the study and returns the operational
 characteristics of the monitoring rule under varying hazard ratio scenarios
 inserted by the user.
 }
-\examples{
-thres1 <- c(1.3, 1)
-events <- c(50, 100)
-hrr <- seq(0.6, 1.5, by = 0.01)
-hrs <- 1.3
-res <- tf_ocs(thres1, events, hrr, hrs)
-
-thres1 <- c(1.3, 1)
-thres2 <- c(1.8, 1.3)
-events <- c(50, 100)
-hrr <- seq(0.6, 1.5, by = 0.01)
-hrs <- 1.3
-res <- tf_ocs(thres1, thres2, events, hrr, hrs)
-}
