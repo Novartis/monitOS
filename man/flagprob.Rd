@@ -5,7 +5,7 @@
 \title{Function to the joint P{Reach stage k and declare a safety issue but not
 stop the trial| log-HR = theta}.}
 \usage{
-flagprob(logthres1, logthres2, events, loghr)
+flagprob(logthres1, logthres2, events, loghr = log(1))
 }
 \arguments{
 \item{logthres1}{The log hazard ratio thresholds for flagging a safety issue.}
@@ -29,6 +29,6 @@ logthres1 <- log(c(1.3, 1))
 logthres2 <- log(c(1.8, 1.3))
 events <- c(50, 100)
 loghr <- log(1)
-res <- stopprob(logthres1, logthres2, events, loghr)
+res <- flagprob(logthres1, logthres2, events, loghr)
 
 }

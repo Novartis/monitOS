@@ -15,10 +15,10 @@
 #' res <- safprob(logthres, events, loghr)
 #'
 safprob <- function(logthres, events, loghr) {
-  
+
   nstage <- length(events) # total number of analyses planned
   info <- events / 4 # Fisher's information for log-HR at each analysis
-  
+
   # Calculate the variance-covariance matrix for the sequence of logHR estimates
   mnloghr <- rep(loghr, times = nstage)
   if (nstage > 1) {
@@ -33,13 +33,13 @@ safprob <- function(logthres, events, loghr) {
   } else {
     sigma <- matrix(1/info)
   }
-  
+
   sprob <- 0
   # Calculate P{Continue to stage k and do not flag a safety signal; log-HR}
   sprob <- pmvnorm(lower = rep(-Inf, times = nstage),
                    upper = logthres[1:nstage], mean = mnloghr,
                    sigma = sigma, keepAttr = FALSE)
-  
+
   return(sprob)
 }
 
@@ -60,12 +60,10 @@ safprob <- function(logthres, events, loghr) {
 #' res <- stopprob(logthres, events, loghr)
 #'
 stopprob <- function(logthres, events, loghr) {
-  
-  require(mvtnorm)
-  
+
   nstage <- length(events) # total number of analyses planned
   info <- events / 4 # Fisher's information for log-HR at each analysis
-  
+
   # Calculate the variance-covariance matrix for the sequence of log-HR
   # estimates
   mnloghr <- rep(loghr, times = nstage)
@@ -77,7 +75,7 @@ stopprob <- function(logthres, events, loghr) {
       sigma[j, i] <- sigma[i, j]
     }
   }
-  
+
   sprob <- vector(mode = "numeric", length = nstage)
   sprob[1] <- pnorm(logthres[1], mean = mnloghr[1], sd = sqrt(sigma[1, 1]),
                     lower.tail = FALSE)
@@ -88,7 +86,7 @@ stopprob <- function(logthres, events, loghr) {
                         mean = mnloghr[1:j], sigma = sigma[1:j, 1:j],
                         keepAttr = FALSE)
   }
-  
+
   return(sprob)
 }
 
@@ -109,12 +107,10 @@ stopprob <- function(logthres, events, loghr) {
 #' res <- safprobc(logthres, events, loghr)
 #'
 safprobc <- function(logthres, events, loghr) {
-  
-  require(mvtnorm)
-  
+
   nstage <- length(events) # total number of analyses planned
   info <- events / 4 # Fisher's information for log-HR at each analysis
-  
+
   # Calculate the variance-covariance matrix for the sequence of log-HR
   # estimates
   mnloghr <- rep(loghr, times = nstage)
@@ -126,19 +122,19 @@ safprobc <- function(logthres, events, loghr) {
       sigma[j, i] <- sigma[i, j]
     }
   }
-  
+
   jpnum <- 0
   jpnum <- pmvnorm(lower = rep(-Inf, times = nstage),
                    upper = logthres[1:nstage], mean = mnloghr,
                    sigma = sigma, keepAttr = FALSE)
-  
+
   jpdenom <- 0
   jpdenom <- pmvnorm(lower = rep(-Inf, times = nstage - 1),
                      upper = logthres[1:(nstage - 1)],
                      mean = mnloghr[1:(nstage - 1)],
                      sigma = sigma[1:(nstage - 1), 1:(nstage - 1)],
                      keepAttr = FALSE)
-  
+
   return(jpnum / jpdenom)
 }
 
@@ -159,12 +155,10 @@ safprobc <- function(logthres, events, loghr) {
 #' res <- stopprobc(logthres, events, loghr)
 #'
 stopprobc <- function(logthres, events, loghr) {
-  
-  require(mvtnorm)
-  
+
   nstage <- length(events) # total number of analyses planned
   info <- events / 4 # Fisher's information for log-HR at each analysis
-  
+
   # Calculate the variance-covariance matrix for the sequence of logHR estimates
   mnloghr <- rep(loghr, times = nstage)
   sigma <- mat.or.vec(nr = nstage, nc = nstage)
@@ -175,7 +169,7 @@ stopprobc <- function(logthres, events, loghr) {
       sigma[j, i] <- sigma[i, j]
     }
   }
-  
+
   numer <- denom <- sprob <- vector(mode = "numeric", length = nstage)
   sprob[1] <- pnorm(logthres[1], mean = mnloghr[1], sd = sqrt(sigma[1, 1]),
                     lower.tail = FALSE)
@@ -186,7 +180,7 @@ stopprobc <- function(logthres, events, loghr) {
                         mean = mnloghr[1:j],
                         sigma = sigma[1:j, 1:j],
                         keepAttr = FALSE)
-    
+
     denom[j] <- pmvnorm(lower = rep(-Inf, times = j - 1),
                         upper = logthres[1:(j - 1)],
                         mean = mnloghr[1:(j - 1)],
@@ -194,7 +188,7 @@ stopprobc <- function(logthres, events, loghr) {
                         keepAttr = FALSE)
     sprob[j] <- 1 - numer[j] / denom[j]
   }
-  
+
   return(sprob)
 }
 
@@ -214,15 +208,13 @@ stopprobc <- function(logthres, events, loghr) {
 #' logthres2 <- log(c(1.8, 1.3))
 #' events <- c(50, 100)
 #' loghr <- log(1)
-#' res <- stopprob(logthres1, logthres2, events, loghr)
+#' res <- flagprob(logthres1, logthres2, events, loghr)
 #'
-flagprob <- function(logthres1, logthres2, events, loghr) {
-  
-  require(mvtnorm)
-  
+flagprob <- function(logthres1, logthres2, events, loghr = log(1)) {
+
   nstage <- length(events) # total number of analyses planned
   info <- events / 4 # Fisher's information for log-HR at each analysis
-  
+
   # Calculate the variance-covariance matrix for the sequence of log-HR
   # estimates
   mnloghr <- rep(loghr, times = nstage)
@@ -234,11 +226,11 @@ flagprob <- function(logthres1, logthres2, events, loghr) {
       sigma[j, i] <- sigma[i, j]
     }
   }
-  
+
   sprob <- vector(mode = "numeric", length = nstage)
   sprob[1] <- pnorm(logthres2[1], mean = mnloghr[1],sd = sqrt(sigma[1, 1])) -
     pnorm(logthres1[1], mean = mnloghr[1], sd = sqrt(sigma[1, 1]))
-  
+
   for (j in 2:nstage) {
     # Calculate P{Continue to stage k and flag a safety signal but not suggest
     # stopping the trial; log-HR}
@@ -247,6 +239,6 @@ flagprob <- function(logthres1, logthres2, events, loghr) {
                         mean = mnloghr[1:j], sigma = sigma[1:j, 1:j],
                         keepAttr = FALSE)
   }
-  
+
   return(sprob)
 }

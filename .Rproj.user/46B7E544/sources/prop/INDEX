@@ -2,4 +2,8 @@
 ~%2FmonitOS%2FNAMESPACE="041C7DC2"
 ~%2FmonitOS%2FR%2Fflag_safety.R="18B2DCA8"
 ~%2FmonitOS%2FR%2Fhello.R="C0765172"
+~%2FmonitOS%2FR%2Ftf_bounds2.R="3E2EFC75"
+~%2FmonitOS%2FR%2Ftf_ocs.R="78FFDA98"
+~%2FmonitOS%2Ftests%2Ftestthat%2Fmy_test.R="81D00171"
+~%2FmonitOS%2Ftests%2Ftestthat%2Ftest_example.R="ECD63F66"
 ~%2FmonitOS%2Ftests%2Ftestthat.R="61F16AD7"
