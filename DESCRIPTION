@@ -1,6 +1,6 @@
 Package: monitOS
 Type: Package
-Title: Monitoring OS in indolent oncology trials
+Title: Monitoring OS in chronic or indolent cancers
 Version: 0.1.0
 Authors@R: c(person("Evanthia", "Koukouli", email = "evanthia.koukouli@novartis.com", role = c("aut", "cre")),
           person("Thibaud", "Coroller", email = "tibaud.coroller@novartis.com", role = c("aut")),

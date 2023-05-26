@@ -1,4 +1,4 @@
-# monitOS: monitor OS in indolent cancer trials (05/2023)
+# monitOS: Monitoring OS in chronic or indolent cancers
 
 ## Description
 
