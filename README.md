@@ -5,20 +5,18 @@
 @evanthia to fill
 
 ## Authors (alphabetical)
-- Thibaud Coroller (AMDS): <thibaud.coroller@novartis.com> 
-- Lisa Hampson (AMDS): <lisa.hampson@novartis.com> 
-- Evanthia Koukouli (AMDS): <evanthia.koukouli@novartis.com>
-
-## Contributors (alphabetical)
 - Mouna Akacha (AMDS): <mouna.akacha@novartis.com>
 - Bharani Bharani-Dharan (GDD Onco): <bharani.bharani-dharan@novartis.com>
 - Frank Bretz (AMDS): <frank.bretz@novartis.com>
-- Arunava chakravartty (GDD Onco) <arunava.chakravartty@novartis.com>
+- Arunava Chakravartty (GDD Onco) <arunava.chakravartty@novartis.com>
+- Thibaud Coroller (AMDS): <thibaud.coroller@novartis.com> 
+- Lisa Hampson (AMDS): <lisa.hampson@novartis.com> 
+- Evanthia Koukouli (AMDS): <evanthia.koukouli@novartis.com>
 - Nigel Yateman (GDD Onco): <nigel.yateman@novartis.com>
 - Emmanuel Zuber (GDD Onco): <emmanuel.zuber@novartis.com>
 
 
-## Installation on Davinci Bus-Busdev
+## Installation on HPC
 
 __Git (easier)__
 
