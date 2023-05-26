@@ -4,7 +4,7 @@
 
 @evanthia to fill
 
-## Authors (alphabetical)
+## Team (alphabetical)
 - Mouna Akacha (AMDS): <mouna.akacha@novartis.com>
 - Bharani Bharani-Dharan (GDD Onco): <bharani.bharani-dharan@novartis.com>
 - Frank Bretz (AMDS): <frank.bretz@novartis.com>
