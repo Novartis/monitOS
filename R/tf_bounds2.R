@@ -87,6 +87,6 @@ tf_bounds2_checks <- function(events, power, t1error, low, nullfin) {
   stopifnot("events should be greater than 1." = all(events > 1))
 
   # If low is TRUE then nullfin should be specified
-  stopifnot("When low is TRUE, nullfin value should not be NULL." = low &
-              !is.null(nullfin))
+  stopifnot("When low is TRUE, nullfin value should not be NULL." = !low &
+              is.null(nullfin))
 }
