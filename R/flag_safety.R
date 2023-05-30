@@ -1,17 +1,3 @@
-
-fct <- function(method='prob') {
-
-  return(
-    switch(method == 'prob', safprob(...),
-           method == 'cond', safprobc(...))
-    )
-
-}
-
-fct_prob
-fct_condi
-fct_TF
-
 #' Function to calculate the joint P{Reach stage k and don't declare a safety
 #' issue| log-HR = theta}.
 #'
