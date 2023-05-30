@@ -39,7 +39,7 @@ tf_ocs <- function(thres1, thres2 = NULL, events, hrr, hrs, col = NULL) {
   if (is.null(col)) col <- generate_colors(length(hrs))
 
   # Load functions needed to calculate operational characteristics
-  source("code/functions/flag_safety.R")
+  # source("code/functions/flag_safety.R")
 
   logthres1 <- log(thres1) # log transform thresholds for continuation
   loghrs <- log(hrs) # log transform hazard ratios to calculate stopping probs
