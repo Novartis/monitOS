@@ -1,4 +1,4 @@
-#' Function to calculate the joint P{Reach stage k and don't declare a safety
+#' Function to calculate the joint P{Reach stage k and do not declare a safety
 #' issue| log-HR = theta}.
 #'
 #' @param logthres The log hazard ratio thresholds for continuation.

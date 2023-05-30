@@ -24,12 +24,12 @@
 #' scenarios specified by the user and the plots include visualizations of these
 #' results.
 #' @export
-# @examples
-# res <- tf_ocs(thres1=c(1.3, 1),
-#               thres2=c(1.8, 1.3),
-#               events=c(50, 100),
-#               hrr=seq(0.6, 1.5, by = 0.01),
-#               hrs=1.3)
+#' @examples
+#' res <- tf_ocs(thres1=c(1.3, 1),
+#'               thres2=c(1.8, 1.3),
+#'               events=c(50, 100),
+#'               hrr=seq(0.6, 1.5, by = 0.01),
+#'               hrs=1.3)
 tf_ocs <- function(thres1, thres2 = NULL, events, hrr, hrs, col = NULL) {
 
   # Sanity checks
@@ -37,9 +37,6 @@ tf_ocs <- function(thres1, thres2 = NULL, events, hrr, hrs, col = NULL) {
 
   # Default condition if competing risk extracted for event
   if (is.null(col)) col <- generate_colors(length(hrs))
-
-  # Load functions needed to calculate operational characteristics
-  source("code/functions/flag_safety.R")
 
   logthres1 <- log(thres1) # log transform thresholds for continuation
   loghrs <- log(hrs) # log transform hazard ratios to calculate stopping probs
@@ -258,17 +255,3 @@ sanity_checks <- function(thres1, thres2, events, hrr, hrs, col) {
 generate_colors <- grDevices::colorRampPalette(
   colors = c("green4", "grey", "red")
 )
-
-
-#' Probability to stop the trial at each stage (joint probability to stop the trial at
-#' stage k and not stop the trial at stage 1 to k-1)
-#'
-#' Probability to flag a safety issue but not stop the trial = P(threshold to be
-#' between two values at stage k & the threshold was less than lower bound at
-#' all previous stages)
-#'
-#' Probability to flag a safety issue at least once
-#'
-#' Probability tosuggest stopping the trial at least once
-#'
-#'
