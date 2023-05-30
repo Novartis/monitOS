@@ -2,7 +2,7 @@
 % Please edit documentation in R/flag_safety.R
 \name{safprob}
 \alias{safprob}
-\title{Function to calculate the joint P{Reach stage k and dont declare a safety
+\title{Function to calculate the joint P{Reach stage k and do not declare a safety
 issue| log-HR = theta}.}
 \usage{
 safprob(logthres, events, loghr)
@@ -19,7 +19,7 @@ safprob(logthres, events, loghr)
 analysis stage.
 }
 \description{
-Function to calculate the joint P{Reach stage k and dont declare a safety
+Function to calculate the joint P{Reach stage k and do not declare a safety
 issue| log-HR = theta}.
 }
 \examples{
