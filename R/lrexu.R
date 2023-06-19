@@ -216,7 +216,7 @@ lrexu_checks <- function(data, n_perm, seed){
 
   # data should be tibble
   stopifnot("incorrect data format; data should be a tibble" =
-              is.tibble(data))
+              is_tibble(data))
 
   # data should include the following variables: time, status, group
   stopifnot("incorrect data format; variable name 'time' should be used to
