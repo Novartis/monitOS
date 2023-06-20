@@ -27,7 +27,7 @@ lrexu <- function(data, n_perm, seed){
   lrexu_checks(data, n_perm, seed)
 
   # get the log-rank statistic from the observed data
-  logrank_data = survdiff(Surv(time, status) ~ group, data=data)
+  logrank_data = survival::survdiff(survival::Surv(time, status) ~ group, data=data)
 
 
   # Implement the the Exact test conditioning on observed follow-up
@@ -46,7 +46,7 @@ lrexu <- function(data, n_perm, seed){
   # follow-up time using the Kaplan-Meier method.
 
   # obtain the KM estimate without considering group information
-  KM_survival <- survfit(Surv(time, status) ~ 1, data = data)
+  KM_survival <- survival::survfit(survival::Surv(time, status) ~ 1, data = data)
   cdf_survival <- 1 - KM_survival$surv
   data$cdf_surv <- 1 - KM_survival$surv[match(data$time, KM_survival$time)]
   if(any(is.na(data$cdf_surv))) {
@@ -57,7 +57,7 @@ lrexu <- function(data, n_perm, seed){
   }
 
   # obtain the KM estimate for follow-up times for the first group
-  KM_followup_g0 <- survfit(Surv(follow_time, follow_status) ~ 1,
+  KM_followup_g0 <- survival::survfit(survival::Surv(follow_time, follow_status) ~ 1,
                             data = data_g0)
   cdf_followup_g0 <- 1 - KM_followup_g0$surv
   data_g0$cdf_followup <- 1 - KM_followup_g0$surv[match(data_g0$time,
@@ -71,7 +71,7 @@ lrexu <- function(data, n_perm, seed){
   }
 
   # obtain the KM estimate for follow-up times for the second group
-  KM_followup_g1 <- survfit(Surv(follow_time, follow_status) ~ 1,
+  KM_followup_g1 <- survival::survfit(survival::Surv(follow_time, follow_status) ~ 1,
                             data = data_g1)
   cdf_followup_g1 <- 1 - KM_followup_g1$surv
   data_g1$cdf_followup <- 1 - KM_followup_g1$surv[match(data_g1$time,
@@ -192,7 +192,7 @@ lrexu <- function(data, n_perm, seed){
     }
 
     # STEP 6: From the permuted data compute and store the log-rank statistic
-    exact_stat[rep] = survdiff(Surv(time_p, status_p) ~ group, data=data)$chisq
+    exact_stat[rep] = survival::survdiff(survival::Surv(time_p, status_p) ~ group, data=data)$chisq
 
     setTxtProgressBar(pb,rep)
   }
@@ -216,7 +216,7 @@ lrexu_checks <- function(data, n_perm, seed){
 
   # data should be tibble
   stopifnot("incorrect data format; data should be a tibble" =
-              is_tibble(data))
+              tibble::is_tibble(data))
 
   # data should include the following variables: time, status, group
   stopifnot("incorrect data format; variable name 'time' should be used to
