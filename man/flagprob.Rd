@@ -30,5 +30,4 @@ logthres2 <- log(c(1.8, 1.3))
 events <- c(50, 100)
 loghr <- log(1)
 res <- flagprob(logthres1, logthres2, events, loghr)
-
 }

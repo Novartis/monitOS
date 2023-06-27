@@ -2,7 +2,7 @@
 test_that("Calculation of the TF bounds works", {
 
   events <- c(15, 30, 50, 69)
-  procs <- tf_bounds2(events, low = TRUE, nullfin = log(1.33))
+  procs <- monitOS::bounds(events, delta_imax = log(1.33))
 
   # check for errors in the provided results.
   expect_equal(procs$lhr_con,
@@ -15,7 +15,4 @@ test_that("Calculation of the TF bounds works", {
                c(-0.4952863, -0.4952863, -0.4952863, -0.4952863),
                tolerance=1e-5)
 
-  # check for correctly flagging an error with incorrect argument specification
-  expect_error(tf_bounds2(events, low = FALSE, nullfin = log(1.33)))
-  expect_error(tf_bounds2(events, low = TRUE, nullfin = NULL))
 })
