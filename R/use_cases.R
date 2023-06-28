@@ -21,15 +21,11 @@ use_cases <- function(study){
 polarix1 <- function(){
 
   events <- c(134, 178)
-  thresh1 <- exp(monitOS::bounds(events = events))
-  return(list(thresh1=thresh1$lhr_con,
+  bounds <- monitOS::bounds(events = events)
+  return(list(thresh1=exp(bounds$lhr_con),
               events=events,
-              hrs=c(thresh1$lhr_alt[1],
-                    1 - 0.5 * (1 -exp(thresh1$lhr_alt[1])),
-                    0,
-                    1.1,
-                    1.5,
-                    2)))
+              thres2='NULL',
+              hrs=c(0.7, 1, 1.1, 1.5, 2)))
 
 }
 
@@ -37,15 +33,11 @@ polarix1 <- function(){
 polarix2 <- function(){
 
   events <- c(110, 125, 131)
-  thresh1 <- exp(monitOS::bounds(events = events))
-  return(list(thresh1=thresh1$lhr_con,
+  bounds <- monitOS::bounds(events = events)
+  return(list(thresh1=exp(bounds$lhr_con),
               events=events,
-              hrs=c(thresh1$lhr_alt[1],
-                    1 - 0.5 * (1 -exp(thresh1$lhr_alt[1])),
-                    0,
-                    1.1,
-                    1.5,
-                    2)))
+              thres2='NULL',
+              hrs=c(0.7, 1, 1.1, 1.5, 2)))
 
 }
 
@@ -53,15 +45,11 @@ polarix2 <- function(){
 MonarchE <- function(){
 
   events <- c(76, 186, 330, 650)
-  thresh1 <- exp(monitOS::bounds(events = events))
-  return(list(thresh1=thresh1$lhr_con,
+  bounds <- monitOS::bounds(events =events)
+  return(list(thresh1=exp(bounds$lhr_con),
+              thresh2='NULL',
               events=events,
-              hrs=c(thresh1$lhr_alt[1],
-                    1 - 0.5 * (1 -exp(thresh1$lhr_alt[1])),
-                    0,
-                    1.1,
-                    1.5,
-                    2)))
+              hrs=c(0.7, 1, 1.1, 1.5, 2)))
 
 }
 
@@ -69,14 +57,10 @@ MonarchE <- function(){
 Leda <- function(){
 
   events <- c(22, 34)
-  thresh1 <- exp(monitOS::bounds(events =events))
-  return(list(thresh1=thresh1$lhr_con,
+  bounds <- monitOS::bounds(events =events, delta_imax = log(1.333))
+  return(list(thresh1=exp(bounds$lhr_con),
+              thresh2='NULL',
               events=events,
-              hrs=c(thresh1$lhr_alt[1],
-                    1 - 0.5 * (1 -exp(thresh1$lhr_alt[1])),
-                    0,
-                    1.1,
-                    1.5,
-                    2)))
+              hrs=c(0.5, 0.7, 1, 1.1, 1.5, 2)))
 
 }

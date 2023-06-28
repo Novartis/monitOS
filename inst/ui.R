@@ -6,18 +6,25 @@ dashboardPage(
   dashboardHeader(title = 'Monitoring OS'),
   # Creating tabs
   dashboardSidebar(sidebarMenu(
+    selectInput('study', 'Case study:',
+                c('random','polarix1', 'polarix2', 'MonarchE', 'Leda')),
+    textInput('events', 'Events (csv)', "110, 125, 131"),
+    textInput('thres1', 'Safety thresholds (csv)', "1.3, 1.2, 1"),
+    textInput('thres2', 'Stop thresholds (csv)', "NULL"),
+    textInput('hrs', 'True HRs', "0.7, 1, 1.1, 1.2, 1.5"),
+    selectInput('method', 'Method :', c('joint', 'cond'))
     # Tab-1
-    menuItem(
-      "Run",
-      tabName = "run",
-      icon = icon("person-running"),
-      selectInput('study', 'Case study/User specified parameter:',
-                  c('User input','polarix1')),
-      textInput('events', 'Events #', "110, 125, 131"),
-      textInput('thres1', 'Threshold #1: (csv)', "1.3, 1.2, 1"),
-      textInput('thres2', 'Threshold #2: (csv)', "1.5, 1.4, 1.3"),
-      selectInput('method', 'Method :', c('joint', 'cond'))
-    )
+    # menuItem(
+    #   "Run",
+    #   tabName = "run",
+    #   icon = icon("person-running"),
+    #   selectInput('study', 'Case study/User specified parameter:',
+    #               c('User input','polarix1', 'polarix2', 'MonarchE', 'Leda')),
+    #   textInput('events', 'Events (csv)', "110, 125, 131"),
+    #   textInput('thres1', 'Safety thresholds (csv)', "1.3, 1.2, 1"),
+    #   textInput('thres2', 'Stop thresholds (csv)', "1.5, 1.4, 1.3"),
+    #   selectInput('method', 'Method :', c('joint', 'cond'))
+    # )
   )
   ),
   # Define body

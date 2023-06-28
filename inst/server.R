@@ -20,23 +20,25 @@ shinyServer(function(input, output, session) {
     # usecase <- reactive(monitOS::use_cases(input$study))
 
   observeEvent(input$study, {
-    if(input$study == "User input"){
+    if(input$study == "random"){
       updateTextInput(session, 'events', value = "110, 125, 131")
       updateTextInput(session, 'thres1', value = "1.3, 1.2, 1")
-      updateTextInput(session, 'thres2', value = "1.5, 1.4, 1.3")
-    }else if(input$study == "polarix1"){
-      ## some made up numbers
-      updateTextInput(session, 'events', value = "110, 120, 130")
-      updateTextInput(session, 'thres1', value = "1.3, 1.2, 1.1")
-      updateTextInput(session, 'thres2', value = "1.5, 1.4, 1.3")
+      updateTextInput(session, 'thres2', value = NULL)
+      updateTextInput(session, 'hrs', value = "0.7, 1, 1.1, 1.2, 1.5")
+    } else {
+      params <- monitOS::use_cases(input$study)
+      updateTextInput(session, 'events', value = paste(round(params$events, 4), collapse = ','))
+      updateTextInput(session, 'thres1', value = paste(round(params$thresh1, 4), collapse = ','))
+      updateTextInput(session, 'thres2', value = if(params$thresh2 == 'NULL') params$thresh2 else paste(round(params$thresh2, 4), collapse = ','))
+      updateTextInput(session, 'hrs', value = paste(round(params$hrs, 4), collapse = ','))
     }
   })
-
   ## if input events changes, then keep the thres1 and thres2 the same size as input event, add random values if missing
   observeEvent(input$events, {
     thres1 <- as.numeric(unlist(strsplit(gsub(" ", "", input$thres1),",")))
     thres2 <- pmax(as.numeric(unlist(strsplit(gsub(" ", "", input$thres2),","))), thres1, na.rm = TRUE)
     events <- as.numeric(unlist(strsplit(gsub(" ", "", input$events),",")))
+
 
     len_events <- length(events)
     len_thres1 <- length(thres1)
@@ -67,18 +69,20 @@ shinyServer(function(input, output, session) {
     # Base react
     react <- reactive({
 
+      print(input$thres2)
       # Parse as vectors
       thres1 <- as.numeric(unlist(strsplit(gsub(" ", "", input$thres1),",")))
-      thres2 <- pmax(as.numeric(unlist(strsplit(gsub(" ", "", input$thres2),","))), thres1, na.rm = TRUE)
+      thres2 <- if(input$thres2 == 'NULL') NULL else as.numeric(unlist(strsplit(gsub(" ", "", input$thres2),",")))
       events <- as.numeric(unlist(strsplit(gsub(" ", "", input$events),",")))
-
+      hrs <- as.numeric(unlist(strsplit(gsub(" ", "", input$hrs),",")))
 
       # Run simulation
       monitOS::ocs(thres1=thres1,
                    thres2=thres2,
                    events=events,
                    method=input$method,
-                   hrs=c(0.7, 1, 1.1, 1.3, 1.5),
+                   hrr=seq(0.3, 1.5, by = 0.01),
+                   hrs=hrs,
                    col=NULL)
     })
 
