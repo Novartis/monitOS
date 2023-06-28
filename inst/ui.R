@@ -11,18 +11,14 @@ dashboardPage(
       "Run",
       tabName = "run",
       icon = icon("person-running"),
-      selectInput('method', 'Method :', c('joint', 'cond')),
+      selectInput('study', 'Case study/User specified parameter:',
+                  c('User input','polarix1')),
+      textInput('events', 'Events #', "110, 125, 131"),
       textInput('thres1', 'Threshold #1: (csv)', "1.3, 1.2, 1"),
       textInput('thres2', 'Threshold #2: (csv)', "1.5, 1.4, 1.3"),
-      textInput('events', 'Events #', "110, 125, 131"))
-    ),
-    # Tab-2
-    menuItem(
-      "Use cases",
-      tabName = "use cases",
-      icon = icon("download"),
-      selectInput('study', 'Case study :', c('polarix1', 'polarix2', 'MonarchE', 'Leda'))
+      selectInput('method', 'Method :', c('joint', 'cond'))
     )
+  )
   ),
   # Define body
   dashboardBody(tabItems(
