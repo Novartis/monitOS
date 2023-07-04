@@ -9,8 +9,8 @@
 use_cases <- function(study){
 
   return(switch(study,
-        polarix1 = polarix1(),
-        polarix2 = polarix2(),
+        Polarix1 = polarix1(),
+        Polarix2 = polarix2(),
         MonarchE = MonarchE(),
         Leda = Leda(),
         YTB323 = YTB()))
