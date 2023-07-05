@@ -2,37 +2,20 @@
 % Please edit documentation in R/lrex.R
 \name{lrex}
 \alias{lrex}
-\title{Function to perform the exact test for a two-arm trial.}
+\title{Perform exact test for a two-arm trial given time-to-event data.}
 \usage{
-lrex(
-  method = "standard",
-  events = NULL,
-  n0 = NULL,
-  n1 = NULL,
-  crit = NULL,
-  data = NULL,
-  n_perm = NULL,
-  seed = 1234
-)
+lrex(method = "standard", data = NULL, n_perm = 1000, seed = 1234)
 }
 \arguments{
 \item{method}{String. Method can be either "standard" or "heinze". Default is
-"standard", calculating the exact test p-value given the data provided. The
-standard exact test inputs the number of observed events along with
-the total sample size per arm and the log-rank test statistic value. If
-"heinze" method is selected, users need to input the time-to-event data and
-the number of permutations to be performed.}
-
-\item{events}{Scalar. The total number of observed events.}
-
-\item{n0}{Scalar. The sample size in the control group.}
-
-\item{n1}{Scalar. Sample size in the treatment group.}
-
-\item{crit}{Scalar. The observed critical value of the log-rank test.}
+"standard", calculating the exact test p-value given the data provided.
+Users need to input the time-to-event data, where time, status and group are
+the variable names where survival information is stored, and the number of
+permutations to perform.}
 
 \item{data}{Tibble. Time-to-event data must be inserted with status, 0
-if censored or 1 if dead; time and group variables.}
+if censored or 1 if dead; time and group, 0 for control and 1 for treatment
+arm, variables.}
 
 \item{n_perm}{Scalar. The number of permutations to be performed.}
 
@@ -44,32 +27,50 @@ permutations where LR is the log-rank test result given the specific
 permuted data set.
 }
 \description{
-Function to perform the exact test for a two-arm trial.
+Perform exact test for a two-arm trial given time-to-event data.
 }
 \examples{
 set.seed(12345)
-n <- 20
+n <- 200
 dt <- tibble::tibble(id = 1:n,
                      time = rexp(n),
-                     status = rbinom(n, size = 1, prob = 0.2),
-                     group = rbinom(n, size = 1, prob = 0.5)
+                     status = c(rbinom(n/2, size = 1, prob = 0.2),
+                                rbinom(n/2, size = 1, prob = 0.1)),
+                     group = rep(0:1, each = n/2)
 )
-# 3 events occurred
+table(ifelse(dt$status==1, "dead", "censored") , dt$group)
+
 # compute log-rank test result
 lrdt <- survival::survdiff(survival::Surv(time, status) ~ group, data=dt)
+lrdt$pvalue
 
-method <- "standard"
-events <- sum(dt$status)
-n0 <- sum(dt$group==0)
-n1 <- sum(dt$group==1)
-crit <- lrdt$chisq
-lrex(method = method,
-     events = events,
-     n0 = n0,
-     n1 = n1,
-     crit = crit)
+n_perm <- 1000
+data <- dt
+seed <- 12345
+# method = "standard" is performed by default
+lrex(data = data, n_perm = n_perm, seed = seed)
+# method = "heinze" to consider follow-up times
+lrex(method = "heinze", data = data, n_perm = n_perm, seed = seed)
 
-n_perm <- 100
-lrex(method = "heinze", data = dt, n_perm = n_perm, seed = 12345)
+set.seed(12345)
+n <- 100
+dt <- tibble::tibble(id = 1:n,
+                     time = rexp(n),
+                     status = c(rbinom(n/2, size = 1, prob = 0.3),
+                                rbinom(n/2, size = 1, prob = 0.1)),
+                     group = rep(0:1, each = n/2)
+)
+table(ifelse(dt$status==1, "dead", "censored") , dt$group)
+
+# compute log-rank test result
+lrdt <- survival::survdiff(survival::Surv(time, status) ~ group, data=dt)
+lrdt$pvalue
+
+data <- dt
+seed <- 12345
+# method = "standard" is performed by default
+lrex(data = data, n_perm = 1000, seed = seed)
+# method = "heinze" to consider follow-up times
+lrex(method = "heinze", data = data, n_perm = 1e03, seed = seed)
 
 }

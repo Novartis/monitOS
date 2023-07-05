@@ -30,11 +30,11 @@ log-rank test of the data.
 }
 \examples{
 set.seed(12345)
-n <- 10 # number of patients
+n <- 20 # number of patients
 dt <- tibble::tibble(time = rexp(n),
-                 status = rbinom(10, size = 1, prob = 0.2),
-                 group = rbinom(10, size = 1, prob = 0.5)
+                 status = rbinom(n, size = 1, prob = 0.2),
+                 group = rbinom(n, size = 1, prob = 0.5)
 )
-ext <- monitOS:::lrexu(data = dt, n_perm = 100, seed = 12345)
+monitOS:::lrexu(data = dt, n_perm = 100, seed = 12345)
 
 }

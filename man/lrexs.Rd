@@ -2,19 +2,18 @@
 % Please edit documentation in R/lrex.R
 \name{lrexs}
 \alias{lrexs}
-\title{Calculate the exact test p-value given a true HR scenario and the observed
-number of events in a two-arm trial.}
+\title{Calculate the exact test p-value assuming a true HR=1 scenario and the
+observed number of events in a two-arm trial.}
 \usage{
-lrexs(events, n0, n1, crit)
+lrexs(data, n_perm, seed)
 }
 \arguments{
-\item{events}{Scalar. The total number of observed events.}
+\item{data}{Tibble. Time-to-event data must be inserted with status, 0
+if censored or 1 if dead; time and group variables.}
 
-\item{n0}{Scalar. The sample size in the control group.}
+\item{n_perm}{Scalar. The number of permutations to be performed.}
 
-\item{n1}{Scalar. Sample size in the treatment group.}
-
-\item{crit}{Scalar. The observed critical value of the log-rank test.}
+\item{seed}{Scalar. The seed for the permutations.}
 }
 \value{
 Scalar. The exact test p-value, i.e., Pr(LR < crit | HR) across all
@@ -22,8 +21,8 @@ permutations where LR is the log-rank test result given the specific
 permuted data set.
 }
 \description{
-Calculate the exact test p-value given a true HR scenario and the observed
-number of events in a two-arm trial.
+Calculate the exact test p-value assuming a true HR=1 scenario and the
+observed number of events in a two-arm trial.
 }
 \examples{
 set.seed(12345)
@@ -35,7 +34,6 @@ dt <- tibble::tibble(id = 1:n,
 )
 lrdt <- survival::survdiff(survival::Surv(time, status) ~ group, data=dt)
 
-monitOS:::lrexs(events = sum(dt$status), n0 = sum(dt$group==0),
-     n1 = sum(dt$group==1), crit = lrdt$chisq)
+monitOS:::lrexs(dt, n_perm = 1e04, seed = 1234)
 
 }
