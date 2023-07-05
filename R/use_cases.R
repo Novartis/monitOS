@@ -9,10 +9,11 @@
 use_cases <- function(study){
 
   return(switch(study,
-        polarix1 = polarix1(),
-        polarix2 = polarix2(),
+        Polarix1 = polarix1(),
+        Polarix2 = polarix2(),
         MonarchE = MonarchE(),
-        Leda = Leda()))
+        Leda = Leda(),
+        YTB323 = YTB323()))
 
 }
 
@@ -24,7 +25,7 @@ polarix1 <- function(){
   bounds <- monitOS::bounds(events = events)
   return(list(thresh1=exp(bounds$lhr_con),
               events=events,
-              thres2='NULL',
+           #   thres2=NULL,
               hrs=c(0.7, 1, 1.1, 1.5, 2)))
 
 }
@@ -36,7 +37,7 @@ polarix2 <- function(){
   bounds <- monitOS::bounds(events = events)
   return(list(thresh1=exp(bounds$lhr_con),
               events=events,
-              thres2='NULL',
+              thres2=NULL,
               hrs=c(0.7, 1, 1.1, 1.5, 2)))
 
 }
@@ -47,7 +48,7 @@ MonarchE <- function(){
   events <- c(76, 186, 330, 650)
   bounds <- monitOS::bounds(events =events)
   return(list(thresh1=exp(bounds$lhr_con),
-              thresh2='NULL',
+              thresh2=NULL,
               events=events,
               hrs=c(0.7, 1, 1.1, 1.5, 2)))
 
@@ -59,7 +60,18 @@ Leda <- function(){
   events <- c(22, 34)
   bounds <- monitOS::bounds(events =events, delta_imax = log(1.333))
   return(list(thresh1=exp(bounds$lhr_con),
-              thresh2='NULL',
+              thresh2=NULL,
+              events=events,
+              hrs=c(0.5, 0.7, 1, 1.1, 1.5, 2)))
+
+}
+
+YTB323 <- function(){
+
+  events <- c(36, 52)
+  bounds <- monitOS::bounds(events =events, delta_imax = log(1.5))
+  return(list(thresh1=exp(bounds$lhr_con),
+              thresh2=NULL,
               events=events,
               hrs=c(0.5, 0.7, 1, 1.1, 1.5, 2)))
 
