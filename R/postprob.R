@@ -30,7 +30,8 @@
 #' postrr <- postprob(param0 = c(1, 1), param1 = c(1, 1), time0 = 10, time1 = 1,
 #' events0 = 2, events1 = 1, n0 = 100, n1 = 100, delta = 1, method = 'gamma')
 #' postrr
-postprob <- function(method = 'beta', param0, param1, events0, events1, time0, time1, n0, n1, delta) {
+postprob <- function(method = 'beta', param0, param1, events0, events1, time0,
+                     time1, n0, n1, delta) {
   res <- switch(
     method,
     beta = postprobbin(param0, param1, events0, events1,n0, n1, delta),
@@ -106,7 +107,12 @@ postprobbin <- function(param0 = c(1, 1),
 #' number of events pattern.
 #' @export
 #' @examples
-#' postrr <- postprobgam(param0 = c(1, 1), param1 = c(1, 1), time0 = 10, time1 = 10, events0 = 2, events1 = 1,
+#' postrr <- postprobgam(param0 = c(1, 1),
+#'                       param1 = c(1, 1),
+#'                       time0 = 10,
+#'                       time1 = 10,
+#'                       events0 = 2,
+#'                       events1 = 1,
 #' n0 = 100, n1 = 100, delta = 1)
 #' postrr
 postprobgam <- function(param0 = c(1, 1),
@@ -142,17 +148,20 @@ postprobgam <- function(param0 = c(1, 1),
 postprob_checks <- function(param0, param1, events0, events1, n0, n1, delta) {
 
   # Shape and range parameters for the beta distributions should be > 0
-  stopifnot("each entry of param0 and param1 must be positive number" = ((param0 > 0) & (param1 > 0)))
+  stopifnot("each entry of param0 and param1 must be positive number" =
+              ((param0 > 0) & (param1 > 0)))
 
   # Same number of parameters should be provided for the prior distributions
-  stopifnot("two entries must be provided for param0 and param1" = (length(param0) == 2 & length(param0) == 2))
+  stopifnot("two entries must be provided for param0 and param1" =
+              (length(param0) == 2 & length(param0) == 2))
 
   # Sample size must be larger than number of events
   stopifnot("n0 should be >= events0" = (n0 >= events0))
   stopifnot("n1 should be >= events1" = (n1 >= events1))
 
   # Number of events and sample size should be 0 or more
-  stopifnot("events0 and events1 cannot be negative." = ((events0 >= 0) & (events1 >= 0)))
+  stopifnot("events0 and events1 cannot be negative." =
+              ((events0 >= 0) & (events1 >= 0)))
   stopifnot("n0 and n1 cannot be negative." = ((n0 >= 0) & (n1 >= 0)))
 }
 

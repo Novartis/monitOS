@@ -5,15 +5,11 @@
 \title{Calculate the exact test p-value assuming a true HR=1 scenario and the
 observed number of events in a two-arm trial.}
 \usage{
-lrexs(data, n_perm)
+lrexs(data)
 }
 \arguments{
 \item{data}{Tibble. Time-to-event data must be inserted with status, 0
 if censored or 1 if dead; time and group variables.}
-
-\item{n_perm}{Scalar. The number of permutations to be performed.}
-
-\item{seed}{Scalar. The seed for the permutations.}
 }
 \value{
 Scalar. The exact test p-value, i.e., Pr(LR < crit | HR) across all
@@ -34,6 +30,6 @@ dt <- tibble::tibble(id = 1:n,
 )
 lrdt <- survival::survdiff(survival::Surv(time, status) ~ group, data=dt)
 
-monitOS:::lrexs(dt, n_perm = 1e04)
+monitOS:::lrexs(dt)
 
 }

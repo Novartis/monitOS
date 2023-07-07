@@ -49,7 +49,12 @@ number of events pattern for the treatment and control arms given prior
 knowledge on each arm event rates (Gamma-Poisson model).
 }
 \examples{
-postrr <- postprobgam(param0 = c(1, 1), param1 = c(1, 1), time0 = 10, time1 = 10, events0 = 2, events1 = 1,
+postrr <- postprobgam(param0 = c(1, 1),
+                      param1 = c(1, 1),
+                      time0 = 10,
+                      time1 = 10,
+                      events0 = 2,
+                      events1 = 1,
 n0 = 100, n1 = 100, delta = 1)
 postrr
 }

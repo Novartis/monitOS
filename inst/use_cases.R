@@ -1,11 +1,7 @@
-#' Title
+#' Specify case studies for shiny app.
 #'
-#' @param study
+#' @param study String. Provide study name.
 #'
-#' @return
-#' @export
-#'
-#' @examples
 use_cases <- function(study){
 
   return(switch(study,
