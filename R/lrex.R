@@ -62,7 +62,7 @@ lrex <- function(method = 'standard', data = NULL, n_perm = 1000, seed = 1234) {
 
   res <- switch(
     method,
-    standard = lrexs(data, n_perm, seed),
+    standard = lrexs(data, n_perm),
     heinze = lrexu(data, n_perm, seed)
   )
   return(as.numeric(res))
@@ -92,60 +92,31 @@ lrex <- function(method = 'standard', data = NULL, n_perm = 1000, seed = 1234) {
 #' )
 #' lrdt <- survival::survdiff(survival::Surv(time, status) ~ group, data=dt)
 #'
-#' monitOS:::lrexs(dt, n_perm = 1e04, seed = 1234)
+#' monitOS:::lrexs(dt, n_perm = 1e04)
 #'
-lrexs <- function(data, n_perm, seed){
+lrexs <- function(data, n_perm){
 
-  lrex_checks(data, n_perm, seed)
-  hr <- 1 # under the null HR is assumed to be equal to 1
+  lrex_checks(data, n_perm)
 
   # get the log-rank statistic from the observed data
   logrank_data = survival::survdiff(
     survival::Surv(time, status) ~ group,
     data=data)
 
+  # define events, sample size and log-rank critical value
   events <- sum(data$status)
   n0 <- sum(data$group == 0)
   n1 <- sum(data$group == 1)
   crit <- logrank_data$chisq
 
-  set.seed(seed)
-
-  # generate cases
-  vec <- 2^((events-1):0)
-  nump <- 2^events
-
-  # if super-low number of events all possible permutations are considered
-  # permu <- if (nump > 1e04) floor(runif(n_perm, min = 1, max = nump)) else 1:nump
-  permu <- if (nump > 1e04) sample(1:nump, size = n_perm, replace = F) else 1:nump
-  permul <- length(permu)
-
-  output <- t(sapply(permu, function(x) (x %/% vec) %% 2))
-
-  # initialization
-  logrank_num <- 0
-  logrank_den <- 0
-  # prob <- 1
-  for (k in 1:events) {
-    if (k == 1) {
-      atRiskT <- matrix(n1, nrow = permul, ncol = 1)
-      atRiskC <- matrix(n0, nrow = permul, ncol = 1)
-    } else {
-      atRiskT <- matrix(n1 - apply(as.matrix(output[,1:(k-1)]), 1, sum))
-      atRiskC <- matrix(n0 - apply(1-as.matrix(output[,1:(k-1)]), 1, sum))
-    }
-
-    prob0 <- atRiskT / (atRiskC + atRiskT)
-    logrank_num <- logrank_num + (output[,k] - matrix(prob0))
-    logrank_den <- logrank_den + prob0 * (1 - prob0)
-    # prob <- prob * ((hr * atRiskT * output[,k] + atRiskC * (1 - output[,k])) / (hr * atRiskT + atRiskC))
-    # assume equal probability of each sequence to occur
-  }
-
-  logrank <- logrank_num / sqrt(logrank_den)  # logrank test statistic (2^events values)
-
-  #return(sum(prob * (logrank > crit)))
-  return(sum(logrank > crit)/length(logrank))
+  return(
+    monitOS:::exactt(
+      events = events,
+      n0 = n0,
+      n1 = n1,
+      crit = crit,
+      hr = 1)
+  )
 }
 #' Given unequal patient follow-up time, it gets the survival data and the
 #' number of permutations to be performed and returns the probability that we
@@ -171,7 +142,7 @@ lrexs <- function(data, n_perm, seed){
 #'
 lrexu <- function(data, n_perm, seed){
 
-  lrex_checks(data, n_perm, seed)
+  lrex_checks(data, n_perm)
 
   # get the log-rank statistic from the observed data
   logrank_data = survival::survdiff(survival::Surv(time, status) ~ group, data=data)
@@ -358,9 +329,9 @@ lrexu <- function(data, n_perm, seed){
 # Perform sanity checks
 lrex_checks <- function(data, n_perm, seed){
 
-  # seed and n_perm should be numeric
-  stopifnot("seed and n_perm should be numeric" =
-              (is.numeric(seed) & isTRUE(is.numeric(n_perm))))
+  # n_perm should be numeric
+  stopifnot("n_perm should be numeric" =
+              isTRUE(is.numeric(n_perm)))
 
   # data should be tibble
   stopifnot("incorrect data format; data should be a tibble" =
