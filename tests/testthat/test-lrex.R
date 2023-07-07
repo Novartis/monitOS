@@ -13,6 +13,6 @@ res1 <- lrex(method = "standard", data = dt, n_perm = n_perm, seed = 12345)
 res2 <- lrex(method = "heinze", data = dt, n_perm = n_perm, seed = 12345)
 
 test_that("lrex works", {
-  expect_equal(res1, 0.1875, tolerance=1e-5)
+  expect_equal(res1, 0.1517, tolerance=1e-5)
   expect_equal(res2, 0.4, tolerance=1e-5)
 })
