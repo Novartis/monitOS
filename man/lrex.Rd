@@ -4,7 +4,7 @@
 \alias{lrex}
 \title{Perform exact test for a two-arm trial given time-to-event data.}
 \usage{
-lrex(method = "standard", data = NULL, n_perm = 1000, seed = 1234)
+lrex(method = "standard", data = NULL, n_perm = NULL, seed = NULL)
 }
 \arguments{
 \item{method}{String. Method can be either "standard" or "heinze". Default is
@@ -31,7 +31,7 @@ Perform exact test for a two-arm trial given time-to-event data.
 }
 \examples{
 set.seed(12345)
-n <- 200
+n <- 50
 dt <- tibble::tibble(id = 1:n,
                      time = rexp(n),
                      status = c(rbinom(n/2, size = 1, prob = 0.2),
@@ -48,29 +48,7 @@ n_perm <- 1000
 data <- dt
 seed <- 12345
 # method = "standard" is performed by default
-lrex(data = data, n_perm = n_perm, seed = seed)
+lrex(data = data)
 # method = "heinze" to consider follow-up times
 lrex(method = "heinze", data = data, n_perm = n_perm, seed = seed)
-
-set.seed(12345)
-n <- 100
-dt <- tibble::tibble(id = 1:n,
-                     time = rexp(n),
-                     status = c(rbinom(n/2, size = 1, prob = 0.3),
-                                rbinom(n/2, size = 1, prob = 0.1)),
-                     group = rep(0:1, each = n/2)
-)
-table(ifelse(dt$status==1, "dead", "censored") , dt$group)
-
-# compute log-rank test result
-lrdt <- survival::survdiff(survival::Surv(time, status) ~ group, data=dt)
-lrdt$pvalue
-
-data <- dt
-seed <- 12345
-# method = "standard" is performed by default
-lrex(data = data, n_perm = 1000, seed = seed)
-# method = "heinze" to consider follow-up times
-lrex(method = "heinze", data = data, n_perm = 1e03, seed = seed)
-
 }

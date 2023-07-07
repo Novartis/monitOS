@@ -16,7 +16,7 @@
 #' permuted data set.
 #' @examples
 #' set.seed(12345)
-#' n <- 200
+#' n <- 50
 #' dt <- tibble::tibble(id = 1:n,
 #'                      time = rexp(n),
 #'                      status = c(rbinom(n/2, size = 1, prob = 0.2),
@@ -33,36 +33,14 @@
 #' data <- dt
 #' seed <- 12345
 #' # method = "standard" is performed by default
-#' lrex(data = data, n_perm = n_perm, seed = seed)
+#' lrex(data = data)
 #' # method = "heinze" to consider follow-up times
 #' lrex(method = "heinze", data = data, n_perm = n_perm, seed = seed)
-#'
-#' set.seed(12345)
-#' n <- 100
-#' dt <- tibble::tibble(id = 1:n,
-#'                      time = rexp(n),
-#'                      status = c(rbinom(n/2, size = 1, prob = 0.3),
-#'                                 rbinom(n/2, size = 1, prob = 0.1)),
-#'                      group = rep(0:1, each = n/2)
-#' )
-#' table(ifelse(dt$status==1, "dead", "censored") , dt$group)
-#'
-#' # compute log-rank test result
-#' lrdt <- survival::survdiff(survival::Surv(time, status) ~ group, data=dt)
-#' lrdt$pvalue
-#'
-#' data <- dt
-#' seed <- 12345
-#' # method = "standard" is performed by default
-#' lrex(data = data, n_perm = 1000, seed = seed)
-#' # method = "heinze" to consider follow-up times
-#' lrex(method = "heinze", data = data, n_perm = 1e03, seed = seed)
-#'
-lrex <- function(method = 'standard', data = NULL, n_perm = 1000, seed = 1234) {
+lrex <- function(method = 'standard', data = NULL, n_perm = NULL, seed = NULL) {
 
   res <- switch(
     method,
-    standard = lrexs(data, n_perm),
+    standard = lrexs(data),
     heinze = lrexu(data, n_perm, seed)
   )
   return(as.numeric(res))
@@ -96,7 +74,7 @@ lrex <- function(method = 'standard', data = NULL, n_perm = 1000, seed = 1234) {
 #'
 lrexs <- function(data, n_perm){
 
-  lrex_checks(data, n_perm)
+  lrex_checks(data)
 
   # get the log-rank statistic from the observed data
   logrank_data = survival::survdiff(
@@ -142,7 +120,7 @@ lrexs <- function(data, n_perm){
 #'
 lrexu <- function(data, n_perm, seed){
 
-  lrex_checks(data, n_perm)
+  lrex_checks(data)
 
   # get the log-rank statistic from the observed data
   logrank_data = survival::survdiff(survival::Surv(time, status) ~ group, data=data)
@@ -327,11 +305,11 @@ lrexu <- function(data, n_perm, seed){
 }
 
 # Perform sanity checks
-lrex_checks <- function(data, n_perm, seed){
+lrex_checks <- function(data){
 
-  # n_perm should be numeric
-  stopifnot("n_perm should be numeric" =
-              isTRUE(is.numeric(n_perm)))
+  # # n_perm should be numeric
+  # stopifnot("n_perm should be numeric" =
+  #             isTRUE(is.numeric(n_perm)))
 
   # data should be tibble
   stopifnot("incorrect data format; data should be a tibble" =
