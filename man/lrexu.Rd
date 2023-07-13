@@ -2,30 +2,30 @@
 % Please edit documentation in R/lrex.R
 \name{lrexu}
 \alias{lrexu}
-\title{Given unequal patient follow-up time, it gets the survival data and the
-number of permutations to be performed and returns the probability that we
-observe a p-value as extreme as the one we have observed based on the
-log-rank test of the data.}
+\title{Exact test for time-to-event data with unequal follow-up times}
 \usage{
 lrexu(data, n_perm, seed)
 }
 \arguments{
-\item{data}{Tibble. Time-to-event data must be inserted with status, 0
-if censored or 1 if dead; time and group variables.}
+\item{data}{Tibble. Users need to input the time-to-event data, ensuring
+that variables time, status and group include the required survival
+information. Time-to-event data must be inserted with status, 0
+if censored or 1 if dead; time and group, 0 for control and 1 for treatment
+arm, variables.}
 
 \item{n_perm}{Scalar. The number of permutations to be performed.}
 
-\item{seed}{Scalar. The seed for the permutations.}
+\item{seed}{Scalar. The seed for random number generation.}
 }
 \value{
 Scalar. The exact test p-value, i.e., Pr(LR < crit | HR) across all
-permutations where LR is the log-rank test result given the specific
+permutations, where LR is the log-rank test statistic given the specific
 permuted data set.
 }
 \description{
-Given unequal patient follow-up time, it gets the survival data and the
-number of permutations to be performed and returns the probability that we
-observe a p-value as extreme as the one we have observed based on the
+Given unequal patient follow-up time, it gets the survival data
+and the number of permutations to be performed and returns the probability
+that we observe a p-value as extreme as the one we have observed based on the
 log-rank test of the data.
 }
 \examples{

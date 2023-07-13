@@ -2,9 +2,7 @@
 % Please edit documentation in R/postprob.R
 \name{postprobbin}
 \alias{postprobbin}
-\title{Function to calculate the posterior probability of observing an inserted
-number of events pattern for the treatment and control arms given prior
-knowledge on each arm event rates  (Beta-Binomial model).}
+\title{Calculate posterior probability based on Beta-Binomial model}
 \usage{
 postprobbin(
   param0 = c(1, 1),
@@ -17,33 +15,34 @@ postprobbin(
 )
 }
 \arguments{
-\item{param0}{Vector. Shape parameters for the Beta prior distribution for
-the control arm.}
+\item{param0, param1}{Vectors with two values each. Shape parameters for the
+Beta prior distribution of the control and treatment arms respectively.}
 
-\item{param1}{Vector. Shape parameters for the Beta prior distribution for
-the treatment arm.}
+\item{events0, events1}{Scalars. Assumed number of events within the control
+and treatment arms respectively.}
 
-\item{events0}{Scalar. Number of events in the control arm.}
+\item{n0, n1}{Scalars. Total number of patients in the control and treatment
+arms respectively.}
 
-\item{events1}{Scalar. Number of events in the treatment arm.}
-
-\item{n0}{Scalar. Total number of patients in the control arm.}
-
-\item{n1}{Scalar. Total number of patients in the treatment arm.}
-
-\item{delta}{Scalar. Risk ratio difference under the null hypothesis.}
+\item{delta}{Scalar. Assumed risk ratio difference under the null hypothesis.}
 }
 \value{
-Scalar. Returns the posterior probability of observing the inserted
-number of events pattern.
+Scalar. Returns the posterior probability of observing the specified
+number of events pattern assuming a Beta-Binomial model.
 }
 \description{
-Function to calculate the posterior probability of observing an inserted
-number of events pattern for the treatment and control arms given prior
-knowledge on each arm event rates  (Beta-Binomial model).
+Function to calculate the posterior probability of observing the
+specified number of events pattern within a two-arm study given prior
+knowledge on each arm's event rate distribution. Method is based on a
+Beta-Binomial model.
 }
 \examples{
-postrr <- postprobbin(param0 = c(1, 1), param1 = c(1, 1), events0 = 2, events1 = 1,
-n0 = 100, n1 = 100, delta = 1)
+postrr <- postprobbin(param0 = c(1, 1),
+                      param1 = c(1, 1),
+                      events0 = 2,
+                      events1 = 1,
+                      n0 = 100,
+                      n1 = 100,
+                      delta = 1)
 postrr
 }

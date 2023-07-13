@@ -2,27 +2,30 @@
 % Please edit documentation in R/flag_safety.R
 \name{flagprob}
 \alias{flagprob}
-\title{Function to the joint P{Reach stage k and declare a safety issue but not
-stop the trial| log-HR = theta}.}
+\title{Function to compute the joint P{Reach stage k and declare a safety issue
+but not stop the trial| log-HR = theta}.}
 \usage{
 flagprob(logthres1, logthres2, events, loghr = log(1))
 }
 \arguments{
-\item{logthres1}{The log hazard ratio thresholds for flagging a safety issue.}
+\item{logthres1}{Vector. The log hazard ratio thresholds for flagging a
+safety issue.}
 
-\item{logthres2}{The log hazard ratio thresholds for stopping the trial.}
+\item{logthres2}{Vector. The log hazard ratio thresholds for stopping the
+trial.}
 
-\item{events}{A vector with the number of events at analysis stages.}
+\item{events}{Vector. A vector with the number of events at each analysis
+stage.}
 
-\item{loghr}{The true log hazard ratio.}
+\item{loghr}{Scalar. The true log hazard ratio.}
 }
 \value{
-(vector): Returns a vector with the computed stopping probabilities
-at each analysis stage.
+Vector. Returns a vector with the computed probabilities at each
+analysis stage.
 }
 \description{
-Function to the joint P{Reach stage k and declare a safety issue but not
-stop the trial| log-HR = theta}.
+Function to compute the joint P{Reach stage k and declare a safety issue
+but not stop the trial| log-HR = theta}.
 }
 \examples{
 logthres1 <- log(c(1.3, 1))

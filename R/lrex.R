@@ -1,18 +1,23 @@
-#' Perform exact test for a two-arm trial given time-to-event data.
+#' Perform exact test given time-to-event data
 #'
-#' @param method String. Method can be either "standard" or "heinze". Default is
-#' "standard", calculating the exact test p-value given the data provided.
-#' Users need to input the time-to-event data, where time, status and group are
-#' the variable names where survival information is stored, and the number of
-#' permutations to perform.
-#' @param data Tibble. Time-to-event data must be inserted with status, 0
+#' @description Perform the exact test based on time-to-event data for a two-arm
+#' trial. We are offering two methods, the standard exact test and the exact
+#' test for unequal follow-up time, as alternatives to the log-rank test when
+#' the number of events is very small, e.g., less than 25.
+#' @param method String. The `method` argument can be either 'standard' or
+#' 'heinze'. Default is 'standard'.
+#' @param data Tibble. Users need to input the time-to-event data, ensuring
+#' that variables time, status and group include the required survival
+#' information. Time-to-event data must be inserted with status, 0
 #' if censored or 1 if dead; time and group, 0 for control and 1 for treatment
 #' arm, variables.
-#' @param n_perm Scalar. The number of permutations to be performed.
-#' @param seed Scalar. The seed for the permutations.
+#' @param n_perm Scalar. The number of permutations to be performed. Default is
+#' `NULL`. Do not change, if `method = "standard"`.
+#' @param seed Scalar. The seed for random number generation. Default is
+#' `NULL`. Do not change, if `method = "standard"`.
 #' @export
 #' @returns Scalar. The exact test p-value, i.e., Pr(LR < crit | HR) across all
-#' permutations where LR is the log-rank test result given the specific
+#' permutations, where LR is the log-rank test statistic given the specific
 #' permuted data set.
 #' @examples
 #' set.seed(12345)
@@ -25,7 +30,7 @@
 #' )
 #' table(ifelse(dt$status==1, "dead", "censored") , dt$group)
 #'
-#' # compute log-rank test result
+#' # standard log-rank test
 #' lrdt <- survival::survdiff(survival::Surv(time, status) ~ group, data=dt)
 #' lrdt$pvalue
 #'
@@ -49,13 +54,18 @@ lrex <- function(method = 'standard', data = NULL, n_perm = NULL, seed = NULL) {
 
 #### SUBFUNCTIONS BELOW ####
 
-#' Calculate the exact test p-value assuming a true HR=1 scenario and the
-#' observed number of events in a two-arm trial.
+#' Standard exact test for time-to-event data
 #'
-#' @param data Tibble. Time-to-event data must be inserted with status, 0
-#' if censored or 1 if dead; time and group variables.
+#' @description Calculate the exact test p-value based on the observed number of
+#' events of a two-arm trial, assuming a true hazard ratio of 1 under the null
+#' hypothesis.
+#' @param data Tibble. Users need to input the time-to-event data, ensuring
+#' that variables time, status and group include the required survival
+#' information. Time-to-event data must be inserted with status, 0
+#' if censored or 1 if dead; time and group, 0 for control and 1 for treatment
+#' arm, variables.
 #' @returns Scalar. The exact test p-value, i.e., Pr(LR < crit | HR) across all
-#' permutations where LR is the log-rank test result given the specific
+#' permutations, where LR is the log-rank test statistic given the specific
 #' permuted data set.
 #' @import survival
 #' @examples
@@ -69,7 +79,6 @@ lrex <- function(method = 'standard', data = NULL, n_perm = NULL, seed = NULL) {
 #' lrdt <- survival::survdiff(survival::Surv(time, status) ~ group, data=dt)
 #'
 #' monitOS:::lrexs(dt)
-#'
 lrexs <- function(data){
 
   lrex_checks(data)
@@ -94,17 +103,21 @@ lrexs <- function(data){
       hr = 1)
   )
 }
-#' Given unequal patient follow-up time, it gets the survival data and the
-#' number of permutations to be performed and returns the probability that we
-#' observe a p-value as extreme as the one we have observed based on the
-#' log-rank test of the data.
+#' Exact test for time-to-event data with unequal follow-up times
 #'
-#' @param data Tibble. Time-to-event data must be inserted with status, 0
-#' if censored or 1 if dead; time and group variables.
+#' @description Given unequal patient follow-up time, it gets the survival data
+#' and the number of permutations to be performed and returns the probability
+#' that we observe a p-value as extreme as the one we have observed based on the
+#' log-rank test of the data.
+#' @param data Tibble. Users need to input the time-to-event data, ensuring
+#' that variables time, status and group include the required survival
+#' information. Time-to-event data must be inserted with status, 0
+#' if censored or 1 if dead; time and group, 0 for control and 1 for treatment
+#' arm, variables.
 #' @param n_perm Scalar. The number of permutations to be performed.
-#' @param seed Scalar. The seed for the permutations.
+#' @param seed Scalar. The seed for random number generation.
 #' @returns Scalar. The exact test p-value, i.e., Pr(LR < crit | HR) across all
-#' permutations where LR is the log-rank test result given the specific
+#' permutations, where LR is the log-rank test statistic given the specific
 #' permuted data set.
 #' @import survival tidyverse tibble
 #' @examples
@@ -304,10 +317,6 @@ lrexu <- function(data, n_perm, seed){
 
 # Perform sanity checks
 lrex_checks <- function(data){
-
-  # # n_perm should be numeric
-  # stopifnot("n_perm should be numeric" =
-  #             isTRUE(is.numeric(n_perm)))
 
   # data should be tibble
   stopifnot("incorrect data format; data should be a tibble" =

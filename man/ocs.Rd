@@ -2,11 +2,7 @@
 % Please edit documentation in R/ocs.R
 \name{ocs}
 \alias{ocs}
-\title{Function to assess the operational characteristics of Tom Fleming's
-monitoring guideline. The function gets as input the thresholds of
-continuation at different stages of the study and returns the operational
-characteristics of the monitoring rule under varying true hazard ratio
-scenarios inserted by the user.}
+\title{Produce operational characteristics outputs for monitoring guideline}
 \usage{
 ocs(
   thres1,
@@ -22,10 +18,10 @@ ocs(
 \item{thres1}{(Scalar | Vector). The hazard ratio thresholds of continuation
 to flag a safety issue at each trial stage.}
 
-\item{thres2}{(Scalar | Vector).The hazard ratio thresholds  of continuation
-to flag a safety issue and stop the trial. Default is NULL. Leave to default,
-if specific stopping boundaries are not known. Note that thres2 is expected
-to be greater to thres1 for all trial stages.}
+\item{thres2}{(Scalar | Vector). The hazard ratio thresholds  of continuation
+to stop the trial due to safety issue. Default is `NULL`. Leave to `NULL`
+if specific stopping boundaries are not known. Note that `thres2` is expected
+to be greater to `thres1` for all trial stages.}
 
 \item{method}{String. Either "joint" for operational characteristics
 calculated based on joint probabilities, i.e., P(Reach analysis stage k and
@@ -35,40 +31,43 @@ have not flagged a safety issue at any precedent analysis 1, ..., k-1).
 Method "joint" is appropriate to explore at analysis stage, whereas "cond"
 may be explored when the trial is actually in progress.}
 
-\item{events}{Vector. The number of events at each analysis stage.}
+\item{events}{Vector.  A vector with the planned number of events at the
+analysis stages; `events` should be at least 1.}
 
 \item{hrs}{(Scalar | Vector). The specific true hazard ratio values to
 calculate and return the joint/conditional probabilities and the overall
 probability of flagging a safety concern at least once across all trial
-stages. If thres2 is not NULL, the probability to stop at least once during
-the trial course and the probability to flag a safety issue but not suggest
-stopping the trial are calculated instead given these true hazard ratios.}
+stages. If `thres2` is not `NULL`, the probability to stop at least once
+during the trial course and the probability to flag a safety issue but not
+suggest stopping the trial are calculated instead.}
 
 \item{hrr}{Vector. The range of true hazard ratio values to plot the
 probability of flagging a safety concern at least once across all trial
-stages. Notice that this argument is used for plotting purposes as compared
-to hrs which is used to return the exact computed probability values. If
-thres2 is not NULL, the hrr hazard ratio range is use to plot the probability
-flag a safety issue at least once, suggest stopping the trial at least once
-(i.e., exceed the thres2 bounds) and claim accelerated approval (i.e., not
-exceed thres1/flagged a safety issue at any stage before the final analysis)
-during the course of the trial.}
+stages and the marginal probabilities of flagging an safety concern at the
+first interim and final analysis. Notice that this argument is used for
+plotting purposes, as compared to `hrs` which is used to return the exact
+computed probability values. If `thres2` is not `NULL`, the `hrr` hazard
+ratio range is used to plot the probability to flag a safety issue at least
+once, suggest stopping the trial at least once (i.e., exceed the thres2
+bounds) and claim accelerated approval (i.e., not exceed `thres1`/flag a
+safety issue at any stage before the final analysis) during the course of
+the trial.}
 
 \item{col}{(Optional) Vector. A vector of color names for the plots. Must
-have same length to hrs.}
+have same length to `hrs`, if specified.}
 }
 \value{
-List. Returns a list with two tables and three plots. The
+List. Returns a list with two tables and three figures. The
 tables include information on the stopping probabilities based on the
 scenarios specified by the user and the plots include visualizations of these
 results.
 }
 \description{
-Function to assess the operational characteristics of Tom Fleming's
-monitoring guideline. The function gets as input the thresholds of
-continuation at different stages of the study and returns the operational
-characteristics of the monitoring rule under varying true hazard ratio
-scenarios inserted by the user.
+Function to assess the operational characteristics of Tom
+Fleming's monitoring guideline. The function gets as input the thresholds of
+continuation at different stages of the study, calculated using the `bounds`
+function and returns the operational characteristics of the monitoring rule
+under varying true hazard ratio scenarios inserted by the user.
 }
 \examples{
 

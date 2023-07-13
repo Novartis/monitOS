@@ -2,32 +2,36 @@
 % Please edit documentation in R/lrex.R
 \name{lrex}
 \alias{lrex}
-\title{Perform exact test for a two-arm trial given time-to-event data.}
+\title{Perform exact test given time-to-event data}
 \usage{
 lrex(method = "standard", data = NULL, n_perm = NULL, seed = NULL)
 }
 \arguments{
-\item{method}{String. Method can be either "standard" or "heinze". Default is
-"standard", calculating the exact test p-value given the data provided.
-Users need to input the time-to-event data, where time, status and group are
-the variable names where survival information is stored, and the number of
-permutations to perform.}
+\item{method}{String. The `method` argument can be either 'standard' or
+'heinze'. Default is 'standard'.}
 
-\item{data}{Tibble. Time-to-event data must be inserted with status, 0
+\item{data}{Tibble. Users need to input the time-to-event data, ensuring
+that variables time, status and group include the required survival
+information. Time-to-event data must be inserted with status, 0
 if censored or 1 if dead; time and group, 0 for control and 1 for treatment
 arm, variables.}
 
-\item{n_perm}{Scalar. The number of permutations to be performed.}
+\item{n_perm}{Scalar. The number of permutations to be performed. Default is
+`NULL`. Do not change, if `method = "standard"`.}
 
-\item{seed}{Scalar. The seed for the permutations.}
+\item{seed}{Scalar. The seed for random number generation. Default is
+`NULL`. Do not change, if `method = "standard"`.}
 }
 \value{
 Scalar. The exact test p-value, i.e., Pr(LR < crit | HR) across all
-permutations where LR is the log-rank test result given the specific
+permutations, where LR is the log-rank test statistic given the specific
 permuted data set.
 }
 \description{
-Perform exact test for a two-arm trial given time-to-event data.
+Perform the exact test based on time-to-event data for a two-arm
+trial. We are offering two methods, the standard exact test and the exact
+test for unequal follow-up time, as alternatives to the log-rank test when
+the number of events is very small, e.g., less than 25.
 }
 \examples{
 set.seed(12345)
@@ -40,7 +44,7 @@ dt <- tibble::tibble(id = 1:n,
 )
 table(ifelse(dt$status==1, "dead", "censored") , dt$group)
 
-# compute log-rank test result
+# standard log-rank test
 lrdt <- survival::survdiff(survival::Surv(time, status) ~ group, data=dt)
 lrdt$pvalue
 

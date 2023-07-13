@@ -2,23 +2,26 @@
 % Please edit documentation in R/lrex.R
 \name{lrexs}
 \alias{lrexs}
-\title{Calculate the exact test p-value assuming a true HR=1 scenario and the
-observed number of events in a two-arm trial.}
+\title{Standard exact test for time-to-event data}
 \usage{
 lrexs(data)
 }
 \arguments{
-\item{data}{Tibble. Time-to-event data must be inserted with status, 0
-if censored or 1 if dead; time and group variables.}
+\item{data}{Tibble. Users need to input the time-to-event data, ensuring
+that variables time, status and group include the required survival
+information. Time-to-event data must be inserted with status, 0
+if censored or 1 if dead; time and group, 0 for control and 1 for treatment
+arm, variables.}
 }
 \value{
 Scalar. The exact test p-value, i.e., Pr(LR < crit | HR) across all
-permutations where LR is the log-rank test result given the specific
+permutations, where LR is the log-rank test statistic given the specific
 permuted data set.
 }
 \description{
-Calculate the exact test p-value assuming a true HR=1 scenario and the
-observed number of events in a two-arm trial.
+Calculate the exact test p-value based on the observed number of
+events of a two-arm trial, assuming a true hazard ratio of 1 under the null
+hypothesis.
 }
 \examples{
 set.seed(12345)
@@ -31,5 +34,4 @@ dt <- tibble::tibble(id = 1:n,
 lrdt <- survival::survdiff(survival::Surv(time, status) ~ group, data=dt)
 
 monitOS:::lrexs(dt)
-
 }

@@ -2,25 +2,28 @@
 % Please edit documentation in R/flag_safety.R
 \name{flag_safety}
 \alias{flag_safety}
-\title{High level function to calculate either joint or conditional safety probs}
+\title{High level function to calculate either joint or conditional safety
+probabilities.}
 \usage{
 flag_safety(method = "joint", logthres, events, loghr)
 }
 \arguments{
-\item{method}{String. Choice between joint or conditional}
+\item{method}{String. Choice between joint or conditional.}
 
-\item{logthres}{The log hazard ratio thresholds for continuation.}
+\item{logthres}{Vector. The log hazard ratio thresholds for continuation.}
 
-\item{events}{A vector with the number of events at analysis stages.}
+\item{events}{Vector. A vector with the number of events at each analysis
+stage.}
 
-\item{loghr}{The true log hazard ratio.}
+\item{loghr}{Scalar. The true log hazard ratio.}
 }
 \value{
-(vector): Returns a vector with the computed probabilities at each
+Vector. Returns a vector with the computed probabilities at each
 analysis stage.
 }
 \description{
-High level function to calculate either joint or conditional safety probs
+High level function to calculate either joint or conditional safety
+probabilities.
 }
 \examples{
 logthres <- log(c(1.3, 1))

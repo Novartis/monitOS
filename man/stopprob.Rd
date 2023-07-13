@@ -8,15 +8,16 @@ log-HR = theta}.}
 stopprob(logthres, events, loghr)
 }
 \arguments{
-\item{logthres}{The log hazard ratio thresholds for continuation.}
+\item{logthres}{Vector. The log hazard ratio thresholds for continuation.}
 
-\item{events}{A vector with the number of events at analysis stages.}
+\item{events}{Vector. A vector with the number of events at each analysis
+stage.}
 
-\item{loghr}{The true log hazard ratio.}
+\item{loghr}{Scalar. The true log hazard ratio.}
 }
 \value{
-(vector): Returns a vector with the computed stopping probabilities
-at each analysis stage.
+Vector. Returns a vector with the computed probabilities at each
+analysis stage.
 }
 \description{
 Function to the joint P{Reach stage k and declare a safety issue |
