@@ -1,16 +1,18 @@
-#' Function to assess the operational characteristics of Tom Fleming's
-#' monitoring guideline. The function gets as input the thresholds of
-#' continuation at different stages of the study and returns the operational
-#' characteristics of the monitoring rule under varying true hazard ratio
-#' scenarios inserted by the user.
+#' Produce operational characteristics outputs for monitoring guideline
 #'
+#' @description Function to assess the operational characteristics of Tom
+#' Fleming's monitoring guideline. The function gets as input the thresholds of
+#' continuation at different stages of the study, calculated using the `bounds`
+#' function and returns the operational characteristics of the monitoring rule
+#' under varying true hazard ratio scenarios inserted by the user.
 #' @param thres1 (Scalar | Vector). The hazard ratio thresholds of continuation
 #' to flag a safety issue at each trial stage.
-#' @param thres2 (Scalar | Vector).The hazard ratio thresholds  of continuation
-#' to flag a safety issue and stop the trial. Default is NULL. Leave to default,
-#' if specific stopping boundaries are not known. Note that thres2 is expected
-#' to be greater to thres1 for all trial stages.
-#' @param events Vector. The number of events at each analysis stage.
+#' @param thres2 (Scalar | Vector). The hazard ratio thresholds  of continuation
+#' to stop the trial due to safety issue. Default is `NULL`. Leave to `NULL`
+#' if specific stopping boundaries are not known. Note that `thres2` is expected
+#' to be greater to `thres1` for all trial stages.
+#' @param events Vector.  A vector with the planned number of events at the
+#' analysis stages; `events` should be at least 1.
 #' @param method String. Either "joint" for operational characteristics
 #' calculated based on joint probabilities, i.e., P(Reach analysis stage k and
 #' flag a safety issue) or "cond" for operational characteristics calculated
@@ -20,24 +22,26 @@
 #' may be explored when the trial is actually in progress.
 #' @param hrr Vector. The range of true hazard ratio values to plot the
 #' probability of flagging a safety concern at least once across all trial
-#' stages. Notice that this argument is used for plotting purposes as compared
-#' to hrs which is used to return the exact computed probability values. If
-#' thres2 is not NULL, the hrr hazard ratio range is use to plot the probability
-#' flag a safety issue at least once, suggest stopping the trial at least once
-#' (i.e., exceed the thres2 bounds) and claim accelerated approval (i.e., not
-#' exceed thres1/flagged a safety issue at any stage before the final analysis)
-#' during the course of the trial.
+#' stages and the marginal probabilities of flagging an safety concern at the
+#' first interim and final analysis. Notice that this argument is used for
+#' plotting purposes, as compared to `hrs` which is used to return the exact
+#' computed probability values. If `thres2` is not `NULL`, the `hrr` hazard
+#' ratio range is used to plot the probability to flag a safety issue at least
+#' once, suggest stopping the trial at least once (i.e., exceed the thres2
+#' bounds) and claim accelerated approval (i.e., not exceed `thres1`/flag a
+#' safety issue at any stage before the final analysis) during the course of
+#' the trial.
 #' @param hrs (Scalar | Vector). The specific true hazard ratio values to
 #' calculate and return the joint/conditional probabilities and the overall
 #' probability of flagging a safety concern at least once across all trial
-#' stages. If thres2 is not NULL, the probability to stop at least once during
-#' the trial course and the probability to flag a safety issue but not suggest
-#' stopping the trial are calculated instead given these true hazard ratios.
+#' stages. If `thres2` is not `NULL`, the probability to stop at least once
+#' during the trial course and the probability to flag a safety issue but not
+#' suggest stopping the trial are calculated instead.
 #' @param col (Optional) Vector. A vector of color names for the plots. Must
-#' have same length to hrs.
+#' have same length to `hrs`, if specified.
 #' @import dplyr ggplot2 tibble
 #' @importFrom dplyr %>%
-#' @return List. Returns a list with two tables and three plots. The
+#' @return List. Returns a list with two tables and three figures. The
 #' tables include information on the stopping probabilities based on the
 #' scenarios specified by the user and the plots include visualizations of these
 #' results.
@@ -130,8 +134,10 @@ ocs <- function(thres1,
           events = events
         )})) %>%
     dplyr::group_by(true_hr_num) %>%
-    dplyr::summarise(prob_flag_si = if(!is.null(thres2)) sum(prob_flag_si) else sum(prob_stop_joint),
-                     prob_stop = if(!is.null(thres2)) sum(prob_stop_joint) else NA) %>%
+    dplyr::summarise(prob_flag_si =
+                       if(!is.null(thres2)) sum(prob_flag_si) else sum(prob_stop_joint),
+                     prob_stop =
+                       if(!is.null(thres2)) sum(prob_stop_joint) else NA) %>%
     dplyr::rename(true_hr = true_hr_num)
 
   # Get probability to flag safety issue and/or stop at least once for the
@@ -188,7 +194,8 @@ ocs <- function(thres1,
                        sd = sqrt(1/info[length(events)]),
                        lower.tail = FALSE)),
     true_hr = rep(hrr, 2),
-    analysis = rep(c("First Interim Analysis", "Final Analysis"), each = length(hrr))
+    analysis = rep(c("First Interim Analysis", "Final Analysis"),
+                   each = length(hrr))
   )
 
   # Generate plots

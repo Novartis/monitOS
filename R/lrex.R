@@ -1,86 +1,73 @@
-#' Function to perform the exact test for a two-arm trial.
+#' Perform exact test given time-to-event data
 #'
-#' @param method String. Method can be either "standard" or "heinze". Default is
-#' "standard", calculating the exact test p-value given the data provided. The
-#' standard exact test inputs the number of observed events along with
-#' the total sample size per arm and the log-rank test statistic value. If
-#' "heinze" method is selected, users need to input the time-to-event data and
-#' the number of permutations to be performed.
-#' @param events Scalar. The total number of observed events.
-#' @param n0 Scalar. The sample size in the control group.
-#' @param n1 Scalar. Sample size in the treatment group.
-#' @param crit Scalar. The observed critical value of the log-rank test.
-#' @param data Tibble. Time-to-event data must be inserted with status, 0
-#' if censored or 1 if dead; time and group variables.
-#' @param n_perm Scalar. The number of permutations to be performed.
-#' @param seed Scalar. The seed for the permutations.
+#' @description Perform the exact test based on time-to-event data for a two-arm
+#' trial. We are offering two methods, the standard exact test and the exact
+#' test for unequal follow-up time, as alternatives to the log-rank test when
+#' the number of events is very small, e.g., less than 25.
+#' @param method String. The `method` argument can be either 'standard' or
+#' 'heinze'. Default is 'standard'.
+#' @param data Tibble. Users need to input the time-to-event data, ensuring
+#' that variables time, status and group include the required survival
+#' information. Time-to-event data must be inserted with status, 0
+#' if censored or 1 if dead; time and group, 0 for control and 1 for treatment
+#' arm, variables.
+#' @param n_perm Scalar. The number of permutations to be performed. Default is
+#' `NULL`. Do not change, if `method = "standard"`.
+#' @param seed Scalar. The seed for random number generation. Default is
+#' `NULL`. Do not change, if `method = "standard"`.
 #' @export
 #' @returns Scalar. The exact test p-value, i.e., Pr(LR < crit | HR) across all
-#' permutations where LR is the log-rank test result given the specific
+#' permutations, where LR is the log-rank test statistic given the specific
 #' permuted data set.
 #' @examples
 #' set.seed(12345)
-#' n <- 20
+#' n <- 50
 #' dt <- tibble::tibble(id = 1:n,
 #'                      time = rexp(n),
-#'                      status = rbinom(n, size = 1, prob = 0.2),
-#'                      group = rbinom(n, size = 1, prob = 0.5)
+#'                      status = c(rbinom(n/2, size = 1, prob = 0.2),
+#'                                 rbinom(n/2, size = 1, prob = 0.1)),
+#'                      group = rep(0:1, each = n/2)
 #' )
-#' # 3 events occurred
-#' # compute log-rank test result
+#' table(ifelse(dt$status==1, "dead", "censored") , dt$group)
+#'
+#' # standard log-rank test
 #' lrdt <- survival::survdiff(survival::Surv(time, status) ~ group, data=dt)
+#' lrdt$pvalue
 #'
-#' method <- "standard"
-#' events <- sum(dt$status)
-#' n0 <- sum(dt$group==0)
-#' n1 <- sum(dt$group==1)
-#' crit <- lrdt$chisq
-#' lrex(method = method,
-#'      events = events,
-#'      n0 = n0,
-#'      n1 = n1,
-#'      crit = crit)
-#'
-#'n_perm <- 100
-#'lrex(method = "heinze", data = dt, n_perm = n_perm, seed = 12345)
-#'
-lrex <- function(method = 'standard', events = NULL, n0 = NULL, n1 = NULL, crit = NULL,
-                 data = NULL, n_perm = NULL, seed = 1234) {
+#' n_perm <- 1000
+#' data <- dt
+#' seed <- 12345
+#' # method = "standard" is performed by default
+#' lrex(data = data)
+#' # method = "heinze" to consider follow-up times
+#' lrex(method = "heinze", data = data, n_perm = n_perm, seed = seed)
+lrex <- function(method = 'standard', data = NULL, n_perm = NULL, seed = NULL) {
 
   res <- switch(
     method,
-    standard = lrexs(events, n0, n1, crit),
+    standard = lrexs(data),
     heinze = lrexu(data, n_perm, seed)
   )
   return(as.numeric(res))
 }
 
-# lrex_checks <- function(method, events, n0, n1, crit, data, n_perm) {
-#
-#   if(method == "standard"){
-#     # If method = "standard", events, n0, n1, crit should not be NULL
-#     stopifnot("For method = 'standard', events, n0, n1 and crit should not be NULL." =
-#                 !is.null(events) & !is.null(n0) & !is.null(n1) & !is.null(crit))
-#   } else {
-#     # If method = "heinze", data, n_perm should not be NULL
-#     stopifnot("For method = 'heinze', data and n_perm should not be NULL." =
-#                 !is.null(data) & !is.null(n_perm))
-#   }
-# }
-
 
 #### SUBFUNCTIONS BELOW ####
 
-#' Calculate the exact test p-value given a true HR scenario and the observed
-#' number of events in a two-arm trial.
+#' Standard exact test for time-to-event data
 #'
-#' @param events Scalar. The total number of observed events.
-#' @param n0 Scalar. The sample size in the control group.
-#' @param n1 Scalar. Sample size in the treatment group.
-#' @param crit Scalar. The observed critical value of the log-rank test.
+#' @description Calculate the exact test p-value based on the observed number of
+#' events of a two-arm trial, assuming a true hazard ratio of 1 under the null
+#' hypothesis.
+#' @param data Tibble. Users need to input the time-to-event data, ensuring
+#' that variables time, status and group include the required survival
+#' information. Time-to-event data must be inserted with status, 0
+#' if censored or 1 if dead; time and group, 0 for control and 1 for treatment
+#' arm, variables.
 #' @returns Scalar. The exact test p-value, i.e., Pr(LR < crit | HR) across all
-#' permutations where LR is the log-rank test result given the specific
+#' permutations, where LR is the log-rank test statistic given the specific
 #' permuted data set.
+#' @import survival
 #' @examples
 #' set.seed(12345)
 #' n <- 20
@@ -91,90 +78,60 @@ lrex <- function(method = 'standard', events = NULL, n0 = NULL, n1 = NULL, crit 
 #' )
 #' lrdt <- survival::survdiff(survival::Surv(time, status) ~ group, data=dt)
 #'
-#' monitOS:::lrexs(events = sum(dt$status), n0 = sum(dt$group==0),
-#'      n1 = sum(dt$group==1), crit = lrdt$chisq)
+#' monitOS:::lrexs(dt)
+lrexs <- function(data){
+
+  lrex_checks(data)
+
+  # get the log-rank statistic from the observed data
+  logrank_data = survival::survdiff(
+    survival::Surv(time, status) ~ group,
+    data=data)
+
+  # define events, sample size and log-rank critical value
+  events <- sum(data$status)
+  n0 <- sum(data$group == 0)
+  n1 <- sum(data$group == 1)
+  crit <- logrank_data$chisq
+
+  return(
+    exactt(
+      events = events,
+      n0 = n0,
+      n1 = n1,
+      crit = crit,
+      hr = 1)
+  )
+}
+#' Exact test for time-to-event data with unequal follow-up times
 #'
-lrexs <- function(events, n0, n1, crit){
-
-  lrexs_checks(events, n0, n1, crit)
-  hr <- 1 # under the null HR is assumed to be equal to 1
-
-
-  # generate cases
-  vec <- 2^((events-1):0)
-  output <- matrix(0, nrow = 1, ncol = events)
-  nump <- 2^events
-  for (i in 1:(nump-1)) {
-    q <- (i %/% vec) %% 2
-    output <- rbind(output, q)
-  }
-
-  # initialization
-  logrank_num <- 0
-  logrank_den <- 0
-  prob <- 1
-  for (k in 1:events) {
-    if (k == 1) {
-      atRiskT <- matrix(n1, nrow = nump, ncol = 1)
-      atRiskC <- matrix(n0, nrow = nump, ncol = 1)
-    } else {
-      atRiskT <- matrix(n1 - apply(as.matrix(output[,1:(k-1)]), 1, sum))
-      atRiskC <- matrix(n0 - apply(1-as.matrix(output[,1:(k-1)]), 1, sum))
-    }
-
-    prob0 <- atRiskT / (atRiskC + atRiskT)
-    logrank_num <- logrank_num + (output[,k] - matrix(prob0))
-    logrank_den <- logrank_den + prob0 * (1 - prob0)
-    prob <- prob * ((hr * atRiskT * output[,k] + atRiskC * (1 - output[,k])) / (hr * atRiskT + atRiskC))
-  }
-
-  logrank <- logrank_num / sqrt(logrank_den)  # logrank test statistic (2^events values)
-
-  return(sum(prob * (logrank > crit)))
-}
-
-
-# Perform sanity checks
-lrexs_checks <- function(events, n0, n1, crit) {
-
-  stopifnot("too large number of events, method = 'standard' currently cannot handle >15 events.\n Switching to method = 'heinze' is recommended." = events <=15)
-
-  # crit must be numeric
-  stopifnot("crit must be numeric" = is.numeric(crit))
-
-  # Sample size must be larger than number of events
-  stopifnot("total sample size should be >= number of events" = (n0 + n1 >= events))
-
-  # Number of events and sample size should be 0 or more
-  stopifnot("events cannot be negative." = (events >= 0))
-  stopifnot("n0 and n1 cannot be negative." = ((n0 >= 0) & (n1 >= 0)))
-}
-
-#' Given unequal patient follow-up time, it gets the survival data and the
-#' number of permutations to be performed and returns the probability that we
-#' observe a p-value as extreme as the one we have observed based on the
+#' @description Given unequal patient follow-up time, it gets the survival data
+#' and the number of permutations to be performed and returns the probability
+#' that we observe a p-value as extreme as the one we have observed based on the
 #' log-rank test of the data.
-#'
-#' @param data Tibble. Time-to-event data must be inserted with status, 0
-#' if censored or 1 if dead; time and group variables.
+#' @param data Tibble. Users need to input the time-to-event data, ensuring
+#' that variables time, status and group include the required survival
+#' information. Time-to-event data must be inserted with status, 0
+#' if censored or 1 if dead; time and group, 0 for control and 1 for treatment
+#' arm, variables.
 #' @param n_perm Scalar. The number of permutations to be performed.
-#' @param seed Scalar. The seed for the permutations.
+#' @param seed Scalar. The seed for random number generation.
 #' @returns Scalar. The exact test p-value, i.e., Pr(LR < crit | HR) across all
-#' permutations where LR is the log-rank test result given the specific
+#' permutations, where LR is the log-rank test statistic given the specific
 #' permuted data set.
 #' @import survival tidyverse tibble
 #' @examples
 #' set.seed(12345)
-#' n <- 10 # number of patients
+#' n <- 20 # number of patients
 #' dt <- tibble::tibble(time = rexp(n),
-#'                  status = rbinom(10, size = 1, prob = 0.2),
-#'                  group = rbinom(10, size = 1, prob = 0.5)
+#'                  status = rbinom(n, size = 1, prob = 0.2),
+#'                  group = rbinom(n, size = 1, prob = 0.5)
 #' )
-#' ext <- monitOS:::lrexu(data = dt, n_perm = 100, seed = 12345)
+#' monitOS:::lrexu(data = dt, n_perm = 100, seed = 12345)
 #'
 lrexu <- function(data, n_perm, seed){
 
-  lrexu_checks(data, n_perm, seed)
+  lrex_checks(data)
 
   # get the log-rank statistic from the observed data
   logrank_data = survival::survdiff(survival::Surv(time, status) ~ group, data=data)
@@ -354,16 +311,12 @@ lrexu <- function(data, n_perm, seed){
   # return(list(logrank_data = logrank_data,
   #             exact_statistics = exact_stat,
   #             exact_pvalue = sum(exact_stat>=logrank_data$chisq)/length(exact_stat)))
-  return(sum(exact_stat>=logrank_data$chisq)/length(exact_stat))
+  return(sum(exact_stat>logrank_data$chisq)/length(exact_stat))
 
 }
 
 # Perform sanity checks
-lrexu_checks <- function(data, n_perm, seed){
-
-  # seed and n_perm should be numeric
-  stopifnot("seed and n_perm should be numeric" =
-              (is.numeric(seed) & isTRUE(is.numeric(n_perm))))
+lrex_checks <- function(data){
 
   # data should be tibble
   stopifnot("incorrect data format; data should be a tibble" =

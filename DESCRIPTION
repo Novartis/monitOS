@@ -13,11 +13,14 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.3
 Imports:
-      mvtnorm,
-      ggplot2,
-      dplyr,
-      tibble,
-      survival,
-      tidyverse
+    mvtnorm,
+    ggplot2,
+    dplyr,
+    tibble,
+    survival,
+    tidyverse,
+    Rcpp
 Suggests:
     testthat (>= 3.0.0)
+LinkingTo: 
+    Rcpp
