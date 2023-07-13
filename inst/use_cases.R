@@ -1,15 +1,19 @@
-#' Specify case studies for shiny app.
+#' Title
 #'
-#' @param study String. Provide study name.
+#' @param study
 #'
+#' @return
+#' @export
+#'
+#' @examples
 use_cases <- function(study){
 
   return(switch(study,
-        Polarix1 = polarix1(),
-        Polarix2 = polarix2(),
-        MonarchE = MonarchE(),
-        Leda = Leda(),
-        YTB323 = YTB()))
+                Polarix1 = polarix1(),
+                Polarix2 = polarix2(),
+                MonarchE = MonarchE(),
+                Leda = Leda(),
+                YTB323 = YTB323()))
 
 }
 
@@ -18,11 +22,11 @@ use_cases <- function(study){
 polarix1 <- function(){
 
   events <- c(134, 178)
-  thresh1 <- exp(monitOS::bounds(events = events))
-  hrs <- c(0.5, 0.7, 1, 1.1, 1.5, 2)
-  return(list(thresh1=thresh1$lhr_con,
+  bounds <- monitOS::bounds(events = events)
+  return(list(thresh1=exp(bounds$lhr_con),
               events=events,
-              hrs=hrs))
+              #   thres2=NULL,
+              hrs=c(0.7, 1, 1.1, 1.5, 2)))
 
 }
 
@@ -30,11 +34,11 @@ polarix1 <- function(){
 polarix2 <- function(){
 
   events <- c(110, 125, 131)
-  thresh1 <- exp(monitOS::bounds(events = events))
-  hrs <- c(0.5, 0.7, 1, 1.1, 1.5, 2)
-  return(list(thresh1=thresh1$lhr_con,
+  bounds <- monitOS::bounds(events = events)
+  return(list(thresh1=exp(bounds$lhr_con),
               events=events,
-              hrs=hrs))
+              thres2=NULL,
+              hrs=c(0.7, 1, 1.1, 1.5, 2)))
 
 }
 
@@ -42,11 +46,11 @@ polarix2 <- function(){
 MonarchE <- function(){
 
   events <- c(76, 186, 330, 650)
-  thresh1 <- exp(monitOS::bounds(events = events))
-  hrs <- c(0.5, 0.7, 1, 1.1, 1.5, 2)
-  return(list(thresh1=thresh1$lhr_con,
+  bounds <- monitOS::bounds(events =events)
+  return(list(thresh1=exp(bounds$lhr_con),
+              thresh2=NULL,
               events=events,
-              hrs=hrs))
+              hrs=c(0.7, 1, 1.1, 1.5, 2)))
 
 }
 
@@ -54,22 +58,21 @@ MonarchE <- function(){
 Leda <- function(){
 
   events <- c(22, 34)
-  thresh1 <- exp(monitOS::bounds(events =events))
-  hrs <- c(0.5, 0.7, 1, 1.1, 1.5, 2)
-  return(list(thresh1=thresh1$lhr_con,
+  bounds <- monitOS::bounds(events =events, delta_imax = log(1.333))
+  return(list(thresh1=exp(bounds$lhr_con),
+              thresh2=NULL,
               events=events,
-              hrs=hrs))
+              hrs=c(0.5, 0.7, 1, 1.1, 1.5, 2)))
 
 }
 
-YTB <- function(){
+YTB323 <- function(){
 
   events <- c(36, 52)
-  thresh1 <- exp(monitOS::bounds(events = events,
-                                 delta_imax = log(1.5)))
-  hrs <- c(0.5, 0.7, 1, 1.1, 1.5, 2)
-  return(list(thresh1=thresh1$lhr_con,
+  bounds <- monitOS::bounds(events =events, delta_imax = log(1.5))
+  return(list(thresh1=exp(bounds$lhr_con),
+              thresh2=NULL,
               events=events,
-              hrs=hrs))
+              hrs=c(0.5, 0.7, 1, 1.1, 1.5, 2)))
 
 }
