@@ -16,9 +16,6 @@ library(dplyr)
 # Define server logic required to draw a histogram
 shinyServer(function(input, output, session) {
 
-    # Load pre-specificed use case
-    # usecase <- reactive(monitOS::use_cases(input$study))
-
   observeEvent(input$study, {
     if(input$study == "User"){
       updateTextInput(session, "events", value = "110, 125, 131")
@@ -38,7 +35,6 @@ shinyServer(function(input, output, session) {
     thres1 <- as.numeric(unlist(strsplit(gsub(" ", "", input$thres1),",")))
     thres2 <- pmax(as.numeric(unlist(strsplit(gsub(" ", "", input$thres2),","))), thres1, na.rm = TRUE)
     events <- as.numeric(unlist(strsplit(gsub(" ", "", input$events),",")))
-
 
     len_events <- length(events)
     len_thres1 <- length(thres1)
