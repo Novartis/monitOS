@@ -1,20 +1,21 @@
-#' Compute the overall survival hazard ratio continuation thresholds at each
-#' interim analysis stage according to Tom Fleming procedure.
+#' Calculate Tom Fleming monitoring guideline boundaries
 #'
-#' @param power Scalar. Power for the analysis. A float ranging from 0 to 1. Default is
-#' 0.9.
-#' @param t1error Scalar. One sided type-1 error. A float ranging from 0 to 1. Default
-#' is 0.025.
-#' @param events Vector A vector with the planned number of events at the analysis
-#' stages. It should be at least 1.
-#' @param delta_imax Scalar. The log-HR threshold to rule out under the null hypothesis at
-#' the final analysis (maximum information level). Default is NULL. If delta_imax
-#' is NULL, then, the
-#' continuation threshold at maximum information level is anchored at HR = 1, and
-#' the log-HR threshold to rule out under the null hypothesis at the final analysis
-#' is adjusted accordingly.
-#' @returns A list object, that includes lhr_con, lhr_null and lhr_alt. Also,
-#' prints a table with the computed thresholds
+#' @description Calculate the overall survival hazard ratio thresholds at each
+#' interim analysis stage according to the Tom Fleming monitoring guideline.
+#' @param events Vector. A vector with the planned number of events at the
+#' analysis stages; `events` should be at least 1.
+#' @param power Scalar. Power for the analysis. Default is 0.9.
+#' @param t1error Scalar. One-sided Type-1 error. Default is 0.025.
+#' @param delta_imax Scalar. The log hazard ratio (log-HR) threshold to rule out
+#' under the null hypothesis at the final analysis satge (maximum information
+#' level). Default is `NULL`. If `delta_imax` is `NULL`, then, the continuation
+#' threshold at maximum information level is anchored at log-HR = 0 (that is a
+#' hazard ratio equal to 1), and the log-HR threshold to rule out under the null
+#' hypothesis at the final analysis is adjusted accordingly.
+#' @returns List. A list object, that includes `lhr_con` (log-HR for
+#' 'continuation'), `lhr_null` (log-HR under the null hypothesis) and `lhr_alt`
+#' (log-HR under the alternative hypothesis). Also, prints a table with the
+#' computed hazard ratio thresholds.
 #' @export
 #' @examples
 #' events <- c(15, 30, 50, 69)
@@ -24,7 +25,7 @@ bounds <- function(events,
                    t1error = 0.025,
                    delta_imax = NULL) {
 
-  # Perform sanity checks.
+  # Perform sanity checks
   bounds_checks(events, power, t1error, delta_imax)
 
   nstage <- length(events) # total number of analysis stages planned
@@ -35,32 +36,28 @@ bounds <- function(events,
   if (!is.null(delta_imax)) {
     lhr_conf <- delta_imax - zalpha * se[nstage]
   } else {
-    # At the final analysis, we want 'type1error' chance of falsely claiming a
-    # detrimental effect on OS (i.e. if lower limit of (1 - 2 * t1error) * 100%
-    # level CI for log-HR exceeds 0).
+    # At the final analysis, we want 't1error' chance of falsely claiming a
+    # detrimental effect on OS
     delta_imax <- zalpha * se[nstage]
     lhr_conf <- 0
   }
 
-  # Calculate 'alternative' log-HR (delta) such that at final analysis:
+  # Calculate 'alternative' log-HR such that at final analysis:
   # Pr(theta.hat + zalpha*se(theta.hat) <= zalpha*se(theta.hat) | theta=delta) =
-  # power, i.e. have prob of (power) to rule out the null log-HR based on
-  # (1 - 2 * t1error) * 100% - level CI.
+  # power
   altfin <- lhr_conf - qnorm(power) * se[nstage]
 
   # Procedure keeps the alternative value of the log-HR constant across all
-  # analyses.
+  # analyses
   lhr_alt <- rep(altfin, times = nstage)
 
-  # Compute 'null' log-HR at each stage such that we have prob to rule
-  # out the null log-HR when the log-HR is equal to delta.
+  # Update 'null' log-HR for each stage
   lhr_null <- lhr_alt[1:(nstage - 1)] +
-    se[1:(nstage - 1)] * (qnorm(power) + qnorm(1 - t1error))
+    se[1:(nstage - 1)] * (qnorm(power) + zalpha)
   lhr_null <- c(lhr_null, delta_imax)
 
-  # Calculate the critical values for the log-HR at each analysis (i.e. the
-  # log-HR s.t the upper bound of the (1 - 2 * type1) * 100% - level CI is equal
-  # to the null value).
+  # Calculate continuation thresholds for the obtained hazard ratio estimate
+  # at each analysis stage
   lhr_con <- lhr_null - zalpha * se
 
   print(

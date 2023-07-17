@@ -1,25 +1,24 @@
 
-#' Function to calculate the posterior probability of observing an inserted
-#' number of events pattern for the treatment and control arms given prior
-#' knowledge on each arm event rates  (Beta-Binomial model).
+#' Calculate posterior probabilities for safety monitoring stopping rule
+#'
+#' @description Function to calculate the posterior probability of observing the
+#' specified number of events pattern within a two-arm study given prior
+#' knowledge on each arm's event rate distribution.
 #'
 #' @param method String. Method for calculating the posterior probabilities. Two
 #' methods are provided, 'beta' (Beta-Binomial conjugate family) and 'gamma'
-#' (Gamma-Poisson conjugate family).
-#' @param param0 Vector. Shape parameters for the Beta prior distribution for
-#' the control arm.
-#' @param param1 Vector. Shape parameters for the Beta prior distribution for
-#' the treatment arm.
-#' @param events0 Scalar. Number of events in the control arm.
-#' @param events1 Scalar. Number of events in the treatment arm.
-#' @param time0 Scalar. Total subject's exposure time up to t in the control arm.
-#' Default is NULL. Leave as NULL if method is Beta.
-#' @param time1 Scalar. Total subject's exposure time up to t in the treatment arm.
-#' Default is NULL. Leave as NULL if method is Beta.
-#' @param n0 Scalar. Total number of patients in the control arm.
-#' @param n1 Scalar. Total number of patients in the treatment arm.
-#' @param delta Scalar. Risk ratio difference under the null hypothesis.
-#' @return Scalar. Returns the posterior probability of observing the inserted
+#' (Gamma-Poisson conjugate family). Default is set to 'beta'.
+#' @param param0,param1 Vectors with two values each. Parameter values for the
+#' prior distributions of the control and treatment arms respectively.
+#' @param events0,events1 Scalars. Assumed number of events within the control
+#' and treatment arms respectively.
+#' @param time0,time1 Scalars. Specify only if `method = 'gamma'`, otherwise
+#' leave as `NULL`. This is the total subjects' exposure time in the control and
+#' treatment arms. Default is `NULL`.
+#' @param n0,n1 Scalars. Total number of patients in the control and treatment
+#' arms respectively.
+#' @param delta Scalar. Assumed risk ratio difference under the null hypothesis.
+#' @return Scalar. Returns the posterior probability of observing the specified
 #' number of events pattern.
 #' @export
 #' @examples
@@ -30,35 +29,43 @@
 #' postrr <- postprob(param0 = c(1, 1), param1 = c(1, 1), time0 = 10, time1 = 1,
 #' events0 = 2, events1 = 1, n0 = 100, n1 = 100, delta = 1, method = 'gamma')
 #' postrr
-postprob <- function(method = 'beta', param0, param1, events0, events1, time0, time1, n0, n1, delta) {
+postprob <- function(method = 'beta', param0, param1, events0, events1, time0,
+                     time1, n0, n1, delta) {
   res <- switch(
     method,
     beta = postprobbin(param0, param1, events0, events1,n0, n1, delta),
-    gamma = postprobgam(param0, param1, events0, events1, time0, time1, n0, n1, delta)
+    gamma = postprobgam(param0, param1, events0, events1, time0, time1, n0, n1,
+                        delta)
   )
   return(as.numeric(res))
 }
 
 
-#' Function to calculate the posterior probability of observing an inserted
-#' number of events pattern for the treatment and control arms given prior
-#' knowledge on each arm event rates  (Beta-Binomial model).
+#' Calculate posterior probability based on Beta-Binomial model
 #'
-#' @param param0 Vector. Shape parameters for the Beta prior distribution for
-#' the control arm.
-#' @param param1 Vector. Shape parameters for the Beta prior distribution for
-#' the treatment arm.
-#' @param events0 Scalar. Number of events in the control arm.
-#' @param events1 Scalar. Number of events in the treatment arm.
-#' @param n0 Scalar. Total number of patients in the control arm.
-#' @param n1 Scalar. Total number of patients in the treatment arm.
-#' @param delta Scalar. Risk ratio difference under the null hypothesis.
-#' @return Scalar. Returns the posterior probability of observing the inserted
-#' number of events pattern.
+#' @description Function to calculate the posterior probability of observing the
+#' specified number of events pattern within a two-arm study given prior
+#' knowledge on each arm's event rate distribution. Method is based on a
+#' Beta-Binomial model.
+#'
+#' @param param0,param1 Vectors with two values each. Shape parameters for the
+#' Beta prior distribution of the control and treatment arms respectively.
+#' @param events0,events1 Scalars. Assumed number of events within the control
+#' and treatment arms respectively.
+#' @param n0,n1 Scalars. Total number of patients in the control and treatment
+#' arms respectively.
+#' @param delta Scalar. Assumed risk ratio difference under the null hypothesis.
+#' @return Scalar. Returns the posterior probability of observing the specified
+#' number of events pattern assuming a Beta-Binomial model.
 #' @export
 #' @examples
-#' postrr <- postprobbin(param0 = c(1, 1), param1 = c(1, 1), events0 = 2, events1 = 1,
-#' n0 = 100, n1 = 100, delta = 1)
+#' postrr <- postprobbin(param0 = c(1, 1),
+#'                       param1 = c(1, 1),
+#'                       events0 = 2,
+#'                       events1 = 1,
+#'                       n0 = 100,
+#'                       n1 = 100,
+#'                       delta = 1)
 #' postrr
 postprobbin <- function(param0 = c(1, 1),
                      param1 = c(1, 1),
@@ -81,33 +88,41 @@ postprobbin <- function(param0 = c(1, 1),
   # Get the risk ratio
   diff <- x1/x0
 
-  # Compute the probability that [...]
+  # Compute the posterior probability
   prob <- sum(diff>delta)/length(diff)
 
   return(prob)
 }
 
-#' Function to calculate the posterior probability of observing an inserted
-#' number of events pattern for the treatment and control arms given prior
-#' knowledge on each arm event rates (Gamma-Poisson model).
+#' Calculate posterior probability based on Gamma-Poisson model
 #'
-#' @param param0 Vector. Shape parameters for the Beta prior distribution for
-#' the control arm.
-#' @param param1 Vector. Shape parameters for the Beta prior distribution for
-#' the treatment arm.
-#' @param events0 Scalar. Number of events in the control arm.
-#' @param events1 Scalar. Number of events in the treatment arm.
-#' @param time0 Scalar. Total subject's exposure time up to t in the control arm.
-#' @param time1 Scalar. Total subject's exposure time up to t in the treatment arm.
-#' @param n0 Scalar. Total number of patients in the control arm.
-#' @param n1 Scalar. Total number of patients in the treatment arm.
+#' @description Function to calculate the posterior probability of observing the
+#' specified number of events pattern within a two-arm study given prior
+#' knowledge on each arm's event rate distribution. Method is based on a
+#' Gamma-Poisson model.
+#' @param param0,param1 Vectors with two values each. Shape and rate parameters
+#' for the Gamma prior distribution of the control and treatment arms
+#' respectively.
+#' @param events0,events1 Scalars. Assumed number of events within the control
+#' and treatment arms respectively.
+#' @param time0,time1 Scalars. Total subjects' exposure time in the control and
+#' treatment arms respectively.
+#' @param n0,n1 Scalars. Total number of patients in the control and treatment
+#' arms respectively.
 #' @param delta Scalar. Risk ratio difference under the null hypothesis.
-#' @return Scalar. Returns the posterior probability of observing the inserted
-#' number of events pattern.
+#' @return Scalar. Returns the posterior probability of observing the specified
+#' number of events pattern assuming a Gamma-Poisson model.
 #' @export
 #' @examples
-#' postrr <- postprobgam(param0 = c(1, 1), param1 = c(1, 1), time0 = 10, time1 = 10, events0 = 2, events1 = 1,
-#' n0 = 100, n1 = 100, delta = 1)
+#' postrr <- postprobgam(param0 = c(1, 1),
+#'                       param1 = c(1, 1),
+#'                       time0 = 10,
+#'                       time1 = 10,
+#'                       events0 = 2,
+#'                       events1 = 1,
+#'                       n0 = 100,
+#'                       n1 = 100,
+#'                       delta = 1)
 #' postrr
 postprobgam <- function(param0 = c(1, 1),
                      param1 = c(1, 1),
@@ -132,7 +147,7 @@ postprobgam <- function(param0 = c(1, 1),
   # Get the risk ratio
   diff <- x1/x0
 
-  # Compute the probability that [...]
+  # Compute the posterior probability
   prob <- sum(diff>delta)/length(diff)
 
   return(prob)
@@ -141,18 +156,22 @@ postprobgam <- function(param0 = c(1, 1),
 # Perform sanity checks
 postprob_checks <- function(param0, param1, events0, events1, n0, n1, delta) {
 
-  # Shape and range parameters for the beta distributions should be > 0
-  stopifnot("each entry of param0 and param1 must be positive number" = ((param0 > 0) & (param1 > 0)))
+  # Shape and, if applicable, rate parameters for the prior distributions should
+  # positive numbers.
+  stopifnot("each entry of param0 and param1 must be positive number" =
+              ((param0 > 0) & (param1 > 0)))
 
-  # Same number of parameters should be provided for the prior distributions
-  stopifnot("two entries must be provided for param0 and param1" = (length(param0) == 2 & length(param0) == 2))
+  # Same number of parameters should be provided for the two prior distributions
+  stopifnot("two entries must be provided for param0 and param1" =
+              (length(param0) == 2 & length(param0) == 2))
 
   # Sample size must be larger than number of events
   stopifnot("n0 should be >= events0" = (n0 >= events0))
   stopifnot("n1 should be >= events1" = (n1 >= events1))
 
   # Number of events and sample size should be 0 or more
-  stopifnot("events0 and events1 cannot be negative." = ((events0 >= 0) & (events1 >= 0)))
+  stopifnot("events0 and events1 cannot be negative." =
+              ((events0 >= 0) & (events1 >= 0)))
   stopifnot("n0 and n1 cannot be negative." = ((n0 >= 0) & (n1 >= 0)))
 }
 

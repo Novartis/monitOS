@@ -2,7 +2,7 @@
 % Please edit documentation in R/plots.R
 \name{plot_ocs}
 \alias{plot_ocs}
-\title{Title}
+\title{Produce operational characteristics' plots}
 \usage{
 plot_ocs(
   logthres1,
@@ -17,14 +17,6 @@ plot_ocs(
 )
 }
 \arguments{
-\item{logthres1}{(Scalar | Vector). The log hazard ratio thresholds of continuation
-to flag a safety issue at each trial stage.}
-
-\item{logthres2}{(Scalar | Vector).The log hazard ratio thresholds  of continuation
-to flag a safety issue and stop the trial. Default is NULL. Leave to default,
-if specific stopping boundaries are not known. Note that thres2 is expected
-to be greater to thres1 for all trial stages.}
-
 \item{method}{String. Either "joint" for operational characteristics
 calculated based on joint probabilities, i.e., P(Reach analysis stage k and
 flag a safety issue) or "cond" for operational characteristics calculated
@@ -35,34 +27,47 @@ may be explored when the trial is actually in progress.}
 
 \item{hrr}{Vector. The range of true hazard ratio values to plot the
 probability of flagging a safety concern at least once across all trial
-stages. If thres2 is not NULL, the hrr hazard ratio range is use to plot the
-probability to flag a safety issue at least once, suggest stopping the trial
-at least once (i.e., exceed the thres2 bounds) and claim accelerated approval
-(i.e., not exceed thres1/flagged a safety issue at any stage before the final
-analysis) during the course of the trial.}
+stages and the marginal probabilities of flagging an safety concern at the
+first interim and final analysis. Notice that this argument is used for
+plotting purposes, as compared to `hrs` which is used to return the exact
+computed probability values. If `thres2` is not `NULL`, the `hrr` hazard
+ratio range is used to plot the probability to flag a safety issue at least
+once, suggest stopping the trial at least once (i.e., exceed the thres2
+bounds) and claim accelerated approval (i.e., not exceed `thres1`/flag a
+safety issue at any stage before the final analysis) during the course of
+the trial.}
 
 \item{hrs}{(Scalar | Vector). The specific true hazard ratio values to
 calculate and return the joint/conditional probabilities and the overall
 probability of flagging a safety concern at least once across all trial
-stages. If thres2 is not NULL, the probability to stop at least once during
-the trial course and the probability to flag a safety issue but not suggest
-stopping the trial are calculated instead given these true hazard ratios.}
+stages. If `thres2` is not `NULL`, the probability to stop at least once
+during the trial course and the probability to flag a safety issue but not
+suggest stopping the trial are calculated instead.}
 
 \item{ocs_stage}{Tibble. Table with operational characteristics' results
 calculated for each trial stage.}
 
 \item{ocs_trial}{Tibble. Table with overall trial operational characteristics'
-results based on the given hazard ratio range hrr.}
+results based on the given hazard ratio range `hrr`.}
 
 \item{ocs_iafa}{Tibble. Table with operational characteristics for the first
-and final analysis based on the given hazard ratio range hrr.}
+and final analysis based on the given hazard ratio range `hrr`.}
 
 \item{col}{(Optional) Vector. A vector of color names for the plots. Must
-have same length to hrs.}
+have same length to `hrs`, if specified.}
+
+\item{thres1}{(Scalar | Vector). The hazard ratio thresholds of continuation
+to flag a safety issue at each trial stage.}
+
+\item{thres2}{(Scalar | Vector). The hazard ratio thresholds  of continuation
+to stop the trial due to safety issue. Default is `NULL`. Leave to `NULL`
+if specific stopping boundaries are not known. Note that `thres2` is expected
+to be greater to `thres1` for all trial stages.}
 }
 \value{
-List of figures.
+List. Returns a list of three figures.
 }
 \description{
-Title
+This function gets the calculated probabilities
+from the `ocs` function and generates a set of visualizations (plots).
 }
