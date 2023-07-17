@@ -89,7 +89,7 @@ shinyServer(function(input, output, session) {
 
     # Rendering
     output$plot1 <- renderPlot(react()$plots$prob_plot)
-    output$plot2 <- renderPlot(react()$plots$oprob_plot)
+    output$plot2 <- renderPlot(react()$plots$flplot)
     output$table2 <- renderTable(react()$ocs_stage)
     output$table1 <- renderTable(react()$ocs_trial)
 })
