@@ -2,74 +2,57 @@
 % Please edit documentation in R/lrex.R
 \name{lrex}
 \alias{lrex}
-\title{Function to perform the exact test for a two-arm trial.}
+\title{Perform exact test given time-to-event data}
 \usage{
-lrex(
-  method = "standard",
-  events = NULL,
-  n0 = NULL,
-  n1 = NULL,
-  crit = NULL,
-  data = NULL,
-  n_perm = NULL,
-  seed = 1234
-)
+lrex(method = "standard", data = NULL, n_perm = NULL, seed = NULL)
 }
 \arguments{
-\item{method}{String. Method can be either "standard" or "heinze". Default is
-"standard", calculating the exact test p-value given the data provided. The
-standard exact test inputs the number of observed events along with
-the total sample size per arm and the log-rank test statistic value. If
-"heinze" method is selected, users need to input the time-to-event data and
-the number of permutations to be performed.}
+\item{method}{String. The `method` argument can be either 'standard' or
+'heinze'. Default is 'standard'.}
 
-\item{events}{Scalar. The total number of observed events.}
+\item{data}{Tibble. Users need to input the time-to-event data, ensuring
+that variables time, status and group include the required survival
+information. Time-to-event data must be inserted with status, 0
+if censored or 1 if dead; time and group, 0 for control and 1 for treatment
+arm, variables.}
 
-\item{n0}{Scalar. The sample size in the control group.}
+\item{n_perm}{Scalar. The number of permutations to be performed. Default is
+`NULL`. Do not change, if `method = "standard"`.}
 
-\item{n1}{Scalar. Sample size in the treatment group.}
-
-\item{crit}{Scalar. The observed critical value of the log-rank test.}
-
-\item{data}{Tibble. Time-to-event data must be inserted with status, 0
-if censored or 1 if dead; time and group variables.}
-
-\item{n_perm}{Scalar. The number of permutations to be performed.}
-
-\item{seed}{Scalar. The seed for the permutations.}
+\item{seed}{Scalar. The seed for random number generation. Default is
+`NULL`. Do not change, if `method = "standard"`.}
 }
 \value{
 Scalar. The exact test p-value, i.e., Pr(LR < crit | HR) across all
-permutations where LR is the log-rank test result given the specific
+permutations, where LR is the log-rank test statistic given the specific
 permuted data set.
 }
 \description{
-Function to perform the exact test for a two-arm trial.
+Perform the exact test based on time-to-event data for a two-arm
+trial. We are offering two methods, the standard exact test and the exact
+test for unequal follow-up time, as alternatives to the log-rank test when
+the number of events is very small, e.g., less than 25.
 }
 \examples{
 set.seed(12345)
-n <- 20
+n <- 50
 dt <- tibble::tibble(id = 1:n,
                      time = rexp(n),
-                     status = rbinom(n, size = 1, prob = 0.2),
-                     group = rbinom(n, size = 1, prob = 0.5)
+                     status = c(rbinom(n/2, size = 1, prob = 0.2),
+                                rbinom(n/2, size = 1, prob = 0.1)),
+                     group = rep(0:1, each = n/2)
 )
-# 3 events occurred
-# compute log-rank test result
+table(ifelse(dt$status==1, "dead", "censored") , dt$group)
+
+# standard log-rank test
 lrdt <- survival::survdiff(survival::Surv(time, status) ~ group, data=dt)
+lrdt$pvalue
 
-method <- "standard"
-events <- sum(dt$status)
-n0 <- sum(dt$group==0)
-n1 <- sum(dt$group==1)
-crit <- lrdt$chisq
-lrex(method = method,
-     events = events,
-     n0 = n0,
-     n1 = n1,
-     crit = crit)
-
-n_perm <- 100
-lrex(method = "heinze", data = dt, n_perm = n_perm, seed = 12345)
-
+n_perm <- 1000
+data <- dt
+seed <- 12345
+# method = "standard" is performed by default
+lrex(data = data)
+# method = "heinze" to consider follow-up times
+lrex(method = "heinze", data = data, n_perm = n_perm, seed = seed)
 }

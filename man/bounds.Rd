@@ -2,35 +2,34 @@
 % Please edit documentation in R/bounds.R
 \name{bounds}
 \alias{bounds}
-\title{Compute the overall survival hazard ratio continuation thresholds at each
-interim analysis stage according to Tom Fleming procedure.}
+\title{Calculate Tom Fleming monitoring guideline boundaries}
 \usage{
 bounds(events, power = 0.9, t1error = 0.025, delta_imax = NULL)
 }
 \arguments{
-\item{events}{Vector A vector with the planned number of events at the analysis
-stages. It should be at least 1.}
+\item{events}{Vector. A vector with the planned number of events at the
+analysis stages; `events` should be at least 1.}
 
-\item{power}{Scalar. Power for the analysis. A float ranging from 0 to 1. Default is
-0.9.}
+\item{power}{Scalar. Power for the analysis. Default is 0.9.}
 
-\item{t1error}{Scalar. One sided type-1 error. A float ranging from 0 to 1. Default
-is 0.025.}
+\item{t1error}{Scalar. One-sided Type-1 error. Default is 0.025.}
 
-\item{delta_imax}{Scalar. The log-HR threshold to rule out under the null hypothesis at
-the final analysis (maximum information level). Default is NULL. If delta_imax
-is NULL, then, the
-continuation threshold at maximum information level is anchored at HR = 1, and
-the log-HR threshold to rule out under the null hypothesis at the final analysis
-is adjusted accordingly.}
+\item{delta_imax}{Scalar. The log hazard ratio (log-HR) threshold to rule out
+under the null hypothesis at the final analysis satge (maximum information
+level). Default is `NULL`. If `delta_imax` is `NULL`, then, the continuation
+threshold at maximum information level is anchored at log-HR = 0 (that is a
+hazard ratio equal to 1), and the log-HR threshold to rule out under the null
+hypothesis at the final analysis is adjusted accordingly.}
 }
 \value{
-A list object, that includes lhr_con, lhr_null and lhr_alt. Also,
-prints a table with the computed thresholds
+List. A list object, that includes `lhr_con` (log-HR for
+'continuation'), `lhr_null` (log-HR under the null hypothesis) and `lhr_alt`
+(log-HR under the alternative hypothesis). Also, prints a table with the
+computed hazard ratio thresholds.
 }
 \description{
-Compute the overall survival hazard ratio continuation thresholds at each
-interim analysis stage according to Tom Fleming procedure.
+Calculate the overall survival hazard ratio thresholds at each
+interim analysis stage according to the Tom Fleming monitoring guideline.
 }
 \examples{
 events <- c(15, 30, 50, 69)

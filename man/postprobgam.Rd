@@ -2,9 +2,7 @@
 % Please edit documentation in R/postprob.R
 \name{postprobgam}
 \alias{postprobgam}
-\title{Function to calculate the posterior probability of observing an inserted
-number of events pattern for the treatment and control arms given prior
-knowledge on each arm event rates (Gamma-Poisson model).}
+\title{Calculate posterior probability based on Gamma-Poisson model}
 \usage{
 postprobgam(
   param0 = c(1, 1),
@@ -19,37 +17,40 @@ postprobgam(
 )
 }
 \arguments{
-\item{param0}{Vector. Shape parameters for the Beta prior distribution for
-the control arm.}
+\item{param0, param1}{Vectors with two values each. Shape and rate parameters
+for the Gamma prior distribution of the control and treatment arms
+respectively.}
 
-\item{param1}{Vector. Shape parameters for the Beta prior distribution for
-the treatment arm.}
+\item{time0, time1}{Scalars. Total subjects' exposure time in the control and
+treatment arms respectively.}
 
-\item{time0}{Scalar. Total subject's exposure time up to t in the control arm.}
+\item{events0, events1}{Scalars. Assumed number of events within the control
+and treatment arms respectively.}
 
-\item{time1}{Scalar. Total subject's exposure time up to t in the treatment arm.}
-
-\item{events0}{Scalar. Number of events in the control arm.}
-
-\item{events1}{Scalar. Number of events in the treatment arm.}
-
-\item{n0}{Scalar. Total number of patients in the control arm.}
-
-\item{n1}{Scalar. Total number of patients in the treatment arm.}
+\item{n0, n1}{Scalars. Total number of patients in the control and treatment
+arms respectively.}
 
 \item{delta}{Scalar. Risk ratio difference under the null hypothesis.}
 }
 \value{
-Scalar. Returns the posterior probability of observing the inserted
-number of events pattern.
+Scalar. Returns the posterior probability of observing the specified
+number of events pattern assuming a Gamma-Poisson model.
 }
 \description{
-Function to calculate the posterior probability of observing an inserted
-number of events pattern for the treatment and control arms given prior
-knowledge on each arm event rates (Gamma-Poisson model).
+Function to calculate the posterior probability of observing the
+specified number of events pattern within a two-arm study given prior
+knowledge on each arm's event rate distribution. Method is based on a
+Gamma-Poisson model.
 }
 \examples{
-postrr <- postprobgam(param0 = c(1, 1), param1 = c(1, 1), time0 = 10, time1 = 10, events0 = 2, events1 = 1,
-n0 = 100, n1 = 100, delta = 1)
+postrr <- postprobgam(param0 = c(1, 1),
+                      param1 = c(1, 1),
+                      time0 = 10,
+                      time1 = 10,
+                      events0 = 2,
+                      events1 = 1,
+                      n0 = 100,
+                      n1 = 100,
+                      delta = 1)
 postrr
 }

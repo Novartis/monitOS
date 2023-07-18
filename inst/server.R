@@ -1,78 +1,55 @@
-#
-# This is the server logic of a Shiny web application. You can run the
-# application by clicking "Run App" above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
+# monitOS shiny app
+rm(list=ls())
 
-
-library(shiny)
+require(shiny)
+require(glue)
 # library(monitOS)
 devtools::load_all()
-library(dplyr)
+
+# Helpers
+wrap <- function(X, decimal=3) return(paste(round(X, decimal), collapse = ","))
+unwrap <- function(X) return(as.numeric(unlist(strsplit(gsub(" ", "", X),","))))
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output, session) {
 
+  # User cases
   observeEvent(input$study, {
     if(input$study == "User"){
-      updateTextInput(session, "events", value = "110, 125, 131")
+      updateTextInput(session, "events", value = "125, 131, 150")
       updateTextInput(session, "thres1", value = "1.3, 1.2, 1")
       updateTextInput(session, "thres2", value = NULL)
       updateTextInput(session, "hrs", value = "0.7, 1, 1.1, 1.2, 1.5")
     } else {
       params <- monitOS::use_cases(input$study)
-      updateTextInput(session, "events", value = paste(round(params$events, 4), collapse = ","))
-      updateTextInput(session, "thres1", value = paste(round(params$thresh1, 4), collapse = ","))
-      updateTextInput(session, "thres2", value = if(is.null(params$thresh2)) params$thresh2 else paste(round(params$thresh2, 4), collapse = ","))
-      updateTextInput(session, "hrs", value = paste(round(params$hrs, 4), collapse = ","))
+      updateTextInput(session, "events", value = wrap(params$events))
+      updateTextInput(session, "thres1", value = wrap(params$thres1))
+      updateTextInput(session, "thres2", value = if(is.null(params$thresh2)) params$thresh2 else wrap(params$thresh2))
+      updateTextInput(session, "hrs", value = wrap(params$hrs))
     }
   })
-  ## if input events changes, then keep the thres1 and thres2 the same size as input event, add random values if missing
+
+  ## Compute new bounds when event changes
   observeEvent(input$events, {
-    thres1 <- as.numeric(unlist(strsplit(gsub(" ", "", input$thres1),",")))
-    thres2 <- pmax(as.numeric(unlist(strsplit(gsub(" ", "", input$thres2),","))), thres1, na.rm = TRUE)
-    events <- as.numeric(unlist(strsplit(gsub(" ", "", input$events),",")))
-
-    len_events <- length(events)
-    len_thres1 <- length(thres1)
-    len_thres2 <- length(thres2)
-
-    ### if added events, add thres values by using last one
-    if(len_events > len_thres1){
-      thres1 <- c(thres1, rep(thres1[len_thres1], (len_events - len_thres1)))
-      updateTextInput(session, "thres1", value = paste0(thres1, collapse = ","))
-    }
-    if(len_events > len_thres2){
-      thres2 <- c(thres2, rep(thres2[len_thres2], (len_events - len_thres2)))
-      updateTextInput(session, "thres2", value = paste0(thres2, collapse = ","))
-    }
-
-    ### if deleted events, keep the first len_events items of thres1 and thres2
-    if(len_events < len_thres1){
-      thres1 <- thres1[1:len_events]
-      updateTextInput(session, "thres1", value = paste0(thres1, collapse = ","))
-    }
-    if(len_events < len_thres2){
-      thres2 <- thres2[1: len_events]
-      updateTextInput(session, "thres2", value = paste0(thres2, collapse = ","))
-    }
+    # Events
+    events <- unwrap(input$events)
+    # Safety threshold
+    updateTextInput(session, "thres1", value = wrap(exp(monitOS::bounds(events)$lhr_con)))
+    # Stop threshold
+    thres2 <- if(is.null(input$thresh2)) input$thresh2 else wrap(exp(monitOS::bounds(events)$lhr_null))
+    updateTextInput(session, "thres2", value = thres2)
   })
 
-
-    # Base react
+    # Core reactive function - OCs plots & results
     react <- reactive({
 
-      print(input$thres2)
-      print(class(input$thres2))
       # Parse as vectors
-      thres1 <- as.numeric(unlist(strsplit(gsub(" ", "", input$thres1),",")))
-      thres2 <- if(input$thres2 == "NULL") NULL else as.numeric(unlist(strsplit(gsub(" ", "", input$thres2),",")))
-      events <- as.numeric(unlist(strsplit(gsub(" ", "", input$events),",")))
-      hrs <- as.numeric(unlist(strsplit(gsub(" ", "", input$hrs),",")))
+      thres1 <- unwrap(input$thres1)
+      thres2 <- if(input$thres2 == 'NULL') NULL else unwrap(input$thres2) # check later why its 'NULL' instead of NULL
+      events <- unwrap(input$events)
+      hrs <- unwrap(input$hrs)
 
+      glue('thres1 = {thres1}')
       # Run simulation
       monitOS::ocs(thres1=thres1,
                    thres2=thres2,
@@ -84,8 +61,8 @@ shinyServer(function(input, output, session) {
     })
 
     # Rendering
-    output$plot1 <- renderPlot(react()$plots$prob_plot)
-    output$plot2 <- renderPlot(react()$plots$flplot)
-    output$table2 <- renderTable(react()$ocs_stage)
-    output$table1 <- renderTable(react()$ocs_trial)
+    output$prob_plot <- renderPlot(react()$plots$prob_plot)
+    output$flplot <- renderPlot(react()$plots$flplot)
+    output$ocs_trial <-  renderTable(react()$ocs_trial)
+    output$ocs_stage <- renderTable(react()$ocs_stage)
 })

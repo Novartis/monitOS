@@ -2,9 +2,7 @@
 % Please edit documentation in R/postprob.R
 \name{postprob}
 \alias{postprob}
-\title{Function to calculate the posterior probability of observing an inserted
-number of events pattern for the treatment and control arms given prior
-knowledge on each arm event rates  (Beta-Binomial model).}
+\title{Calculate posterior probabilities for safety monitoring stopping rule}
 \usage{
 postprob(
   method = "beta",
@@ -22,38 +20,31 @@ postprob(
 \arguments{
 \item{method}{String. Method for calculating the posterior probabilities. Two
 methods are provided, 'beta' (Beta-Binomial conjugate family) and 'gamma'
-(Gamma-Poisson conjugate family).}
+(Gamma-Poisson conjugate family). Default is set to 'beta'.}
 
-\item{param0}{Vector. Shape parameters for the Beta prior distribution for
-the control arm.}
+\item{param0, param1}{Vectors with two values each. Parameter values for the
+prior distributions of the control and treatment arms respectively.}
 
-\item{param1}{Vector. Shape parameters for the Beta prior distribution for
-the treatment arm.}
+\item{events0, events1}{Scalars. Assumed number of events within the control
+and treatment arms respectively.}
 
-\item{events0}{Scalar. Number of events in the control arm.}
+\item{time0, time1}{Scalars. Specify only if `method = 'gamma'`, otherwise
+leave as `NULL`. This is the total subjects' exposure time in the control and
+treatment arms. Default is `NULL`.}
 
-\item{events1}{Scalar. Number of events in the treatment arm.}
+\item{n0, n1}{Scalars. Total number of patients in the control and treatment
+arms respectively.}
 
-\item{time0}{Scalar. Total subject's exposure time up to t in the control arm.
-Default is NULL. Leave as NULL if method is Beta.}
-
-\item{time1}{Scalar. Total subject's exposure time up to t in the treatment arm.
-Default is NULL. Leave as NULL if method is Beta.}
-
-\item{n0}{Scalar. Total number of patients in the control arm.}
-
-\item{n1}{Scalar. Total number of patients in the treatment arm.}
-
-\item{delta}{Scalar. Risk ratio difference under the null hypothesis.}
+\item{delta}{Scalar. Assumed risk ratio difference under the null hypothesis.}
 }
 \value{
-Scalar. Returns the posterior probability of observing the inserted
+Scalar. Returns the posterior probability of observing the specified
 number of events pattern.
 }
 \description{
-Function to calculate the posterior probability of observing an inserted
-number of events pattern for the treatment and control arms given prior
-knowledge on each arm event rates  (Beta-Binomial model).
+Function to calculate the posterior probability of observing the
+specified number of events pattern within a two-arm study given prior
+knowledge on each arm's event rate distribution.
 }
 \examples{
 postrr <- postprob(param0 = c(1, 1), param1 = c(1, 1),
