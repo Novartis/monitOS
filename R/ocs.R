@@ -219,6 +219,21 @@ ocs <- function(thres1,
 }
 
 
+# Table 1 names (bottom left):
+#
+#   true_hr = "True/Assumed HR" or "True/Assumed hazard ratio"
+# prob_flag_si = if (thres2 == NULL) {"Probability to flag a safety issue at least once" or "Flag a SI at least once (prob.)"} else {"Probability to flag a safety issue but NOT suggest stopping the trial"}
+# prob_stop =  if (thres2 == NULL) {DELETE/HIDE COLUMN}else{"Probability for early termination" or "Probability to suggest stopping the trial"}
+#
+# Table 2 names (bottom right):
+#
+#   numev = "Events (#)"
+# stage = "Stage"
+# prob_stop = if (thres2 == NULL) {"Probability to flag a safety issue"} else {"Probability to suggest stopping the trial"}
+# prob_flag_si = if (thres2 == NULL) {DELETE/HIDE COLUMN} else {"Probability to flag a safety issue"}
+# true_hr = "True/Assumed HR" or "True/Assumed hazard ratio"
+
+
 # Perform sanity checks
 sanity_checks <- function(thres1, thres2, events, hrr, hrs, col) {
   # Hazard ratios should be > 0

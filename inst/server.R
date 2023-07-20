@@ -2,7 +2,6 @@
 rm(list=ls())
 
 require(shiny)
-require(glue)
 # library(monitOS)
 devtools::load_all()
 
@@ -21,7 +20,7 @@ shinyServer(function(input, output, session) {
       updateTextInput(session, "thres2", value = NULL)
       updateTextInput(session, "hrs", value = "0.7, 1, 1.1, 1.2, 1.5")
     } else {
-      params <- monitOS::use_cases(input$study)
+      params <- monitOS:::use_cases(input$study)
       updateTextInput(session, "events", value = wrap(params$events))
       updateTextInput(session, "thres1", value = wrap(params$thres1))
       updateTextInput(session, "thres2", value = if(is.null(params$thresh2)) params$thresh2 else wrap(params$thresh2))
@@ -49,7 +48,6 @@ shinyServer(function(input, output, session) {
       events <- unwrap(input$events)
       hrs <- unwrap(input$hrs)
 
-      glue('thres1 = {thres1}')
       # Run simulation
       monitOS::ocs(thres1=thres1,
                    thres2=thres2,

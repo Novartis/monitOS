@@ -14,7 +14,7 @@ dashboardPage(
   # Define body
   dashboardBody(
     tabItems(
-      tabItem(tabName = "Welcome", shiny::includeMarkdown(glue('{pkgload::pkg_path()}/README.md'))),
+      tabItem(tabName = "Welcome", shiny::includeMarkdown(glue::glue('{pkgload::pkg_path()}/README.md'))),
       tabItem(tabName = "Parameters",
               fluidRow(
                 column(3, selectInput("study", "Case study:",
