@@ -3,42 +3,37 @@ library(shinydashboard)
 
 dashboardPage(
   skin = "blue",
-  dashboardHeader(title = 'Monitoring OS'),
+  dashboardHeader(title = "Monitoring OS"),
   # Creating tabs
   dashboardSidebar(sidebarMenu(
-    # Tab-1
-    menuItem(
-      "Run",
-      tabName = "run",
-      icon = icon("person-running"),
-      selectInput('method', 'Method :', c('joint', 'cond')),
-      textInput('thres1', 'Threshold #1: (csv)', "1.3, 1.2, 1"),
-      textInput('thres2', 'Threshold #2: (csv)', "1.5, 1.4, 1.3"),
-      textInput('events', 'Events #', "110, 125, 131"))
-    ),
-    # Tab-2
-    menuItem(
-      "Use cases",
-      tabName = "use cases",
-      icon = icon("download"),
-      selectInput('study', 'Case study :', c('polarix1', 'polarix2', 'MonarchE', 'Leda'))
+    menuItem("Welcome", tabName = "Welcome", icon = shiny::icon("info-circle")),
+    menuItem("Settings", tabName = "Parameters", icon = shiny::icon("tachometer-alt")),
+    menuItem("Calculation", tabName = "Results", icon = shiny::icon("square-poll-vertical"))
     )
   ),
   # Define body
-  dashboardBody(tabItems(
-    # First tab content
-    tabItem(tabName = "Modeling", class = "active"),
-    # empty for now
-    # Second tab content
-    tabItem(
-      tabName = "Sampling",
-      class = "active",
-      fluidRow(
-        shinydashboard::box(status = "primary", plotOutput('plot1', height = '512px')),
-        shinydashboard::box(status = "success", plotOutput('plot2', height = '512px')),
-        shinydashboard::box(status = "primary", tableOutput("table1")),
-        shinydashboard::box(status = "success", tableOutput("table2"))
+  dashboardBody(
+    tabItems(
+      tabItem(tabName = "Welcome", shiny::includeMarkdown(glue::glue('{pkgload::pkg_path()}/README.md'))),
+      tabItem(tabName = "Parameters",
+              fluidRow(
+                column(3, selectInput("study", "Case study:",
+                            c("User","Polarix1", "Polarix2", "MonarchE", "Leda", "YTB323"))),
+                column(3, textInput("events", "Events (csv)", "110, 125, 131"))),
+              fluidRow(
+                column(3, textInput("thres1", "Safety thresholds (csv)", "1.3, 1.2, 1")),
+                column(3, textInput("thres2", "Stopping thresholds (csv)", "NULL")),
+                column(3, textInput("hrs", "True HRs", "0.7, 1, 1.1, 1.2, 1.5")),
+                column(3, selectInput("method", "Method :", c("joint", "cond"))),
+                )
+              ),
+      tabItem(tabName = "Results", fluidRow(
+        shinydashboard::box(status = "primary", plotOutput("prob_plot", height = "512px")),
+        shinydashboard::box(status = "success", plotOutput("flplot", height = "512px")),
+        shinydashboard::box(status = "primary", tableOutput("ocs_trial")),
+        shinydashboard::box(status = "success", tableOutput("ocs_stage"))
+        )
       )
     )
-  ))
+  )
 )
