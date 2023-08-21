@@ -62,6 +62,7 @@ Deploy:
     - R CMD build . --as-cran
     - PKG_FILE_NAME=$(ls -1t *.tar.gz | head -n 1) && echo ${PKG_FILE_NAME}
     - mv "${PKG_FILE_NAME}" monitOS-source.tar.gz
+    - R -e 'rsconnect::deployApp(appDir = here::here(), appId = 2946, account = "corolth1", server = "rsconnect-prod.dit.eu.novartis.net")' -y
   dependencies: []
   artifacts:
     name: "monitOS_source"

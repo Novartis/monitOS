@@ -1,0 +1,11 @@
+name: monitos
+title:
+username: corolth1
+account: corolth1
+server: rsconnect-prod.dit.eu.novartis.net
+hostUrl: https://rsconnect-prod.dit.eu.novartis.net/__api__
+appId: 2946
+bundleId: 16970
+url: https://rsconnect-prod.dit.eu.novartis.net/monitOS-shiny/
+when: 1692652205.11765
+lastSyncTime: 1692652205.11766
