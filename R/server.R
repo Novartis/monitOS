@@ -1,16 +1,12 @@
-# monitOS shiny app
-rm(list=ls())
-
-require(shiny)
-# library(monitOS)
-devtools::load_all()
-
-# Helpers
-wrap <- function(X, decimal=3) return(paste(round(X, decimal), collapse = ","))
-unwrap <- function(X) return(as.numeric(unlist(strsplit(gsub(" ", "", X),","))))
-
-# Define server logic required to draw a histogram
-shinyServer(function(input, output, session) {
+#' Title
+#'
+#' @param input todo
+#' @param output todo
+#' @param session todo
+#'
+#' @export
+#' @import shiny
+app_server <- function(input, output, session) {
 
   # User cases
   observeEvent(input$study, {
@@ -63,4 +59,5 @@ shinyServer(function(input, output, session) {
     output$flplot <- renderPlot(react()$plots$flplot)
     output$ocs_trial <-  renderTable(react()$ocs_trial)
     output$ocs_stage <- renderTable(react()$ocs_stage)
-})
+}
+
