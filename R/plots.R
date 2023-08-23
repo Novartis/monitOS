@@ -2,9 +2,9 @@
 #'
 #' @description This function gets the calculated probabilities
 #' from the `ocs` function and generates a set of visualizations (plots).
-#' @param thres1 (Scalar | Vector). The hazard ratio thresholds of continuation
+#' @param logthres1 (Scalar | Vector). The hazard ratio thresholds of continuation
 #' to flag a safety issue at each trial stage.
-#' @param thres2 (Scalar | Vector). The hazard ratio thresholds  of continuation
+#' @param logthres2 (Scalar | Vector). The hazard ratio thresholds  of continuation
 #' to stop the trial due to safety issue. Default is `NULL`. Leave to `NULL`
 #' if specific stopping boundaries are not known. Note that `thres2` is expected
 #' to be greater to `thres1` for all trial stages.

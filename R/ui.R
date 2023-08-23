@@ -8,7 +8,7 @@ app_ui <- function(request){
 
   dashboardPage(
     skin = "blue",
-    dashboardHeader(title = "Monitoring OS"),
+    dashboardHeader(title = "Monitoring OS - August 23rd"),
     # Creating tabs
     dashboardSidebar(sidebarMenu(
       menuItem("Welcome", tabName = "Welcome", icon = shiny::icon("info-circle")),

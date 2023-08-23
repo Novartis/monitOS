@@ -1,16 +1,17 @@
 stages:          # List of stages for jobs, and their order of execution
   - setup
-  - build
-  - test
+  # - build-fast
+  # - build-cran
+  # - test
   - deploy
 
-before_script: ## Check this part
-
-  - export http_proxy=http://proxy.eu.novartis.net:2010/
-  - export https_proxy=http://proxy.eu.novartis.net:2010/
-  - export NOT_CRAN=true
-  - export CCACHE_DIR=/tmp
-  - export PATH=/usr/lib/ccache:$PATH
+# before_script: ## Check this part
+#
+#   - export http_proxy=http://proxy.eu.novartis.net:2010/
+#   - export https_proxy=http://proxy.eu.novartis.net:2010/
+#   - export NOT_CRAN=true
+#   - export CCACHE_DIR=/tmp
+#   - export PATH=/usr/lib/ccache:$PATH
 
 
 # <DON'T REMOVE!>
@@ -36,17 +37,16 @@ Setup:
     - Rscript -e "if (!requireNamespace('renv', quietly = TRUE)) install.packages('renv');"
     - Rscript -e "renv::restore();"
 
-
-
-Check:
+Test:
   stage: test
   script:
-    - R -e 'devtools::check()'
+    - Rscript -e "if (!requireNamespace('devtools', quietly = TRUE)) install.packages('devtools');"
+    - Rscript -e 'devtools::check()'
 
-Build:
-  stage: build
+Build-Fast:
+  stage: build-fast
   only:
-    - main
+    - dev
   script:
     - R CMD build . --no-build-vignettes --no-manual
     - PKG_FILE_NAME=$(ls -1t *.tar.gz | head -n 1) && echo ${PKG_FILE_NAME}
@@ -57,19 +57,24 @@ Build:
     paths:
        - monitOS-source-fast.tar.gz
 
-Deploy:
-  stage: deploy
+Build-CRAN:
+  stage: build-cran
   only:
     - main
   script:
     - R CMD build . --as-cran
     - PKG_FILE_NAME=$(ls -1t *.tar.gz | head -n 1) && echo ${PKG_FILE_NAME}
     - mv "${PKG_FILE_NAME}" monitOS-source.tar.gz
-    - R -e 'source("deploy/deploy-workflow.R"); deploy_app_rsc()'
-  dependencies: []
   artifacts:
     name: "monitOS_source"
     expire_in: 1 month
     paths:
       - monitOS-source.tar.gz
+
+Deploy:
+  stage: deploy
+  only:
+    - main
+  script:
+    - R -e 'source("deploy/deploy-workflow.R"); deploy_app_rsc()'
 
