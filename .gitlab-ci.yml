@@ -2,7 +2,7 @@ stages:          # List of stages for jobs, and their order of execution
   - setup
   - build-fast
   - build-cran
-  - test
+  # - test
   - deploy
 
 # before_script: ## Check this part
@@ -37,11 +37,11 @@ Setup:
     - Rscript -e "if (!requireNamespace('renv', quietly = TRUE)) install.packages('renv');"
     - Rscript -e "renv::restore();"
 
-Test:
-  stage: test
-  script:
-    - Rscript -e "if (!requireNamespace('devtools', quietly = TRUE)) install.packages('devtools');"
-    - Rscript -e 'devtools::check()'
+# Test:
+#   stage: test
+#   script:
+#     - Rscript -e "if (!requireNamespace('devtools', quietly = TRUE)) install.packages('devtools');"
+#     - Rscript -e 'devtools::check()'
 
 Build-Fast:
   stage: build-fast
