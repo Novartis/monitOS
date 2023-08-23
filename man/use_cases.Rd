@@ -7,7 +7,7 @@
 use_cases(study)
 }
 \arguments{
-\item{study}{}
+\item{study}{TBD}
 }
 \value{
 

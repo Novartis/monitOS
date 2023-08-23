@@ -17,6 +17,14 @@ plot_ocs(
 )
 }
 \arguments{
+\item{logthres1}{(Scalar | Vector). The hazard ratio thresholds of continuation
+to flag a safety issue at each trial stage.}
+
+\item{logthres2}{(Scalar | Vector). The hazard ratio thresholds  of continuation
+to stop the trial due to safety issue. Default is `NULL`. Leave to `NULL`
+if specific stopping boundaries are not known. Note that `thres2` is expected
+to be greater to `thres1` for all trial stages.}
+
 \item{method}{String. Either "joint" for operational characteristics
 calculated based on joint probabilities, i.e., P(Reach analysis stage k and
 flag a safety issue) or "cond" for operational characteristics calculated
@@ -55,14 +63,6 @@ and final analysis based on the given hazard ratio range `hrr`.}
 
 \item{col}{(Optional) Vector. A vector of color names for the plots. Must
 have same length to `hrs`, if specified.}
-
-\item{thres1}{(Scalar | Vector). The hazard ratio thresholds of continuation
-to flag a safety issue at each trial stage.}
-
-\item{thres2}{(Scalar | Vector). The hazard ratio thresholds  of continuation
-to stop the trial due to safety issue. Default is `NULL`. Leave to `NULL`
-if specific stopping boundaries are not known. Note that `thres2` is expected
-to be greater to `thres1` for all trial stages.}
 }
 \value{
 List. Returns a list of three figures.
