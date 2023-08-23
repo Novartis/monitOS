@@ -36,8 +36,17 @@ Setup:
     - Rscript -e "if (!requireNamespace('renv', quietly = TRUE)) install.packages('renv');"
     - Rscript -e "renv::restore();"
 
+
+
+Check:
+  stage: test
+  script:
+    - R -e 'devtools::check()'
+
 Build:
   stage: build
+  only:
+    - main
   script:
     - R CMD build . --no-build-vignettes --no-manual
     - PKG_FILE_NAME=$(ls -1t *.tar.gz | head -n 1) && echo ${PKG_FILE_NAME}
@@ -47,19 +56,6 @@ Build:
     expire_in: 1 day
     paths:
        - monitOS-source-fast.tar.gz
-
-Check:
-  stage: test
-  script:
-    - tar xf "monitOS-source-fast.tar.gz"
-    - export NOT_CRAN=false
-    - R CMD check monitOS --no-build-vignettes --no-manual
-    - rm -rf monitOS.Rcheck/monitOS
-  artifacts:
-    name: "Rcheck-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
-    expire_in: 1 week
-    paths:
-      - monitOS.Rcheck/
 
 Deploy:
   stage: deploy
