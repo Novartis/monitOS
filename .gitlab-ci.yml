@@ -76,5 +76,5 @@ Deploy:
   only:
     - main
   script:
-    - R -e 'source("deploy/deploy-workflow.R"); deploy_app_rsc()'
+    - R -e 'source("deploy/deploy.R"); deploy_app_rsc()'
 
