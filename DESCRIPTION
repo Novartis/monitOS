@@ -21,7 +21,8 @@ Imports:
     tidyverse,
     Rcpp,
     shiny,
-    shinydashboard
+    shinydashboard,
+    glue
 Suggests:
     testthat (>= 3.0.0),
     glue

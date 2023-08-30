@@ -40,7 +40,7 @@
 #' @param col (Optional) Vector. A vector of color names for the plots. Must
 #' have same length to `hrs`, if specified.
 #' @import dplyr ggplot2 tibble
-#' @importFrom dplyr %>%
+#' @importFrom dplyr %>% mutate
 #' @return List. Returns a list with two tables and three figures. The
 #' tables include information on the stopping probabilities based on the
 #' scenarios specified by the user and the plots include visualizations of these
@@ -92,7 +92,7 @@ ocs <- function(thres1,
   prob_stop <-
     sapply(
       loghrs,
-      FUN = monitOS::flag_stop,
+      FUN = flag_stop,
       method = method,
       logthres = logthres,
       events = events
@@ -101,7 +101,7 @@ ocs <- function(thres1,
   prob_flag <- if (!is.null(thres2)) {
     sapply(
       loghrs,
-      FUN = monitOS::flagprob,
+      FUN = flagprob,
       logthres1 = logthres1,
       logthres2 = logthres2,
       events = events
@@ -112,7 +112,7 @@ ocs <- function(thres1,
 
   # Compile results
   tab1 <-
-    tibble::tibble(
+    tibble(
       numev = rep(events, length(loghrs)),
       stage = rep(seq(1, length(events)), length(loghrs)),
       prob_stop = c(prob_stop),
@@ -122,35 +122,35 @@ ocs <- function(thres1,
     )
 
   tab2 <- tab1 %>%
-    dplyr::mutate(prob_stop_joint = c(
+    mutate(prob_stop_joint = c(
       if(method == "joint"){
         prob_stop
       } else {
         sapply(
           loghrs,
-          FUN = monitOS::flag_stop,
+          FUN = flag_stop,
           method = "joint",
           logthres = logthres,
           events = events
         )})) %>%
-    dplyr::group_by(true_hr_num) %>%
-    dplyr::summarise(prob_flag_si =
+    group_by(true_hr_num) %>%
+    summarise(prob_flag_si =
                        if(!is.null(thres2)) sum(prob_flag_si) else sum(prob_stop_joint),
                      prob_stop =
                        if(!is.null(thres2)) sum(prob_stop_joint) else NA) %>%
-    dplyr::rename(true_hr = true_hr_num)
+    rename(true_hr = true_hr_num)
 
   # Get probability to flag safety issue and/or stop at least once for the
   # range of hazard ratios provided
   flagsi <- 1 - sapply(loghrr,
-                       monitOS::flag_safety,
+                       flag_safety,
                        method=method,
                        logthres = logthres1,
                        events = events)
 
   stoptrial <- if (!is.null(logthres2)) {
     1 - sapply(loghrr,
-               monitOS::flag_safety,
+               flag_safety,
                method=method,
                logthres = logthres2,
                events = events)
@@ -160,7 +160,7 @@ ocs <- function(thres1,
 
   claimap <- if (!is.null(logthres2)) {
     sapply(loghrr,
-           monitOS::flag_safety,
+           flag_safety,
            method=method,
            logthres = logthres1[-length(logthres1)],
            events = events[-length(events)])
@@ -168,12 +168,12 @@ ocs <- function(thres1,
     NULL
   }
 
-  tab3 <- if (is.null(logthres2)) {
-    tibble::tibble(
+  tab3 <- if (!is.null(logthres2)) {
+    tibble(
       prob_atleast1 = c(flagsi),
       true_hr = round(hrr, 2))
   } else {
-    tibble::tibble(
+    tibble(
       prob_atleast11 = c(flagsi),
       prob_atleast12 = c(stoptrial),
       claimap = c(claimap),
@@ -182,7 +182,7 @@ ocs <- function(thres1,
 
   # OCs at first interim and final analysis
   info <- events/4
-  tab4 <- tibble::tibble(
+  tab4 <- tibble(
     flag_si = c(sapply(log(hrr),
                        pnorm,
                        q = log(thres1[1]),
@@ -199,7 +199,7 @@ ocs <- function(thres1,
   )
 
   # Generate plots
-  plots <- monitOS::plot_ocs(logthres1,
+  plots <- plot_ocs(logthres1,
                              logthres2,
                              method,
                              hrr,
@@ -211,8 +211,8 @@ ocs <- function(thres1,
 
   return(list(
     ocs_stage = tab1 %>%
-      dplyr::select(-true_hr_num) %>%
-      dplyr::rename(true_hr = true_hr_fac),
+      select(-true_hr_num) %>%
+      rename(true_hr = true_hr_fac),
     ocs_trial = tab2,
     plots = plots
   ))

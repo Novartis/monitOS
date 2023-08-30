@@ -7,11 +7,8 @@ test_that("Ensure that OCs are calculated correctly", {
                       hrr=seq(0.6, 1.5, by = 0.01),
                       hrs=1.3,
                       col = NULL)
-  expect_equal(res$ocs_trial,
-               tibble::tibble(
-                 true_hr = 1.3,
-                 prob_flag_si = 0.660,
-                 prob_stop = 0.508),
+  expect_equal(as.numeric(res$ocs_trial),
+               c(1.3, 0.6597, 0.5078),
                TOLERANCE)
   expect_equal(as.numeric(res$ocs_stage$prob_stop),
                c(0.1249604, 0.3828472),

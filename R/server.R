@@ -13,13 +13,11 @@ app_server <- function(input, output, session) {
     if(input$study == "User"){
       updateTextInput(session, "events", value = "125, 131, 150")
       updateTextInput(session, "thres1", value = "1.3, 1.2, 1")
-      updateTextInput(session, "thres2", value = NULL)
       updateTextInput(session, "hrs", value = "0.7, 1, 1.1, 1.2, 1.5")
     } else {
       params <- monitOS:::use_cases(input$study)
       updateTextInput(session, "events", value = wrap(params$events))
       updateTextInput(session, "thres1", value = wrap(params$thres1))
-      updateTextInput(session, "thres2", value = if(is.null(params$thresh2)) params$thresh2 else wrap(params$thresh2))
       updateTextInput(session, "hrs", value = wrap(params$hrs))
     }
   })
@@ -28,11 +26,8 @@ app_server <- function(input, output, session) {
   observeEvent(input$events, {
     # Events
     events <- unwrap(input$events)
-    # Safety threshold
+    # Detrimental threshold
     updateTextInput(session, "thres1", value = wrap(exp(monitOS::bounds(events)$lhr_con)))
-    # Stop threshold
-    thres2 <- if(is.null(input$thresh2)) input$thresh2 else wrap(exp(monitOS::bounds(events)$lhr_null))
-    updateTextInput(session, "thres2", value = thres2)
   })
 
     # Core reactive function - OCs plots & results
@@ -40,9 +35,14 @@ app_server <- function(input, output, session) {
 
       # Parse as vectors
       thres1 <- unwrap(input$thres1)
-      thres2 <- if(input$thres2 == 'NULL') NULL else unwrap(input$thres2) # check later why its 'NULL' instead of NULL
       events <- unwrap(input$events)
       hrs <- unwrap(input$hrs)
+      # browser()
+      # one liner doesn't work
+      thres2 <- NULL
+      if(is.null(input$thresh2)) thres2 <- exp(bounds(events)$lhr_null)
+
+
 
       # Run simulation
       monitOS::ocs(thres1=thres1,

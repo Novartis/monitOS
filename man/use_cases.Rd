@@ -9,9 +9,6 @@ use_cases(study)
 \arguments{
 \item{study}{TBD}
 }
-\value{
-
-}
 \description{
 Title
 }
