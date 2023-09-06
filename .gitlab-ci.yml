@@ -73,8 +73,8 @@ Build-CRAN:
 
 Deploy:
   stage: deploy
-  only:
-    - main
+  # only:
+  #   - main
   script:
     - R -e 'source("deploy/deploy.R"); deploy_app_rsc()'
 
