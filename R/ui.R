@@ -21,7 +21,7 @@ app_ui <- function(request){
     # Define body
     dashboardBody(
       tabItems(
-        tabItem(tabName = "Welcome", includeMarkdown(glue('{pkg_path()}/README.md'))),
+        tabItem(tabName = "Welcome"), #, includeMarkdown(glue('{pkg_path()}/README.md'))),
         tabItem(tabName = "Calculation",
           fluidRow(column(3, textInput("events", "L", "110, 125, 131"))),
           fluidRow(box(status = "primary", plotOutput("prob_plot", height = "512px")),
