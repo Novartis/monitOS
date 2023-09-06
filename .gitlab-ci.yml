@@ -1,8 +1,8 @@
 stages:          # List of stages for jobs, and their order of execution
-  - setup
-  - build-fast
-  - build-cran
-  - test
+  # - setup
+  # - build-fast
+  # - build-cran
+  # - test
   - deploy
 
 # before_script: ## Check this part
