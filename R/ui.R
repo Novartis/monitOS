@@ -11,21 +11,30 @@ app_ui <- function(request){
     dashboardHeader(title = "Monitoring OS"),
     # Creating tabs
     dashboardSidebar(sidebarMenu(
-      menuItem("Welcome", tabName = "Welcome", icon = icon("info-circle")),
-      menuItem("Calculation", tabName = "Calculation", icon = icon("square-poll-vertical")),
-      menuItem("Optional Settings", tabName = "Settings", icon = icon("tachometer-alt")))
+      menuItem("Welcome", tabName = "Welcome", icon = icon("house")),
+      menuItem("Calculation", tabName = "Calculation", icon = icon("calculator")),
+      menuItem("Comparison", tabName = "Comparison", icon = icon("socks")),
+      menuItem("Settings", tabName = "Settings", icon = icon("sliders")))
       ),
     # Define body
     dashboardBody(
       tabItems(
         tabItem(tabName = "Welcome", includeMarkdown(glue('{pkgload::pkg_path()}/README.md'))),
         tabItem(tabName = "Calculation",
-          fluidRow(column(3, textInput("events", "L (events)", "110, 125, 131"))),
+          fluidRow(column(3, textInput("events", "L", "110, 125, 131"))),
           fluidRow(box(status = "primary", plotOutput("prob_plot", height = "512px")),
                    box(status = "success", plotOutput("flplot", height = "512px"))),
           fluidRow(box(status = "primary", tableOutput("ocs_trial")),
                    box(status = "success", tableOutput("ocs_stage")))
           ),
+        tabItem(tabName = "Comparison",
+                fluidRow(column(6, textInput("events1", "L1", "110, 125, 131")),
+                         column(6, textInput("events2", "L2", "100, 115, 150"))),
+                fluidRow(box(status = "primary", plotOutput("prob_plot1", height = "350px")),
+                         box(status = "success", plotOutput("prob_plot2", height = "350px"))),
+                fluidRow(box(status = "primary", plotOutput("flplot1", height = "350px")),
+                         box(status = "success", plotOutput("flplot2", height = "350px")))
+        ),
         tabItem(tabName = "Settings",
                 fluidRow(column(3, selectInput("study", "Case study",
                                                c("User","Polarix1", "Polarix2", "MonarchE", "Leda", "YTB323")))

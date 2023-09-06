@@ -168,7 +168,7 @@ ocs <- function(thres1,
     NULL
   }
 
-  tab3 <- if (!is.null(logthres2)) {
+  tab3 <- if (is.null(logthres2)) {
     tibble(
       prob_atleast1 = c(flagsi),
       true_hr = round(hrr, 2))
