@@ -30,8 +30,8 @@ app_ui <- function(request){
                    box(status = "success", tableOutput("ocs_stage")))
           ),
         tabItem(tabName = "Comparison",
-                fluidRow(column(6, textInput("events1", "L1", "110, 125, 131")),
-                         column(6, textInput("events2", "L2", "100, 115, 150"))),
+                fluidRow(column(6, textInput("events1", "L", "110, 125, 131")),
+                         column(6, textInput("events2", "L*", "100, 115, 150"))),
                 fluidRow(box(status = "primary", plotOutput("prob_plot1", height = "350px")),
                          box(status = "success", plotOutput("prob_plot2", height = "350px"))),
                 fluidRow(box(status = "primary", plotOutput("flplot1", height = "350px")),
