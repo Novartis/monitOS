@@ -22,7 +22,8 @@ Imports:
     Rcpp,
     shiny,
     shinydashboard,
-    glue
+    glue,
+    pkgload
 Suggests:
     testthat (>= 3.0.0),
     glue

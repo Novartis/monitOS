@@ -130,14 +130,13 @@ plot_ocs <- function(logthres1,
 
   flplot <-
     ggplot(data = ocs_iafa,
-           aes(x = true_hr, y = flag_si, linetype = analysis)) +
-    geom_vline(xintercept = 1, col = "pink", linetype = "dotted") +
+           aes(x = true_hr, y = flag_si, col=analysis, linetype = analysis)) +
+    geom_vline(xintercept = 1, col = "pink") +
     geom_line() +
     theme_bw() +
     ggplot2::theme(legend.position = "top")+
     labs(y = "P{Flag an OS detriment | HR}",
-         x = "True HR",
-         linetype = "") +
+         x = "True HR") +
     scale_x_continuous(breaks = seq(min(hrr), max(hrr), by = 0.1)) +
     scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.1))
 

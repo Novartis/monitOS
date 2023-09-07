@@ -2,5 +2,5 @@
 # To deploy, run: rsconnect::deployApp()
 # Or use the blue button on top of this file
 
-pkgload::load_all()
+devtools::load_all()
 run_app()

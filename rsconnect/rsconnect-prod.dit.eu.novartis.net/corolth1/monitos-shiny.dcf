@@ -5,9 +5,10 @@ account: corolth1
 server: rsconnect-prod.dit.eu.novartis.net
 hostUrl: https://rsconnect-prod.dit.eu.novartis.net/__api__
 appId: 2946
-bundleId: 16967
-url: https://rsconnect-prod.dit.eu.novartis.net/content/d189ca7b-7249-44ee-b440-a1239b31f40d/
-when: 1692639867.79222
-lastSyncTime: 1692639867.79223
+bundleId: 17217
+url: https://rsconnect-prod.dit.eu.novartis.net/monitOS-shiny/
+when: 1694035586.39849
+lastSyncTime: 1694035586.3985
 asMultiple: FALSE
 asStatic: FALSE
+ignoredFiles: .Rprofile
