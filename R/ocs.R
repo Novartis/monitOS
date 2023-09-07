@@ -182,32 +182,30 @@ ocs <- function(thres1,
 
   # OCs at first interim and final analysis
   info <- events/4
+
   tab4 <- tibble(
-    flag_si = c(sapply(log(hrr),
-                       pnorm,
-                       q = log(thres1[1]),
-                       sd = sqrt(1/info[1]),
-                       lower.tail = FALSE),
-                sapply(log(hrr),
-                       pnorm,
-                       q = log(thres1[length(events)]),
-                       sd = sqrt(1/info[length(events)]),
-                       lower.tail = FALSE)),
-    true_hr = rep(hrr, 2),
-    analysis = rep(c("First Interim Analysis", "Final Analysis"),
-                   each = length(hrr))
-  )
+            flag_si = c(t(sapply(log(hrr),
+                   pnorm,
+                   q = log(thres1),
+                   sd = sqrt(1/info),
+                   lower.tail = FALSE))),
+            true_hr = rep(hrr, length(events)),
+            analysis = rep(c(glue('Interim #{seq(1, length(events)-1, 1)}'), 'Final'),
+                           each = length(hrr))
+            )
+
+
 
   # Generate plots
   plots <- plot_ocs(logthres1,
-                             logthres2,
-                             method,
-                             hrr,
-                             hrs,
-                             ocs_stage = tab1,
-                             ocs_trial = tab3,
-                             ocs_iafa = tab4,
-                             col)
+                     logthres2,
+                     method,
+                     hrr,
+                     hrs,
+                     ocs_stage = tab1,
+                     ocs_trial = tab3,
+                     ocs_iafa = tab4,
+                     col)
 
   return(list(
     ocs_stage = tab1 %>%
