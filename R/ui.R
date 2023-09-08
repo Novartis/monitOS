@@ -26,10 +26,10 @@ app_ui <- function(request){
           fluidRow(column(3, textInput("events", "target number of OS events at each analysis?", "40,134,223,297")),
                    column(3, textInput("thres1", "HR continuation thresholds", "1.3, 1.2, 1"))),
           fluidRow(
-            column(3, sliderInput('power_int', 'what power do we want to not flag a safety concern at an interim analysis if the true OS HR equals our target alternative?', min=0.8, max=1, value=0.9, step = 0.01)),
-            column(3, sliderInput('t1error', 'what is the (one-sided) type I error rate that we will accept at the final analysis?', min=0, max=0.1, value=0.025, step = 0.005)),
-            column(3, sliderInput('hr_null', 'what is the minimum unacceptable OS HR?', min=1, max=1.5, value=1.333, step = 0.05)),
-            column(3, sliderInput('lhr_alt', 'what is a plausible alternative OS HR consistent with OS benefit?', min=0.6, max=1, value=0.9, step = 0.05))
+            column(3, sliderInput('power_int', 'what power do we want to not flag a safety concern at an interim analysis if the true OS HR equals our target alternative?', min=0.7, max=1, value=0.9, step = 0.01)),
+            column(3, sliderInput('t1error', 'what is the (one-sided) type I error rate that we will accept at the final analysis?', min=0, max=0.2, value=0.025, step = 0.005)),
+            column(3, sliderInput('hr_null', 'what is the minimum unacceptable OS HR?', min=1, max=1.6, value=1.333, step = 0.05)),
+            column(3, sliderInput('lhr_alt', 'what is a plausible alternative OS HR consistent with OS benefit?', min=0.5, max=1, value=0.9, step = 0.05))
           ),
           fluidRow(box(status = "primary", plotOutput("prob_plot", height = "400px")),
                    box(status = "success", plotOutput("flplot", height = "400px"))),
