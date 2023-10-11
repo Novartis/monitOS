@@ -1,4 +1,3 @@
-
 #' Calculate posterior probabilities for safety monitoring stopping rule
 #'
 #' @description Function to calculate the posterior probability of observing the

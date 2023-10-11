@@ -9,7 +9,7 @@ bounds(
   events,
   power_int = 0.9,
   t1error = 0.025,
-  lhr_null = log(1.333),
+  lhr_null = log(1.3),
   lhr_alt = log(0.9)
 )
 }
@@ -49,7 +49,7 @@ procedure (instead the false positive or false negative risks vary across analys
 }
 \examples{
 res <- bounds(events=c(20, 50, 60),
-              power_int=0.9,
+              power=0.9,
               t1error=0.025,
               lhr_null = log(1.333),
               lhr_alt = log(0.9))

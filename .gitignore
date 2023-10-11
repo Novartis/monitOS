@@ -39,8 +39,7 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
-<<<<<<< HEAD
-=======
-
 .Rproj.user
->>>>>>> main
+
+# images
+*.jpeg
