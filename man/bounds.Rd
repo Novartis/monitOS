@@ -2,55 +2,68 @@
 % Please edit documentation in R/bounds.R
 \name{bounds}
 \alias{bounds}
-\title{Adapted version of TF monitoring procedure which considers the same detrimental OS log-HR
-at each analysis}
+\title{OS monitoring guidelines as proposed in manuscript "Monitoring overall survival in pivotal trials in indolent cancers"}
 \usage{
 bounds(
   events,
   power_int = 0.9,
-  t1error = 0.025,
-  lhr_null = log(1.3),
-  lhr_alt = log(0.9)
+  falsepos = 0.025,
+  hr_null = 1.3,
+  hr_alt = 0.9,
+  rand_ratio = 1,
+  hr_marg_benefit = NULL
 )
 }
 \arguments{
-\item{events}{Vector. Target number of OS events at each analysis}
+\item{events}{Vector. Target number of deaths at each analysis}
 
-\item{power_int}{Scalar. Should be NULL if the user specifies t1error. If t1error is NULL, the user specifies
-the required marginal power to rule out lhr_null when lhr = lhr_alt at the final analysis
-(and at each interim analysis too). This specification then drives the false positive risks we are
-willing to accept at each analysis}
+\item{power_int}{Scalar. Marginal power required at the Primary Analysis when true hazard ratio (HR) is hr_alt.}
 
-\item{t1error}{Scalar or Vector. Should be NULL if the user specifies power. If power
-is NULL, the user must input this argument. User can specify either a scalar or a
-vector of length K. If the user inputs a scalar, this is interpreted as the one-sided
-type I error rate agreed with the HA for the final analysis. We then
-calculate the attained power under lhr_alt and require this at every interim analysis. If the user
-inputs t1error as a vector argument, this is interpreted as the sequence of (marginal, one-sided) type I error
-rates we are willing to accept at each OS analysis.}
+\item{falsepos}{Scalar. Marginal one-sided false positive error rate we are prepared to tolerate at the Final Analysis. Determines the  positivity threshold at Final Analysis}
 
-\item{lhr_null}{Scalar. The minimum unacceptable OS log-HR}
+\item{hr_null}{Scalar. The unacceptably large detrimental effect of treatment on OS we want to rule out (on HR scale)}
 
-\item{lhr_alt}{Scalar. Plausible clinically relevant beneficial effect of treatment (log-HR)}
+\item{hr_alt}{Scalar. Plausible clinically relevant beneficial effect of treatment on OS (on HR scale)}
+
+\item{rand_ratio}{Integer. If patients are randomized k:1 between experimental intervention and control, rand_ratio should be inputted as k.
+Example: if patients are randomized 1:1 between experimental and control, k=1. If patients are randomized 2:1 between experimental and control, k=2.}
+
+\item{hr_marg_benefit}{Scalar. We may be uncertain about what a plausible beneficial effect of treatment on OS is. User can enter a second plausible OS benefit (on HR scale)
+and function will evaluate the probability we meet the positivity threshold at each analysis under this HR. This second OS benefit will usually be closer to 1 than hr_alt.}
 }
 \value{
-List. A list object that contains `t1error` (one-sided marginal type I error rates at each analysis),
-`CI_level_monit_null` (level of two-sided CIs used to rule out lhr_null at each analysis),
-`lhr_null` (minimum unacceptable OS log-HR), `lhr_alt` (plausible clinically relevant log-HR)
-`lhr_con` (log-HR for 'continuation'), `Continuation_Thres_Posterior` ('continuation' thresholds
-expressed as posterior probabilities true log-HR exceeds lhr_null), `Continuation_Thres_PredProb`
-('continuation' thresholds expressed as predictive probabilities of ruling out
-lhr_null at final analysis). Also prints a table with this information.
+List that contains `lhr_null` (unacceptable OS log-HR), ' `lhr_alt` (plausible clinically relevant log-HR), ' `lhr_pos` (positivity thresholds for log-HR estimates),
+and `summary` dataframe, which contains `Positivity_Thres_HR` (OS HR thresholds for positivity), `OneSided_falsepos` (One sided false positive error_rate),
+`CI_level_monit_null` (Level of 2 sided CI needed to rule out hr_null), `Power_Alt` (Probability of meeting positivity threshold under hr_alt),
+`Positivity_Thres_Posterior` Pr(true OS HR >= minimum unacceptable OS HR | current data) and
+`Positivity_Thres_PredProb` Pr(OS HR estimate at Final Analysis <= Final Analysis positivity threshold | current data)
 }
 \description{
-Calculates bounds of versions of the Fleming monitoring procedure where lhr_null
-and lhr_alt are specified by the user and are both kept constant throughout the
-procedure (instead the false positive or false negative risks vary across analyses)
+Calculate thresholds for positivity that can be used at an analysis to judge whether emerging
+evidence about the effect of treatment on OS is concerning or not. The threshold for positivity at any given analysis
+is the value below which the observed hazard ratio must be in order to provide sufficient reassurance that the effect
+ on OS does not reach the selected unacceptable level of detriment (the margin hr_null).
+Terminology follows the manuscript "Monitoring overall survival in pivotal trials in indolent cancers"
 }
 \examples{
-res <- bounds(events=c(20, 50, 60),
-              power=0.9,
-              t1error=0.025,
-              lhr_null = log(1.333),
-              lhr_alt = log(0.9))
+ # Example 01: OS monitoring guideline retrospectively applied to Motivating Example 1
+ # with delta null = 1.3, delta alt = 0.80, gamma_FA = 0.025 and  beta_PA = 0.10.
+ bounds(events=c(60, 89, 110, 131, 178),
+               power_int=0.9,  # βPA
+               falsepos=0.025,  # γFA
+               hr_null = 1.3,  # δnull
+               hr_alt = 0.8,   # δalt
+               rand_ratio = 1,
+               hr_marg_benefit = NULL)
+# Example 02: OS monitoring guideline applied to Motivating Example 2
+# with delta null = 4/3, delta alt = 0.7, gamma_FA = 0.20 and beta_PA = 0.1.
+res <- bounds(events=c(60, 89, 110, 131, 178),
+              power_int=0.9,  # βPA
+              falsepos=0.025,  # γFA
+              hr_null = 1.3,  # δnull
+              hr_alt = 0.8,   # δalt
+              rand_ratio = 1, # rand_ratio
+              hr_marg_benefit = 0.95)
+
+
 }

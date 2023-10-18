@@ -2,6 +2,7 @@ stages:          # List of stages for jobs, and their order of execution
   - setup
   - build-fast
   - build-cran
+  - check
   - test
   - deploy
 
@@ -39,6 +40,15 @@ Setup:
 
 Test:
   stage: test
+  script:
+    - Rscript -e "if (!requireNamespace('devtools', quietly = TRUE)) install.packages('devtools');"
+    - Rscript -e 'devtools::test()'
+
+Check:
+  stage: check
+  only:
+  - main
+  - dev
   script:
     - Rscript -e "if (!requireNamespace('devtools', quietly = TRUE)) install.packages('devtools');"
     - Rscript -e 'devtools::check()'
