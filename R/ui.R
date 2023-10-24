@@ -30,7 +30,7 @@ app_ui <- function(request){
                   column(4, 'Example: If any OS HR >= 1.333 would be unacceptably large, the answer to Q1 is 1.333.'))),
                 fluidRow(
                   box(title = 'Plausible beneficial effect', collapsed = TRUE, collapsible = TRUE, width = 12, status = "info",
-                  column(4, sliderInput('hr_alt', 'What is a plausible OS HR consistent with a beneficial effect of the experimental intervention vs control?', min=0.05, max=1, value=0.9, step = 0.05)),
+                  column(4, sliderInput('hr_alt', 'What is a plausible OS HR consistent with a beneficial effect of the experimental intervention vs control?', min=0.05, max=1, value=0.7, step = 0.05)),
                   column(4, 'This "margin of benefit" should reflect the beneficial effect that one could reasonably expect from the experimental indication given its mechanism of action (MoA).'),
                   column(4, 'Example: Based on results for competitor drugs with the same MoA, an OS HR = 0.9 is a plausible beneficial effect on OS and would be considered clinically relevant if statistical significance is achieved on the trial\'s primary endpoint.'))),
                 # Events
@@ -46,7 +46,7 @@ app_ui <- function(request){
                 # False positive
                 fluidRow(
                   box(title='False positive error rate', collapsed = TRUE, collapsible = TRUE, width = 12,
-                      column(4, sliderInput('falsepos', 'What (one-sided) false positive error rate can be tolerated at the OS Final Analysis?', min=0, max=0.3, value=0.025, step = 0.005)),
+                      column(4, sliderInput('falsepos', 'What (one-sided) false positive error rate can be tolerated at the OS Final Analysis?', min=0, max=0.3, value=0.1, step = 0.005)),
                       column(4, 'OS "Positivity threshold" is the value below which the observed OS HR must be in order to provide sufficient reassurance that the effect on OS does not reach the unacceptable level of detriment (your answer to Q1).'))),
                 # Power interim
                 fluidRow(
@@ -61,7 +61,7 @@ app_ui <- function(request){
                            column(3, sliderInput('rand_ratio', 'What is the randomization ratio?', min=0.5, max=3, value=1, step = 0.5)),
                            column(3, 'If patients are randomized k:1 between experimental intervention and control, rand_ratio should be inputted as k. For Example: if patients are randomized 1:1 between experimental and control, k=1. If patients are randomized 2:1 between experimental and control, k=2.')))),
                 # Key results
-                fluidRow(box(title = 'Summary', status = "success", tableOutput("bounds"), width = 12))
+                fluidRow(box(title = 'Thresholds for positivity', status = "success", tableOutput("bounds"), width = 12))
         )
   )
 

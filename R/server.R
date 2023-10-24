@@ -25,6 +25,7 @@ app_server <- function(input, output, session) {
                         rand_ratio = input$rand_ratio,
                         hr_marg_benefit = input$hr_marg_benefit)
 
+
     hr_pos = exp(boundaries$lhr_pos)
     updateTextInput(session, "hr_pos", value = wrap(hr_pos))
 
