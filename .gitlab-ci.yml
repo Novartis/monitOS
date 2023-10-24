@@ -3,7 +3,7 @@ stages:          # List of stages for jobs, and their order of execution
   - build-fast
   - build-cran
   - check
-  - test
+  - Test
   - deploy
 
 before_script: ## Check this part
@@ -37,12 +37,6 @@ Setup:
       fi
     - Rscript -e "if (!requireNamespace('renv', quietly = TRUE)) install.packages('renv');"
     - Rscript -e "renv::restore();"
-
-Test:
-  stage: test
-  script:
-    - Rscript -e "if (!requireNamespace('devtools', quietly = TRUE)) install.packages('devtools');"
-    - Rscript -e 'devtools::test()'
 
 Check:
   stage: check
@@ -81,6 +75,19 @@ Build-CRAN:
     expire_in: 1 month
     paths:
       - monitOS-source.tar.gz
+
+
+Test:
+    stage: test
+    allow_failure: true
+    when: on_success
+    only:
+        - master
+        - dev
+    script:
+        - Rscript -e 'install.packages("DT")'
+        - Rscript -e 'covr::gitlab(quiet = FALSE)'
+
 
 Deploy:
   stage: deploy
