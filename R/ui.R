@@ -46,13 +46,13 @@ app_ui <- function(request){
                 # False positive
                 fluidRow(
                   box(title='False positive error rate', collapsed = TRUE, collapsible = TRUE, width = 12,
-                  column(4, sliderInput('power_int', 'What power is required to meet the OS "positivity threshold" at time of the trial\'s Primary Analysis when the true OS HR equals your answer to Q2?', min=0, max=0.3, value=0.025, step = 0.005)),
-                  column(4, 'A false positive error arises at the OS final analysis when true OS HR equals your answer to Q1 but no concerning evidence of unacceptable OS detriment is flagged. Should be set with consideration given to the false negative rate at the OS final analysis.'))),
+                      column(4, sliderInput('falsepos', 'What (one-sided) false positive error rate can be tolerated at the OS Final Analysis?', min=0, max=0.3, value=0.025, step = 0.005)),
+                      column(4, 'OS "Positivity threshold" is the value below which the observed OS HR must be in order to provide sufficient reassurance that the effect on OS does not reach the unacceptable level of detriment (your answer to Q1).'))),
                 # Power interim
                 fluidRow(
                   box(title='Power required', collapsed = TRUE, collapsible = TRUE, width = 12,
-                      column(4, sliderInput('falsepos', 'What (one-sided) false positive error rate can be tolerated at the OS Final Analysis?', min=0.7, max=1, value=0.9, step = 0.01)),
-                      column(4, 'OS "Positivity threshold" is the value below which the observed OS HR must be in order to provide sufficient reassurance that the effect on OS does not reach the unacceptable level of detriment (your answer to Q1).'))),
+                      column(4, sliderInput('power_int', 'What power is required to meet the OS "positivity threshold" at time of the trial\'s Primary Analysis when the true OS HR equals your answer to Q2?', min=0.7, max=1, value=0.9, step = 0.01)),
+                      column(4, 'A false positive error arises at the OS final analysis when true OS HR equals your answer to Q1 but no concerning evidence of unacceptable OS detriment is flagged. Should be set with consideration given to the false negative rate at the OS final analysis.'))),
                 fluidRow(box(title = 'Other Parameters', collapsible = TRUE, collapsed = TRUE, width = 12,
                          fluidRow(
                            column(3, sliderInput('hr_marg_benefit', 'What is a plausible marginal OS HR consistent with OS benefit?',

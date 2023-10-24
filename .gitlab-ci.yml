@@ -71,6 +71,7 @@ Build-CRAN:
   stage: build-cran
   only:
     - main
+    - dev
   script:
     - R CMD build . --as-cran
     - PKG_FILE_NAME=$(ls -1t *.tar.gz | head -n 1) && echo ${PKG_FILE_NAME}
