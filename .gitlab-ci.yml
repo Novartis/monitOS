@@ -3,7 +3,7 @@ stages:          # List of stages for jobs, and their order of execution
   - build-fast
   - build-cran
   - check
-  - test
+  - coverage
   - deploy
 
 before_script: ## Check this part
@@ -51,6 +51,7 @@ Build-Fast:
   stage: build-fast
   except:
     - main
+    - dev
   script:
     - R CMD build . --no-build-vignettes --no-manual
     - PKG_FILE_NAME=$(ls -1t *.tar.gz | head -n 1) && echo ${PKG_FILE_NAME}
@@ -77,15 +78,16 @@ Build-CRAN:
       - monitOS-source.tar.gz
 
 
-Test:
-    stage: test
+Coverage:
+    stage: coverage
     allow_failure: true
     when: on_success
     only:
         - master
         - dev
     script:
-        - Rscript -e 'install.packages("DT")'
+        - Rscript -e "if (!requireNamespace('covr', quietly = TRUE)) install.packages('covr');"
+        - Rscript -e "if (!requireNamespace('DT', quietly = TRUE)) install.packages('DT');"
         - Rscript -e 'covr::gitlab(quiet = FALSE)'
 
 
