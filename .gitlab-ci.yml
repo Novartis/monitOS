@@ -3,7 +3,7 @@ stages:          # List of stages for jobs, and their order of execution
   - build-fast
   - build-cran
   - check
-  - Test
+  - test
   - deploy
 
 before_script: ## Check this part
