@@ -17,3 +17,4 @@ meeting_probs <- function(summary, lhr_pos, lhr_target=1, rand_ratio=1){
   }
   return(as.numeric(prob))
 }
+

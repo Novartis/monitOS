@@ -78,7 +78,7 @@ bounds <- function(events,
 
   # calculate the levels of the two-sided CIs used to monitor the OS log-HR
   # at each interim analysis and the corresponding one-sided false positive error rate
-  # assuming we want marginal power = power_int to 'rule out' hr_null at required
+  # assuming we want marginal power = power_int to 'rule out' hr_Lnull at required
   # evidentiary level when true OS HR = hr_alt
   gamma <-
     2 * (1 - pnorm(((
