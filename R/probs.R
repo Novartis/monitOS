@@ -7,14 +7,23 @@
 #' Example: if patients are randomized 1:1 between experimental and control, k=1. If patients are randomized 2:1 between experimental and control, k=2.
 #'
 #' @return Array. Probabilities of meeting positivity threshold under target HR
-meeting_probs <- function(summary, lhr_pos, lhr_target=1, rand_ratio=1){
-  events <- summary$Events
-  info <- rand_ratio*events / ((rand_ratio + 1)^2) # Fisher's information for log-HR at each analysis
-  se <- sqrt(1 / info) # asymptotic standard error for log-HR at each analysis
-  prob <- list()
-  for (i in 1:length(events)){
-    prob[i] <- pnorm(lhr_pos[i], mean=lhr_target, sd=se[i], lower.tail = TRUE)
+meeting_probs <-
+  function(summary,
+           lhr_pos,
+           lhr_target = 1,
+           rand_ratio = 1) {
+    events <- summary$Events
+    info <-
+      rand_ratio * events / ((rand_ratio + 1) ^ 2) # Fisher's information for log-HR at each analysis
+    se <-
+      sqrt(1 / info) # asymptotic standard error for log-HR at each analysis
+    prob <- list()
+    for (i in 1:length(events)) {
+      prob[i] <-
+        pnorm(lhr_pos[i],
+              mean = lhr_target,
+              sd = se[i],
+              lower.tail = TRUE)
+    }
+    return(as.numeric(prob))
   }
-  return(as.numeric(prob))
-}
-
