@@ -50,14 +50,7 @@ Check:
 Build:
   stage: build
   script:
-    - R CMD build . --as-cran
-    - PKG_FILE_NAME=$(ls -1t *.tar.gz | head -n 1) && echo ${PKG_FILE_NAME}
-    - mv "${PKG_FILE_NAME}" "${PKG_FILE_NAME}".tar.gz
-  artifacts:
-    name: "${PKG_FILE_NAME}"
-    expire_in: 1 month
-    paths:
-      - monitOS-source-*.tar.gz
+    - R CMD build . --as-cran --manual
 
 Coverage:
     stage: coverage
