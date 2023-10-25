@@ -4,3 +4,4 @@
 ^\.Rproj\.user$
 ^LICENSE\.md$
 ^\.gitlab-ci\.yml$
+^cran-comments\.md$
