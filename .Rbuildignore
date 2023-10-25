@@ -5,3 +5,4 @@
 ^LICENSE\.md$
 ^\.gitlab-ci\.yml$
 ^cran-comments\.md$
+^CRAN-SUBMISSION$

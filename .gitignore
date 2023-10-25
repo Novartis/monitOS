@@ -45,3 +45,4 @@ vignettes/*.pdf
 
 # images
 *.jpeg
+inst/doc

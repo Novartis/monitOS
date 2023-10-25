@@ -32,36 +32,36 @@ Example: if patients are randomized 1:1 between experimental and control, k=1. I
 and function will evaluate the probability we meet the positivity threshold at each analysis under this HR. This second OS benefit will usually be closer to 1 than hr_alt.}
 }
 \value{
-List that contains `lhr_null` (unacceptable OS log-HR), ' `lhr_alt` (plausible clinically relevant log-HR), ' `lhr_pos` (positivity thresholds for log-HR estimates),
-and `summary` dataframe, which contains `Positivity_Thres_HR` (OS HR thresholds for positivity), `OneSided_falsepos` (One sided false positive error_rate),
-`CI_level_monit_null` (Level of 2 sided CI needed to rule out hr_null), `Power_Alt` (Probability of meeting positivity threshold under hr_alt),
-`Positivity_Thres_Posterior` Pr(true OS HR >= minimum unacceptable OS HR | current data) and
-`Positivity_Thres_PredProb` Pr(OS HR estimate at Final Analysis <= Final Analysis positivity threshold | current data)
+List that contains \code{lhr_null} (unacceptable OS log-HR), ' \code{lhr_alt} (plausible clinically relevant log-HR), ' \code{lhr_pos} (positivity thresholds for log-HR estimates),
+and \code{summary} dataframe, which contains \code{Positivity_Thres_HR} (OS HR thresholds for positivity), \code{OneSided_falsepos} (One sided false positive error_rate),
+\code{CI_level_monit_null} (Level of 2 sided CI needed to rule out hr_null), \code{Power_Alt} (Probability of meeting positivity threshold under hr_alt),
+\code{Positivity_Thres_Posterior} Pr(true OS HR >= minimum unacceptable OS HR | current data) and
+\code{Positivity_Thres_PredProb} Pr(OS HR estimate at Final Analysis <= Final Analysis positivity threshold | current data)
 }
 \description{
 Calculate thresholds for positivity that can be used at an analysis to judge whether emerging
 evidence about the effect of treatment on OS is concerning or not. The threshold for positivity at any given analysis
 is the value below which the observed hazard ratio must be in order to provide sufficient reassurance that the effect
- on OS does not reach the selected unacceptable level of detriment (the margin hr_null).
+on OS does not reach the selected unacceptable level of detriment (the margin hr_null).
 Terminology follows the manuscript "Monitoring overall survival in pivotal trials in indolent cancers"
 }
 \examples{
  # Example 01: OS monitoring guideline retrospectively applied to Motivating Example 1
  # with delta null = 1.3, delta alt = 0.80, gamma_FA = 0.025 and  beta_PA = 0.10.
  bounds(events=c(60, 89, 110, 131, 178),
-               power_int=0.9,  # βPA
-               falsepos=0.025,  # γFA
-               hr_null = 1.3,  # δnull
-               hr_alt = 0.8,   # δalt
-               rand_ratio = 1,
-               hr_marg_benefit = NULL)
+        power_int=0.9,  # beta_PA
+        falsepos=0.025, # gamma_FA
+        hr_null = 1.3,  # delta_null
+        hr_alt = 0.8,   # delta_alt
+        rand_ratio = 1, # rand_ratio
+        hr_marg_benefit = NULL)
 # Example 02: OS monitoring guideline applied to Motivating Example 2
 # with delta null = 4/3, delta alt = 0.7, gamma_FA = 0.20 and beta_PA = 0.1.
 res <- bounds(events=c(60, 89, 110, 131, 178),
-              power_int=0.9,  # βPA
-              falsepos=0.025,  # γFA
-              hr_null = 1.3,  # δnull
-              hr_alt = 0.8,   # δalt
+              power_int=0.9,  # beta_PA
+              falsepos=0.025, # gamma_FA
+              hr_null = 1.3,  # delta_null
+              hr_alt = 0.8,   # delta_alt
               rand_ratio = 1, # rand_ratio
               hr_marg_benefit = 0.95)
 

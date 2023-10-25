@@ -26,19 +26,19 @@
 #'  # Example 01: OS monitoring guideline retrospectively applied to Motivating Example 1
 #'  # with delta null = 1.3, delta alt = 0.80, gamma_FA = 0.025 and  beta_PA = 0.10.
 #'  bounds(events=c(60, 89, 110, 131, 178),
-#'                power_int=0.9,  # βPA
-#'                falsepos=0.025,  # γFA
-#'                hr_null = 1.3,  # δnull
-#'                hr_alt = 0.8,   # δalt
-#'                rand_ratio = 1,
-#'                hr_marg_benefit = NULL)
+#'         power_int=0.9,  # beta_PA
+#'         falsepos=0.025, # gamma_FA
+#'         hr_null = 1.3,  # delta_null
+#'         hr_alt = 0.8,   # delta_alt
+#'         rand_ratio = 1, # rand_ratio
+#'         hr_marg_benefit = NULL)
 #' # Example 02: OS monitoring guideline applied to Motivating Example 2
 #' # with delta null = 4/3, delta alt = 0.7, gamma_FA = 0.20 and beta_PA = 0.1.
 #' res <- bounds(events=c(60, 89, 110, 131, 178),
-#'               power_int=0.9,  # βPA
-#'               falsepos=0.025,  # γFA
-#'               hr_null = 1.3,  # δnull
-#'               hr_alt = 0.8,   # δalt
+#'               power_int=0.9,  # beta_PA
+#'               falsepos=0.025, # gamma_FA
+#'               hr_null = 1.3,  # delta_null
+#'               hr_alt = 0.8,   # delta_alt
 #'               rand_ratio = 1, # rand_ratio
 #'               hr_marg_benefit = 0.95)
 #'
@@ -46,13 +46,13 @@
 bounds <- function(events,
                    # OS events at each analysis
                    power_int = 0.9,
-                   # 1-βPA, what power do we want to not flag a safety concern at an interim analysis if the true OS HR equals our target alternative?
+                   # 1-Beta PA, what power do we want to not flag a safety concern at an interim analysis if the true OS HR equals our target alternative?
                    falsepos = 0.025,
-                   # γFA, What is the (one-sided) type I error rate that we will accept at the final analysis?
+                   # Gamme FA, What is the (one-sided) type I error rate that we will accept at the final analysis?
                    hr_null = 1.3,
-                   # δnull, what is the minimum unacceptable OS HR?
+                   # Delta null, what is the minimum unacceptable OS HR?
                    hr_alt = 0.9,
-                   # δalt, what is a plausible alternative OS HR consistent with OS benefit?
+                   # Delta alt, what is a plausible alternative OS HR consistent with OS benefit?
                    rand_ratio = 1,
                    # for every patient randomized to control, rand_ratio patients are allocated to experimental intervention
                    hr_marg_benefit = NULL
