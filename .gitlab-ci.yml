@@ -1,7 +1,7 @@
 stages:          # List of stages for jobs, and their order of execution
   - setup
-  - build-fast
-  - build-cran
+  - build
+  - rhub
   - check
   - coverage
   - deploy
@@ -47,49 +47,38 @@ Check:
     - Rscript -e "if (!requireNamespace('devtools', quietly = TRUE)) install.packages('devtools');"
     - Rscript -e 'devtools::check()'
 
-Build-Fast:
-  stage: build-fast
-  except:
-    - main
-    - dev
-  script:
-    - R CMD build . --no-build-vignettes --no-manual
-    - PKG_FILE_NAME=$(ls -1t *.tar.gz | head -n 1) && echo ${PKG_FILE_NAME}
-    - mv "${PKG_FILE_NAME}" monitOS-source-fast.tar.gz
-  artifacts:
-    name: "build-fast"
-    expire_in: 1 day
-    paths:
-       - monitOS-source-fast.tar.gz
-
-Build-CRAN:
-  stage: build-cran
-  only:
-    - main
-    - dev
+Build:
+  stage: build
   script:
     - R CMD build . --as-cran
     - PKG_FILE_NAME=$(ls -1t *.tar.gz | head -n 1) && echo ${PKG_FILE_NAME}
-    - mv "${PKG_FILE_NAME}" monitOS-source.tar.gz
+    - mv "${PKG_FILE_NAME}" "${PKG_FILE_NAME}".tar.gz
   artifacts:
-    name: "monitOS_source"
+    name: "${PKG_FILE_NAME}"
     expire_in: 1 month
     paths:
-      - monitOS-source.tar.gz
-
+      - monitOS-source-*.tar.gz
 
 Coverage:
     stage: coverage
-    allow_failure: true
-    when: on_success
     only:
         - master
         - dev
+    allow_failure: true
     script:
         - Rscript -e "if (!requireNamespace('covr', quietly = TRUE)) install.packages('covr');"
         - Rscript -e "if (!requireNamespace('DT', quietly = TRUE)) install.packages('DT');"
         - Rscript -e 'covr::gitlab(quiet = FALSE)'
 
+RHUB:
+    stage: rhub
+    only:
+    - master
+    - dev
+    allow_failure: true
+    script:
+    - Rscript -e "if (!requireNamespace('devtools', quietly = TRUE)) install.packages('devtools');"
+    - Rscript -e 'devtools::check_rhub()'
 
 Deploy:
   stage: deploy
