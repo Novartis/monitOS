@@ -1,7 +1,7 @@
 Package: monitOS
 Type: Package
 Title: Monitoring overall survival in pivotal trials in indolent cancers
-Version: 0.1.2
+Version: 0.1.3
 Authors@R: c(
     person("Thomas", "Fleming", email = "fleming@seattlebiostat.com", role ="ctb"),
     person("Lisa", "Hampson", email = "lisa.hampson@novartis.com", role ="aut"),
