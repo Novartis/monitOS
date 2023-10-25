@@ -2,7 +2,6 @@
 
 export(bounds)
 export(run_app)
-import(dplyr)
 import(shiny)
 import(shinydashboard)
 importFrom(glue,glue)

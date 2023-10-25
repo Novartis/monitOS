@@ -38,24 +38,8 @@ app_server <- function(input, output, session) {
     return(boundaries)
   })
 
+
   # Rendering
-  output$bounds <- renderTable(
-    react()$summary %>%
-      select(
-        -c(
-          Delta_null,
-          Delta_alt,
-          Positivity_Thres_Posterior,
-          Positivity_Thres_PredProb
-        )
-      ) %>%
-      rename(Deaths = Events) %>%
-      rename('OS HR threshold for positivity' = Positivity_Thres_HR) %>%
-      rename('One-sided false positive error rate' = OneSided_falsepos) %>%
-      rename('Level of 2-sided CI needed to rule out delta null' = TwoSided_CI_level) %>%
-      rename('Probability of meeting positivity threshold under delta alt' = Power_Alt) %>%
-      rename(
-        'Probability of meeting positivity threshold under marginal HR' = Power_Marg_Benefit
-      )
-  )
+  output$bounds <- renderTable(react()$summary[, -c(6,7)])
+
 }

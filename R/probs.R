@@ -12,7 +12,7 @@ meeting_probs <-
            lhr_pos,
            lhr_target = 1,
            rand_ratio = 1) {
-    events <- summary$Events
+    events <- summary$Deaths
     info <-
       rand_ratio * events / ((rand_ratio + 1) ^ 2) # Fisher's information for log-HR at each analysis
     se <-

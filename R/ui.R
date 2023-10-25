@@ -3,7 +3,6 @@
 #' @param request generic shiny var
 #' @importFrom glue glue
 #' @import shiny shinydashboard
-#' @import dplyr
 app_ui <- function(request){
 
   dashboardPage(

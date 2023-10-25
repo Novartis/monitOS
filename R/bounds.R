@@ -17,8 +17,8 @@
 #' and function will evaluate the probability we meet the positivity threshold at each analysis under this HR. This second OS benefit will usually be closer to 1 than hr_alt.
 #' @importFrom stats pnorm qnorm
 #' @return List that contains `lhr_null` (unacceptable OS log-HR), ' `lhr_alt` (plausible clinically relevant log-HR), ' `lhr_pos` (positivity thresholds for log-HR estimates),
-#' and `summary` dataframe, which contains `Positivity_Thres_HR` (OS HR thresholds for positivity), `OneSided_falsepos` (One sided false positive error_rate),
-#' `CI_level_monit_null` (Level of 2 sided CI needed to rule out hr_null), `Power_Alt` (Probability of meeting positivity threshold under hr_alt),
+#' and `summary` dataframe, which contains `OS HR threshold for positivity`, `One sided false positive error rate`,
+#' `Level of 2 sided CI needed to rule out hr_null`, `Probability of meeting positivity threshold under hr_alt`,
 #' `Positivity_Thres_Posterior` Pr(true OS HR >= minimum unacceptable OS HR | current data) and
 #' `Positivity_Thres_PredProb` Pr(OS HR estimate at Final Analysis <= Final Analysis positivity threshold | current data)
 #' @export
@@ -41,8 +41,6 @@
 #'               hr_alt = 0.8,   # delta_alt
 #'               rand_ratio = 1, # rand_ratio
 #'               hr_marg_benefit = 0.95)
-#'
-#'
 bounds <- function(events,
                    # OS events at each analysis
                    power_int = 0.9,
@@ -95,26 +93,27 @@ bounds <- function(events,
   post_pos <- calc_posterior(lhr_pos, lhr_null, events)
   pred_pos <- calc_predictive(lhr_pos, events)
 
-  summary <- data.frame(
-    Events = events,
-    Delta_null = rep(exp(lhr_null), times = nstage),
-    Delta_alt = rep(exp(lhr_alt), times = nstage),
-    Positivity_Thres_HR = round(exp(lhr_pos), 3),
-    # OS HR thresholds for positivity
-    OneSided_falsepos = round(falsepos_all, 3),
-    # One sided false positive error_rate at each analysis
-    TwoSided_CI_level = round(pmax(0, CI_level_monit_null), 0),
-    # Level of 2-sided CI needed to rule out δnull at given analysis (%)
-    Power_Alt = round(power_all, 3),
-    # Probability of meeting positivity threshold under plausible OS benefit
-    Positivity_Thres_Posterior = round(post_pos, 3),
-    # Pr(true OS HR >= detrimental OS HR | current data)
-    Positivity_Thres_PredProb = c(round(pred_pos * 100, 3), NA)
-  )
+  summary <- data.frame('Deaths' = events)
+
+  # OS HR thresholds for positivity
+  summary$'OS HR threshold for positivity' <- round(exp(lhr_pos), 3)
+
+  # One sided false positive error_rate at each analysis
+  summary$'One-sided false positive error rate' <- round(falsepos_all, 3)
+
+  # Level of 2-sided CI needed to rule out δnull at given analysis (%)
+  summary$'Level of 2-sided CI needed to rule out delta null' <- round(pmax(0, CI_level_monit_null), 0)
+
+  # Probability of meeting positivity threshold under plausible OS benefit
+  summary$'Probability of meeting positivity threshold under delta alt' <- round(power_all, 3)
+
+  # Pr(true OS HR >= detrimental OS HR | current data)
+  summary$'Positivity Threshold Posterior Probability' <- round(post_pos, 3)
+  summary$'Positivity Threshold Predictive Probability' <- c(round(pred_pos * 100, 3), NA)
 
   if (!is.null(hr_marg_benefit)) {
     # calculate the probability of meeting positivity thresholds under lhr_marg_benefit
-    summary$Power_Marg_Benefit <-
+    summary$'Probability of meeting positivity threshold under marginal HR' <-
       round(meeting_probs(
         summary = summary,
         lhr_pos = lhr_pos,

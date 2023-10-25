@@ -33,8 +33,8 @@ and function will evaluate the probability we meet the positivity threshold at e
 }
 \value{
 List that contains \code{lhr_null} (unacceptable OS log-HR), ' \code{lhr_alt} (plausible clinically relevant log-HR), ' \code{lhr_pos} (positivity thresholds for log-HR estimates),
-and \code{summary} dataframe, which contains \code{Positivity_Thres_HR} (OS HR thresholds for positivity), \code{OneSided_falsepos} (One sided false positive error_rate),
-\code{CI_level_monit_null} (Level of 2 sided CI needed to rule out hr_null), \code{Power_Alt} (Probability of meeting positivity threshold under hr_alt),
+and \code{summary} dataframe, which contains \verb{OS HR threshold for positivity}, \verb{One sided false positive error rate},
+\verb{Level of 2 sided CI needed to rule out hr_null}, \verb{Probability of meeting positivity threshold under hr_alt},
 \code{Positivity_Thres_Posterior} Pr(true OS HR >= minimum unacceptable OS HR | current data) and
 \code{Positivity_Thres_PredProb} Pr(OS HR estimate at Final Analysis <= Final Analysis positivity threshold | current data)
 }
@@ -64,6 +64,4 @@ res <- bounds(events=c(60, 89, 110, 131, 178),
               hr_alt = 0.8,   # delta_alt
               rand_ratio = 1, # rand_ratio
               hr_marg_benefit = 0.95)
-
-
 }
