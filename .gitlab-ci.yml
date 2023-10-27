@@ -52,7 +52,7 @@ Build:
   stage: build
   allow_failure: true
   script:
-    - R CMD build . --as-cran
+    - R CMD build .
     - PKG_FILE_NAME=$(ls -1t *.tar.gz | head -n 1) && echo ${PKG_FILE_NAME}
     - mv "${PKG_FILE_NAME}" monitOS-source.tar.gz
   artifacts:
@@ -80,6 +80,7 @@ RHUB:
     allow_failure: true
     script:
     - Rscript -e "if (!requireNamespace('devtools', quietly = TRUE)) install.packages('devtools');"
+    - Rscript -e "if (!requireNamespace('rhub', quietly = TRUE)) install.packages('rhub');"
     - Rscript -e 'devtools::check_rhub()'
 
 Deploy:
