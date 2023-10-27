@@ -13,6 +13,3 @@ No return value, runs shiny app
 Runs the shiny app to guide user choice adequate settings to calculate
 the positivity thresholds to monitor overall survival (OS)
 }
-\examples{
-run_app()
-}

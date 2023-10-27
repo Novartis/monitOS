@@ -5,8 +5,6 @@
 #' @import shiny
 #' @export
 #' @return No return value, runs shiny app
-#' @examples
-#' run_app()
 run_app <- function() {
   shinyApp(
     ui = app_ui,
