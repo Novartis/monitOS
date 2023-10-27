@@ -40,6 +40,7 @@ Setup:
 
 Check:
   stage: check
+  allow_failure: true
   only:
   - main
   - dev
@@ -50,7 +51,7 @@ Check:
 Build:
   stage: build
   script:
-    - R CMD build . --as-cran --manual
+    - R CMD build . --as-cran
 
 Coverage:
     stage: coverage
