@@ -1,11 +1,14 @@
-#' OS monitoring guidelines as proposed in manuscript "Monitoring Overall Survival in Pivotal Trials in Indolent Cancers
+#' @title Bounds
 #'
-#' @description Calculate thresholds for positivity that can be used at an analysis to judge whether emerging
+#' @description OS monitoring guidelines as proposed in manuscript "Monitoring Overall Survival in Pivotal Trials in Indolent Cancers".
+#' Calculate thresholds for positivity that can be used at an analysis to judge whether emerging
 #' evidence about the effect of treatment on OS is concerning or not. The threshold for positivity at any given analysis
 #' is the value below which the observed hazard ratio must be in order to provide sufficient reassurance that the effect
-#'  on OS does not reach the selected unacceptable level of detriment (the margin hr_null).
-#' Terminology follows the manuscript "Monitoring overall survival in pivotal trials in indolent cancers"
-#'
+#' on OS does not reach the selected unacceptable level of detriment (the margin hr_null).
+#' Terminology follows the manuscript "Monitoring Overall Survival in Pivotal Trials in Indolent Cancers", publication submitted
+#' @details Monitoring guidelines assume that the hazard ratio (HR) can adequately summarize the size of the benefits and harms of the experimental
+#' intervention vs control on overall survival (OS). Furthermore, guidelines assume that an OS HR < 1 is consistent with a beneficial effect of the
+#' intervention on OS (and smaller OS HRs <1 indicate increased efficacy).
 #' @param events Vector. Target number of deaths at each analysis
 #' @param power_int Scalar. Marginal power required at the Primary Analysis when true hazard ratio (HR) is hr_alt.
 #' @param falsepos Scalar. Marginal one-sided false positive error rate we are prepared to tolerate at the Final Analysis. Determines the  positivity threshold at Final Analysis
@@ -16,16 +19,22 @@
 #' @param hr_marg_benefit Scalar. We may be uncertain about what a plausible beneficial effect of treatment on OS is. User can enter a second plausible OS benefit (on HR scale)
 #' and function will evaluate the probability we meet the positivity threshold at each analysis under this HR. This second OS benefit will usually be closer to 1 than hr_alt.
 #' @importFrom stats pnorm qnorm
-#' @return List that contains `lhr_null` (unacceptable OS log-HR), ' `lhr_alt` (plausible clinically relevant log-HR), ' `lhr_pos` (positivity thresholds for log-HR estimates),
-#' and `summary` dataframe, which contains `OS HR threshold for positivity`, `One sided false positive error rate`,
-#' `Level of 2 sided CI needed to rule out hr_null`, `Probability of meeting positivity threshold under hr_alt`,
-#' `Positivity_Thres_Posterior` Pr(true OS HR >= minimum unacceptable OS HR | current data) and
-#' `Positivity_Thres_PredProb` Pr(OS HR estimate at Final Analysis <= Final Analysis positivity threshold | current data)
+#' @return List that contains:
+#' * `lhr_null`: Scalar, unacceptable OS log-HR,
+#' * `lhr_alt`: Scalar, plausible clinically relevant log-HR,
+#' * `lhr_pos`: Scalar, positivity thresholds for log-HR estimates,
+#' * `summary`: Dataframe, which contains:
+#'   * `OS HR threshold for positivity`,
+#'   * `One sided false positive error rate`,
+#'   * `Level of 2 sided CI needed to rule out hr_null`,
+#'   * `Probability of meeting positivity threshold under hr_alt`,
+#'   * `Positivity_Thres_Posterior`: Pr(true OS HR >= minimum unacceptable OS HR | current data),
+#'   * `Positivity_Thres_PredProb`: Pr(OS HR estimate at Final Analysis <= Final Analysis positivity threshold | current data)
 #' @export
 #' @examples
-#'  # Example 01: OS monitoring guideline retrospectively applied to Motivating Example 1
-#'  # with delta null = 1.3, delta alt = 0.80, gamma_FA = 0.025 and  beta_PA = 0.10.
-#'  bounds(events=c(60, 89, 110, 131, 178),
+#' # Example 01: OS monitoring guideline retrospectively applied to Motivating Example 1
+#' # with delta null = 1.3, delta alt = 0.80, gamma_FA = 0.025 and  beta_PA = 0.10.
+#' bounds(events=c(60, 89, 110, 131, 178),
 #'         power_int=0.9,  # beta_PA
 #'         falsepos=0.025, # gamma_FA
 #'         hr_null = 1.3,  # delta_null
@@ -34,13 +43,13 @@
 #'         hr_marg_benefit = NULL)
 #' # Example 02: OS monitoring guideline applied to Motivating Example 2
 #' # with delta null = 4/3, delta alt = 0.7, gamma_FA = 0.20 and beta_PA = 0.1.
-#' res <- bounds(events=c(60, 89, 110, 131, 178),
-#'               power_int=0.9,  # beta_PA
-#'               falsepos=0.025, # gamma_FA
-#'               hr_null = 1.3,  # delta_null
-#'               hr_alt = 0.8,   # delta_alt
-#'               rand_ratio = 1, # rand_ratio
-#'               hr_marg_benefit = 0.95)
+#' bounds(events=c(60, 89, 110, 131, 178),
+#'        power_int=0.9,  # beta_PA
+#'        falsepos=0.025, # gamma_FA
+#'        hr_null = 1.3,  # delta_null
+#'        hr_alt = 0.8,   # delta_alt
+#'        rand_ratio = 1, # rand_ratio
+#'        hr_marg_benefit = 0.95)
 bounds <- function(events,
                    # OS events at each analysis
                    power_int = 0.9,

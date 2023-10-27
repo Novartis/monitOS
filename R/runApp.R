@@ -1,14 +1,13 @@
-#' Run the Shiny Application
+#' @title monitOS app
 #'
-#' @param ... arguments to pass to golem_opts.
-#' @inheritParams shiny::shinyApp
-#'
+#' @description Runs the shiny app to guide user choice adequate settings to calculate
+#' the positivity thresholds to monitor overall survival (OS)
+#' @import shiny
 #' @export
-run_app <- function(onStart = NULL,
-                    options = list(),
-                    enableBookmarking = NULL,
-                    uiPattern = "/",
-                    ...) {
+#' @return No return value, runs shiny app
+#' @examples
+#' run_app()
+run_app <- function() {
   shinyApp(
     ui = app_ui,
     server = app_server,

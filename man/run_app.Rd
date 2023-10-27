@@ -2,39 +2,17 @@
 % Please edit documentation in R/runApp.R
 \name{run_app}
 \alias{run_app}
-\title{Run the Shiny Application}
+\title{monitOS app}
 \usage{
-run_app(
-  onStart = NULL,
-  options = list(),
-  enableBookmarking = NULL,
-  uiPattern = "/",
-  ...
-)
+run_app()
 }
-\arguments{
-\item{onStart}{A function that will be called before the app is actually run.
-This is only needed for \code{shinyAppObj}, since in the \code{shinyAppDir}
-case, a \code{global.R} file can be used for this purpose.}
-
-\item{options}{Named options that should be passed to the \code{runApp} call
-(these can be any of the following: "port", "launch.browser", "host", "quiet",
-"display.mode" and "test.mode"). You can also specify \code{width} and
-\code{height} parameters which provide a hint to the embedding environment
-about the ideal height/width for the app.}
-
-\item{enableBookmarking}{Can be one of \code{"url"}, \code{"server"}, or
-\code{"disable"}. The default value, \code{NULL}, will respect the setting from
-any previous calls to  \code{\link[shiny:enableBookmarking]{enableBookmarking()}}. See \code{\link[shiny:enableBookmarking]{enableBookmarking()}}
-for more information on bookmarking your app.}
-
-\item{uiPattern}{A regular expression that will be applied to each \code{GET}
-request to determine whether the \code{ui} should be used to handle the
-request. Note that the entire request path must match the regular
-expression in order for the match to be considered successful.}
-
-\item{...}{arguments to pass to golem_opts.}
+\value{
+No return value, runs shiny app
 }
 \description{
-Run the Shiny Application
+Runs the shiny app to guide user choice adequate settings to calculate
+the positivity thresholds to monitor overall survival (OS)
+}
+\examples{
+run_app()
 }
