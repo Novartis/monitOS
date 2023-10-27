@@ -1,4 +1,4 @@
-#' OS monitoring guidelines as proposed in manuscript "Monitoring overall survival in pivotal trials in indolent cancers"
+#' OS monitoring guidelines as proposed in manuscript "Monitoring Overall Survival in Pivotal Trials in Indolent Cancers
 #'
 #' @description Calculate thresholds for positivity that can be used at an analysis to judge whether emerging
 #' evidence about the effect of treatment on OS is concerning or not. The threshold for positivity at any given analysis

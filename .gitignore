@@ -46,3 +46,7 @@ vignettes/*.pdf
 # images
 *.jpeg
 inst/doc
+
+
+# Shiny
+**/rsconnect/

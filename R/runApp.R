@@ -2,6 +2,7 @@
 #'
 #' @param ... arguments to pass to golem_opts.
 #' @inheritParams shiny::shinyApp
+#'
 #' @export
 run_app <- function(onStart = NULL,
                     options = list(),

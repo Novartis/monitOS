@@ -20,12 +20,11 @@ calc_posterior <- function(lhr_con, lhr_null, events) {
   return(post)
 }
 
-#' Calculates the posterior predictive probability of 'ruling out' lhr_null at final OS analysis
+#' Title"
+#' @description Calculates the posterior predictive probability of 'ruling out' lhr_null at final OS analysis
 #' given current estimate of OS log-HR is lhr_cont_k, for k=1, ..., K-1
-#'
 #' @param lhr_con vector of length K (# number of looks at OS data) containing 'continuation' thresholds on log-HR scale
 #' @param events vector length K - number of OS events at each look at the data
-#'
 #' @return vector of length K-1: continuation thresholds at analyses k=1, ..., K-1 expressed on scale of
 #' posterior predictive probability of ruling out lhr_null at final OS analysis
 #' @importFrom stats pnorm

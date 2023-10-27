@@ -2,7 +2,7 @@
 % Please edit documentation in R/bounds.R
 \name{bounds}
 \alias{bounds}
-\title{OS monitoring guidelines as proposed in manuscript "Monitoring overall survival in pivotal trials in indolent cancers"}
+\title{OS monitoring guidelines as proposed in manuscript "Monitoring Overall Survival in Pivotal Trials in Indolent Cancers}
 \usage{
 bounds(
   events,
