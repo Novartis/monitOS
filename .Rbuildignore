@@ -9,3 +9,4 @@
 ^app\.R$
 ^R/rsconnect$
 ^rsconnect$
+^\.covrignore$

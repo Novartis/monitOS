@@ -81,7 +81,7 @@ RHUB:
     script:
     - Rscript -e "if (!requireNamespace('devtools', quietly = TRUE)) install.packages('devtools');"
     - Rscript -e "if (!requireNamespace('rhub', quietly = TRUE)) install.packages('rhub');"
-    - Rscript -e 'devtools::check_rhub(email = 'thibaud.coroller@novartis.com')'
+    - Rscript -e 'devtools::check_rhub()'
 
 Deploy:
   stage: deploy
