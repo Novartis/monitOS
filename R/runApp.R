@@ -9,9 +9,9 @@ run_app <- function() {
   shinyApp(
     ui = app_ui,
     server = app_server,
-    onStart = onStart,
-    options = options,
-    enableBookmarking = enableBookmarking,
-    uiPattern = uiPattern
+    # onStart = onStart,
+    # options = options,
+    # enableBookmarking = enableBookmarking,
+    # uiPattern = uiPattern
   )
 }

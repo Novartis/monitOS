@@ -6,3 +6,6 @@
 ^\.gitlab-ci\.yml$
 ^cran-comments\.md$
 ^CRAN-SUBMISSION$
+^app\.R$
+^R/rsconnect$
+^rsconnect$
