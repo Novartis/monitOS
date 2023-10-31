@@ -2,17 +2,17 @@
 % Please edit documentation in R/server.R
 \name{app_server}
 \alias{app_server}
-\title{Title}
+\title{Shiny app server}
 \usage{
 app_server(input, output, session)
 }
 \arguments{
-\item{input}{todo}
+\item{input}{generic shiny var}
 
-\item{output}{todo}
+\item{output}{generic shiny var}
 
-\item{session}{todo}
+\item{session}{generic shiny var}
 }
 \description{
-Title
+Shiny app server
 }

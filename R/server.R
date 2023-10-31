@@ -1,56 +1,45 @@
-#' Title
+#' Shiny app server
 #'
-#' @param input todo
-#' @param output todo
-#' @param session todo
-#'
-#' @export
-#' @import shiny
+#' @param input generic shiny var
+#' @param output generic shiny var
+#' @param session generic shiny var
 app_server <- function(input, output, session) {
+  wrap <-
+    function(X, decimal = 3)
+      return(paste(round(X, decimal), collapse = ","))
+  unwrap <-
+    function(X)
+      return(as.numeric(unlist(strsplit(
+        gsub(" ", "", X), ","
+      ))))
 
-    # User cases
-    observeEvent(input$study, {
-      if(input$study != "User"){
-        params <- use_cases(input$study)
-        updateTextInput(session, "events", value = wrap(params$events))
-        updateTextInput(session, "thres1", value = wrap(params$thres1))
-        updateTextInput(session, "hrs", value = wrap(params$hrs))
-      }
-    })
-    # Core reactive function - OCs plots & results
-    react <- reactive({
-
+  # Core reactive function - OCs plots & results
+  react <- reactive({
     # Parse as vectors
-    events <- unwrap(input$events)
-    hrs <- unwrap(input$hrs)
 
-    # BOUNDS
-    bounds_ = bounds(events, input$power_int, t1error = input$t1error,
-                     lhr_null = log(input$hr_null), lhr_alt = log(input$lhr_alt))
+    events <- c(unwrap(input$eventPA), input$eventOS)
+    updateTextInput(session, "events", value = wrap(events))
 
-    thres1 = exp(bounds_$lhr_con)
-    updateTextInput(session, "thres1", value = wrap(thres1))
+    # boundaries
+    boundaries = bounds(
+      events = events,
+      power_int = input$power_int,
+      falsepos = input$falsepos,
+      hr_null = input$hr_null,
+      hr_alt = input$hr_alt,
+      rand_ratio = input$rand_ratio,
+      hr_marg_benefit = input$hr_marg_benefit
+    )
 
-    # Run simulation
-    ocs <- ocs(thres1=thres1,
-               thres2=NULL,
-               events=events,
-               method=input$method,
-               hrr=seq(0.3, 1.5, by = 0.01),
-               hrs=hrs,
-               col=NULL)
 
-    return(list(bounds=bounds_,
-                ocs=ocs))
+    hr_pos = exp(boundaries$lhr_pos)
+    updateTextInput(session, "hr_pos", value = wrap(hr_pos))
 
+    return(boundaries)
   })
 
+
   # Rendering
-  output$prob_plot <- renderPlot(react()$ocs$plots$prob_plot)
-  output$flplot <- renderPlot(react()$ocs$plots$flplot)
-  output$bounds <- renderTable(react()$bounds$df)
-  output$ocs_trial <-  renderTable(react()$ocs$ocs_trial)
-  output$ocs_stage <- renderTable(react()$ocs$ocs_stage)
+  output$bounds <- renderTable(react()$summary[, -c(6,7)])
 
 }
-
