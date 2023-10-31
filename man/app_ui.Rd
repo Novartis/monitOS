@@ -2,13 +2,13 @@
 % Please edit documentation in R/ui.R
 \name{app_ui}
 \alias{app_ui}
-\title{Title}
+\title{Shiny app UI}
 \usage{
 app_ui(request)
 }
 \arguments{
-\item{request}{todo}
+\item{request}{generic shiny var}
 }
 \description{
-Title
+Shiny app UI
 }

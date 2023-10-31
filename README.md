@@ -1,35 +1,52 @@
-# monitOS: Monitoring OS in chronic or indolent cancers
 
-## Description
+# monitOS: Monitoring overall survival in pivotal trials in indolent cancers
 
-The aim of `monitOS` is to put together a number of tools which can facilitate safety monitoring based on OS for trials with low expected number of events. These tools could be used at either interim or final OS analysis depending on study needs. The following material are available as part of this project:
+<!-- badges: start -->
+[![CRAN status](https://www.r-pkg.org/badges/version/monitOS)](https://CRAN.R-project.org/package=monitOS)
+<!-- badges: end -->
 
--   `monitOS` R package, a collection of functions to implement the methods discussed in [link to paper draft]
--   `monitOS` R shiny app, where users can automatically explore the proposed methods, assess operational characteristics and download a report with findings for a user specified case study as wel as example case studies from internal and external trials.
--   Webpage accessible via [go/monitos](https://rsconnect-prod.dit.eu.novartis.net/monitOS/scripts/about.html). This document provides the methodological background of each provided tool with accompanied resources for further reading, worked examples showing `monitOS` implementation and useful links where `monitOS` development code is stored and available.
+These guidelines are meant to provide a pragmatic, yet rigorous, help to drug developers and decision makers,
+since they are shaped by three fundamental ingredients: the clinically determined margin of detriment on OS that
+is unacceptably high (δnull); the benefit on OS that is plausible given the mechanism of action of the novel intervention (δalt);
+and the quantity of information (i.e. events, expected number of survival events, at primary and final analysis) it is 
+feasible to accrue given the clinical and drug development setting. The proposed guidelines facilitate
+transparent discussions between stakeholders focusing on the risks of erroneous decisions and what might 
+be an acceptable trade-off between power and the false positive error rate. 
 
-**IMPORTANT !** `monitOS` intention is to function as a toolkit and provide description and implementation examples of methods for the monitoring of overall survival (OS) in situations where the number of events is limited. It is NOT the package's, and this website's, intention to offer recommendations or influence decision making around the design of individual clinical trials. Appropriate methods and design approaches should be adopted on a case-by-case basis, after careful investigation and assessment.
+Monitoring guidelines assume that the hazard ratio (HR) can adequately summarize the size of the benefits and harms of the experimental intervention vs control on overall survival (OS). Furthermore, guidelines assume that an OS HR < 1 is consistent with a beneficial effect of the intervention on OS (and smaller OS HRs <1 indicate increased efficacy). For more details about how OS monitoring guidelines are formulated, please refer to [arxiv paper](https://arxiv.org/).
 
-## Usage
+## Installation
 
-You can find worked examples demonstrating `monitOS` R package and shiny app usage in [go/monitos](https://rsconnect-prod.dit.eu.novartis.net/monitOS/scripts/about.html).
+You can install the development version of monitOS like so:
 
-## Contributing
+``` r
+# install.packages('monitOS')
+```
 
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+## Example
 
-Please make sure to update tests as appropriate.
+This is a basic example which shows you how to solve a common problem:
 
-## Project status
+``` r
+library(monitOS)
+# Example 01: OS monitoring guideline retrospectively applied to Motivating Example 1
+# with delta null = 1.3, delta alt = 0.80, gamma_FA = 0.025 and  beta_PA = 0.10.
+bounds(events=c(60, 89, 110, 131, 178),
+       power_int=0.9,  # βPA
+       falsepos=0.025,  # γFA
+       hr_null = 1.3,  # δnull
+       hr_alt = 0.8,   # δalt
+       rand_ratio = 1,
+       hr_marg_benefit = NULL)
+# Example 02: OS monitoring guideline applied to Motivating Example 2
+# with delta null = 4/3, delta alt = 0.7, gamma_FA = 0.20, beta_PA = 0.1, 
+# randomization ratio 2 and 0.95 HR marginal benefit
+bounds(events=c(60, 89, 110, 131, 178),
+       power_int=0.9,  # βPA
+       falsepos=0.025,  # γFA
+       hr_null = 1.3,  # δnull
+       hr_alt = 0.8,   # δalt
+       rand_ratio = 2, # rand_ratio
+       hr_marg_benefit = 0.95)  # Marginal HR benefit
+```
 
-This is a currently **active** project.
-
-**Note that R package and shiny app are currently under development.** An initial R package version can be found within this repo.
-
-Documentation is available [here](https://rsconnect-prod.dit.eu.novartis.net/monitOS/scripts/about.html).
-
-## Contributors
-
--   Thibaud Coroller (AMDS): [thibaud.coroller\@novartis.com](mailto:thibaud.coroller@novartis.com){.email}
--   Evanthia Koukouli (GDD CRM): [evanthia.koukouli\@novartis.com](mailto:evanthia.koukouli@novartis.com){.email}
--   Lisa Hampson (AMDS): [lisa.hampson\@novartis.com](mailto:lisa.hampson@novartis.com){.email}

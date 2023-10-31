@@ -1,8 +1,9 @@
 stages:          # List of stages for jobs, and their order of execution
   - setup
-  - build-fast
-  - build-cran
-  - test
+  - build
+  - check
+  - coverage
+  - rhub
   - deploy
 
 before_script: ## Check this part
@@ -37,32 +38,21 @@ Setup:
     - Rscript -e "if (!requireNamespace('renv', quietly = TRUE)) install.packages('renv');"
     - Rscript -e "renv::restore();"
 
-Test:
-  stage: test
+Check:
+  stage: check
+  allow_failure: true
+  only:
+  - main
+  - dev
   script:
     - Rscript -e "if (!requireNamespace('devtools', quietly = TRUE)) install.packages('devtools');"
     - Rscript -e 'devtools::check()'
 
-Build-Fast:
-  stage: build-fast
-  except:
-    - main
+Build:
+  stage: build
+  allow_failure: true
   script:
-    - R CMD build . --no-build-vignettes --no-manual
-    - PKG_FILE_NAME=$(ls -1t *.tar.gz | head -n 1) && echo ${PKG_FILE_NAME}
-    - mv "${PKG_FILE_NAME}" monitOS-source-fast.tar.gz
-  artifacts:
-    name: "build-fast"
-    expire_in: 1 day
-    paths:
-       - monitOS-source-fast.tar.gz
-
-Build-CRAN:
-  stage: build-cran
-  only:
-    - main
-  script:
-    - R CMD build . --as-cran
+    - R CMD build .
     - PKG_FILE_NAME=$(ls -1t *.tar.gz | head -n 1) && echo ${PKG_FILE_NAME}
     - mv "${PKG_FILE_NAME}" monitOS-source.tar.gz
   artifacts:
@@ -71,10 +61,32 @@ Build-CRAN:
     paths:
       - monitOS-source.tar.gz
 
+Coverage:
+    stage: coverage
+    only:
+        - master
+        - dev
+    allow_failure: true
+    script:
+        - Rscript -e "if (!requireNamespace('covr', quietly = TRUE)) install.packages('covr');"
+        - Rscript -e "if (!requireNamespace('DT', quietly = TRUE)) install.packages('DT');"
+        - Rscript -e 'covr::gitlab(quiet = FALSE)'
+
+RHUB:
+    stage: rhub
+    only:
+    - master
+    - dev
+    allow_failure: true
+    script:
+    - Rscript -e "if (!requireNamespace('devtools', quietly = TRUE)) install.packages('devtools');"
+    - Rscript -e "if (!requireNamespace('rhub', quietly = TRUE)) install.packages('rhub');"
+    - Rscript -e 'devtools::check_rhub()'
+
 Deploy:
   stage: deploy
   only:
     - main
   script:
-    - R -e 'source("deploy/deploy.R"); deploy_app_rsc()'
+    - R -e 'source("inst/shiny/deploy.R"); deploy_app_rsc()'
 

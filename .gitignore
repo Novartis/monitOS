@@ -21,6 +21,8 @@
 # RStudio files
 .Rproj.user/
 .Rproj.user
+paths
+public/
 
 # produced vignettes
 vignettes/*.html
@@ -39,8 +41,12 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
-<<<<<<< HEAD
-=======
-
 .Rproj.user
->>>>>>> main
+
+# images
+*.jpeg
+inst/doc
+
+
+# Shiny
+**/rsconnect/
