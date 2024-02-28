@@ -1,6 +1,5 @@
 stages:          # List of stages for jobs, and their order of execution
   - setup
-  - build
   - check
   - coverage
   - rhub
@@ -40,26 +39,10 @@ Setup:
 
 Check:
   stage: check
-  allow_failure: true
-  only:
-  - main
-  - dev
+  allow_failure: false
   script:
     - Rscript -e "if (!requireNamespace('devtools', quietly = TRUE)) install.packages('devtools');"
     - Rscript -e 'devtools::check()'
-
-Build:
-  stage: build
-  allow_failure: true
-  script:
-    - R CMD build .
-    - PKG_FILE_NAME=$(ls -1t *.tar.gz | head -n 1) && echo ${PKG_FILE_NAME}
-    - mv "${PKG_FILE_NAME}" monitOS-source.tar.gz
-  artifacts:
-    name: "monitOS_source"
-    expire_in: 1 month
-    paths:
-      - monitOS-source.tar.gz
 
 Coverage:
     stage: coverage
@@ -87,6 +70,7 @@ Deploy:
   stage: deploy
   only:
     - main
+  allow_failure: true
   script:
     - R -e 'source("inst/shiny/deploy.R"); deploy_app_rsc()'
 

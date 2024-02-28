@@ -35,11 +35,25 @@ app_server <- function(input, output, session) {
     hr_pos = exp(boundaries$lhr_pos)
     updateTextInput(session, "hr_pos", value = wrap(hr_pos))
 
-    return(boundaries)
+
+    # Update column names
+    # columns <- c(
+    #   'Deaths',
+    #   'OS HR threshold for positivity',
+    #   'One-sided false positive error rate',
+    #   'Level of 2-sided CI needed to rule out delta null',
+    #   'Probability of meeting positivity threshold under delta alt',
+    #   'Posterior probability the true OS HR exceeds delta null given the data',
+    #   'Predictive probability the OS HR estimate at Final Analysis does not exceed the positivity threshold',
+    #   'Probability of meeting positivity threshold under incremental test benefit'
+    # ) # Optional
+    # names(boundaries$summary) <- columns
+
+  return(boundaries)
+
   })
 
-
   # Rendering
-  output$bounds <- renderTable(react()$summary[, -c(6,7)])
+  output$bounds <- renderTable(react()$summary[,-c(6, 7)])
 
 }
