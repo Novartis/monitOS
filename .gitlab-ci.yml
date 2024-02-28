@@ -64,7 +64,7 @@ RHUB:
     script:
     - Rscript -e "if (!requireNamespace('devtools', quietly = TRUE)) install.packages('devtools');"
     - Rscript -e "if (!requireNamespace('rhub', quietly = TRUE)) install.packages('rhub');"
-    - Rscript -e "rhub::validate_email(email = "thibaud.coroller@novartis.com", token = "d10bbf730f814b55b96af77e9a5f4f87")"
+    - Rscript -e "rhub::validate_email(email = $RHUB_EMAIL, token = $RHUB_TOKEN)"
     - Rscript -e "devtools::check_rhub()"
 
 Deploy:
