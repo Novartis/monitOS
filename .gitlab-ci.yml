@@ -4,6 +4,7 @@ stages:          # List of stages for jobs, and their order of execution
   - coverage
   - rhub
   - deploy
+  - cran
 
 before_script: ## Check this part
 
@@ -74,4 +75,13 @@ Deploy:
   allow_failure: true
   script:
     - R -e 'source("inst/shiny/deploy.R"); deploy_app_rsc()'
+
+
+CRAN:
+  stage: cran
+  only:
+    - main
+  script:
+    - Rscript -e "if (!requireNamespace('devtools', quietly = TRUE)) install.packages('devtools');"
+    - Rscript -e "devtools::submit_cran()"
 
