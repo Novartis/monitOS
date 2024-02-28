@@ -441,11 +441,9 @@
     },
     "httpuv": {
       "Package": "httpuv",
-      "Version": "1.6.11",
-      "Source": "URL",
+      "Version": "1.6.13",
+      "Source": "Repository",
       "Repository": "RSPM",
-      "RemoteType": "url",
-      "RemoteUrl": "https://rspm.apps.dit-prdocp.novartis.net/exploratory/__linux__/centos7/latest/src/contrib/httpuv_1.6.11.tar.gz",
       "Requirements": [
         "R",
         "R6",
@@ -454,7 +452,7 @@
         "promises",
         "utils"
       ],
-      "Hash": "08d80650a1a0f5f704e492a4ad527b64"
+      "Hash": "d23d2879001f3d82ee9dc38a9ef53c4c"
     },
     "httr": {
       "Package": "httr",
@@ -1023,7 +1021,7 @@
     },
     "shiny": {
       "Package": "shiny",
-      "Version": "1.7.5.1",
+      "Version": "1.8.0",
       "Source": "Repository",
       "Repository": "RSPM",
       "Requirements": [
@@ -1053,7 +1051,7 @@
         "withr",
         "xtable"
       ],
-      "Hash": "5ec01cc255f2138fc2f0dc74d2b1a1a1"
+      "Hash": "3a1f41807d648a908e3c7f0334bf85e6"
     },
     "shinydashboard": {
       "Package": "shinydashboard",
