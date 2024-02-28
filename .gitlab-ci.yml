@@ -71,7 +71,7 @@ RHUB:
 Deploy:
   stage: deploy
   only:
-    - main
+    - shiny
   allow_failure: true
   script:
     - R -e 'source("inst/shiny/deploy.R"); deploy_app_rsc()'
