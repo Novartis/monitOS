@@ -3,8 +3,8 @@ stages:          # List of stages for jobs, and their order of execution
   - check
   - coverage
   - rhub
-  - deploy
-  - cran
+  - shiny
+  - deploy_pages
 
 before_script: ## Check this part
 
@@ -46,42 +46,52 @@ Check:
     - Rscript -e 'devtools::check()'
 
 Coverage:
-    stage: coverage
-    only:
-        - master
-        - dev
-    allow_failure: true
-    script:
-        - Rscript -e "if (!requireNamespace('covr', quietly = TRUE)) install.packages('covr');"
-        - Rscript -e "if (!requireNamespace('DT', quietly = TRUE)) install.packages('DT');"
-        - Rscript -e 'covr::gitlab(quiet = FALSE)'
-
-RHUB:
-    stage: rhub
-    only:
+  stage: coverage
+  only:
     - master
     - dev
-    allow_failure: true
-    script:
+  allow_failure: true
+  script:
+    - Rscript -e "if (!requireNamespace('covr', quietly = TRUE)) install.packages('covr');"
+    - Rscript -e "if (!requireNamespace('DT', quietly = TRUE)) install.packages('DT');"
+    - Rscript -e 'covr::gitlab(quiet = FALSE)'
+
+RHUB:
+  stage: rhub
+  only:
+    - master
+    - dev
+  script:
     - Rscript -e "if (!requireNamespace('devtools', quietly = TRUE)) install.packages('devtools');"
     - Rscript -e "if (!requireNamespace('rhub', quietly = TRUE)) install.packages('rhub');"
-    - Rscript -e "rhub::validate_email(email = $RHUB_EMAIL, token = $RHUB_TOKEN)"
+    - Rscript -e "rhub::validate_email(email = $RHUB_EMAIL, token = $RHUB_TOKEN);"
     - Rscript -e "devtools::check_rhub()"
 
-Deploy:
-  stage: deploy
+Shiny:
+  stage: shiny
   only:
     - shiny
   allow_failure: true
   script:
-    - R -e 'source("inst/shiny/deploy.R"); deploy_app_rsc()'
+    - Rscript -e 'source("inst/shiny/deploy.R"); deploy_app_rsc()'
 
-
-CRAN:
-  stage: cran
-  only:
-    - main
+pages:
+  stage: deploy_pages
   script:
+    - echo "We are on branch $CI_COMMIT_REF_NAME"
+    - mkdir -p public/$CI_COMMIT_REF_NAME
+    - Rscript -e "if (!requireNamespace('pkgdown', quietly = TRUE)) install.packages('pkgdown');"
     - Rscript -e "if (!requireNamespace('devtools', quietly = TRUE)) install.packages('devtools');"
-    - Rscript -e "devtools::submit_cran()"
-
+    - Rscript -e "devtools::build('.')"
+    - export LOAD_MONITOS_PKG=TRUE
+    - Rscript -e "pkgdown::build_site(override = list(destination = 'public/$CI_COMMIT_REF_NAME'))"
+  artifacts:
+    name: "$CI_COMMIT_REF_NAME"
+    paths:
+      - public
+    expire_in: never
+  only:
+    - dev
+    - master
+  except:
+    - schedules
