@@ -37,3 +37,8 @@ if (!identical(Sys.getenv("CI", unset = ""), "")) {
   )
 }
 
+if (Sys.getenv("LOAD_MONITOS_PKG") != "") {
+  message("Loading monitOS package locally")
+  devtools::load_all(".")
+}
+
