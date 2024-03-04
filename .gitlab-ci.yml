@@ -48,7 +48,7 @@ Check:
 Coverage:
   stage: coverage
   only:
-    - master
+    - main
     - dev
   allow_failure: true
   script:
@@ -59,7 +59,7 @@ Coverage:
 RHUB:
   stage: rhub
   only:
-    - master
+    - main
     - dev
   script:
     - Rscript -e "if (!requireNamespace('devtools', quietly = TRUE)) install.packages('devtools');"
@@ -92,6 +92,6 @@ pages:
     expire_in: never
   only:
     - dev
-    - master
+    - main
   except:
     - schedules
