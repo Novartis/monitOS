@@ -77,8 +77,6 @@ bounds <- function(events,
   se <-
     sqrt(1 / info) # asymptotic standard error for log-HR at each analysis
 
-  # THIBAUD: please incorporate a check that power_int and falsepos are entered - if they are not, return an error
-
   # Calculate the attained power when true HR = hr_alt at Final Analysis
   power_final <-
     pnorm((lhr_null - qnorm(1 - falsepos) * se[nstage] - lhr_alt) / se[nstage])
@@ -117,12 +115,12 @@ bounds <- function(events,
   summary$'Probability of meeting positivity threshold under delta alt' <- round(power_all, 3)
 
   # Pr(true OS HR >= detrimental OS HR | current data)
-  summary$'Positivity Threshold Posterior Probability' <- round(post_pos, 3)
-  summary$'Positivity Threshold Predictive Probability' <- c(round(pred_pos * 100, 3), NA)
+  summary$'Posterior probability the true OS HR exceeds delta null given the data' <- round(post_pos, 3)
+  summary$'Predictive probability the OS HR estimate at Final Analysis does not exceed the positivity threshold' <- c(round(pred_pos * 100, 3), NA)
 
   if (!is.null(hr_marg_benefit)) {
     # calculate the probability of meeting positivity thresholds under lhr_marg_benefit
-    summary$'Probability of meeting positivity threshold under marginal HR' <-
+    summary$'Probability of meeting positivity threshold under incremental benefit' <-
       round(meeting_probs(
         summary = summary,
         lhr_pos = lhr_pos,

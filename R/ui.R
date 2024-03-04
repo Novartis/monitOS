@@ -4,14 +4,15 @@
 #' @importFrom glue glue
 #' @import shiny shinydashboard
 app_ui <- function(request){
+  # require(shinydashboard)
 
-  dashboardPage(
+  shinydashboard::dashboardPage(
     skin = "blue",
-    dashboardHeader(title = "Monitoring OS"),
+    shinydashboard::dashboardHeader(title = "Monitoring OS"),
     # Creating tabs
-    dashboardSidebar(disable = TRUE),
+    shinydashboard::dashboardSidebar(disable = TRUE),
     # Define body
-    dashboardBody(
+    shinydashboard::dashboardBody(
      fluidRow(box(title='Context', with=12, collapsed = FALSE, collapsible = TRUE, width = 12,
                   'These guidelines are meant to provide a pragmatic, yet rigorous, help to drug developers and decision makers,
                   since they are shaped by three fundamental ingredients: the clinically determined margin of detriment on OS that
@@ -34,9 +35,9 @@ app_ui <- function(request){
                   column(4, 'Example: Based on results for competitor drugs with the same MoA, an OS HR = 0.9 is a plausible beneficial effect on OS and would be considered clinically relevant if statistical significance is achieved on the trial\'s primary endpoint.'))),
                 # Events
                 fluidRow(
-                  box(title='Expected deaths at OS Final Analysis', collapsed = TRUE, collapsible = TRUE, width = 12, status = "info",
-                  column(4, numericInput("eventOS", "How many deaths is it feasible to expect by the time of the final OS analysis?", value = 70, min=1)),
-                  column(4, 'Final OS analysis is scheduled at longest feasible duration of follow-up.'))),
+                  box(title='Expected deaths at Final Analysis', collapsed = TRUE, collapsible = TRUE, width = 12, status = "info",
+                  column(4, numericInput("eventOS", "How many deaths is it feasible to expect by the time of the final analysis?", value = 70, min=1)),
+                  column(4, 'Final analysis is scheduled at longest feasible duration of follow-up.'))),
                 fluidRow(
                   box(title='Expected deaths at trial Primary Analysis', collapsed = TRUE, collapsible = TRUE, width = 12, status = "info",
                   column(4, textInput("eventPA", "How many deaths are expected at the time of the trial\'s primary outcome analysis?", "28, 42")),
@@ -45,22 +46,38 @@ app_ui <- function(request){
                 # False positive
                 fluidRow(
                   box(title='False positive error rate', collapsed = TRUE, collapsible = TRUE, width = 12,
-                      column(4, sliderInput('falsepos', 'What (one-sided) false positive error rate can be tolerated at the OS Final Analysis?', min=0, max=0.3, value=0.1, step = 0.005)),
-                      column(4, 'OS "Positivity threshold" is the value below which the observed OS HR must be in order to provide sufficient reassurance that the effect on OS does not reach the unacceptable level of detriment (your answer to Q1).'))),
+                      column(4, sliderInput('falsepos', 'What (one-sided) false positive error rate can be tolerated at the Final Analysis?', min=0, max=0.3, value=0.1, step = 0.005)),
+                      column(4, 'A false positive error arises at the OS final analysis when true OS HR equals your answer to Q1 but no concerning evidence of unacceptable OS detriment is flagged. Should be set with consideration given to the false negative rate at the OS final analysis. OS "Positivity threshold" is the value below which the observed OS HR must be in order to provide sufficient reassurance that the effect on OS does not reach the unacceptable level of detriment (your answer to Q1).'))),
                 # Power interim
                 fluidRow(
                   box(title='Power required', collapsed = TRUE, collapsible = TRUE, width = 12,
                       column(4, sliderInput('power_int', 'What power is required to meet the OS "positivity threshold" at time of the trial\'s Primary Analysis when the true OS HR equals your answer to Q2?', min=0.7, max=1, value=0.9, step = 0.01)),
-                      column(4, 'A false positive error arises at the OS final analysis when true OS HR equals your answer to Q1 but no concerning evidence of unacceptable OS detriment is flagged. Should be set with consideration given to the false negative rate at the OS final analysis.'))),
-                fluidRow(box(title = 'Other Parameters', collapsible = TRUE, collapsed = TRUE, width = 12,
+                      column(4, 'Typical choices for power at Primary Analysis are 0.8 or 0.9, but should be set with consideration given to the power at the Final Analysis. Example: Setting power at Primary Analysis to be greater than or equal to the
+                             power achieved at the Final Analysis is sufficient to ensure positivity thresholds at successive analyses form a decreasing sequence.'),
+                      column(4, 'Example: A power of 0.95'))),
+                fluidRow(box(title = 'Optional Parameters', collapsible = TRUE, collapsed = TRUE, width = 12,
                          fluidRow(
-                           column(3, sliderInput('hr_marg_benefit', 'What is a plausible marginal OS HR consistent with OS benefit?',
+                           column(4, sliderInput('hr_marg_benefit', 'What is a plausible marginal OS HR consistent with OS benefit?',
                                                  min=0.7, max=1.1, value=0.95, step = 0.05)),
-                           column(3, 'This HR is use to calculate the probability of meeting positivity threshold under marginal HR'),
-                           column(3, sliderInput('rand_ratio', 'What is the randomization ratio?', min=0.5, max=3, value=1, step = 0.5)),
-                           column(3, 'If patients are randomized k:1 between experimental intervention and control, rand_ratio should be inputted as k. For Example: if patients are randomized 1:1 between experimental and control, k=1. If patients are randomized 2:1 between experimental and control, k=2.')))),
+                           column(4, 'This HR is use to calculate the probability of meeting positivity threshold under marginal HR. The app will evaluate
+                                  the probability of meeting the positivity threshold at each analysis under this incremental benefit.'),
+                           column(4, 'Example: Suppose our
+                                  answer to Q2 is OS HR = 0.9 but it is also plausible that OS HR = 0.95 and this would still represent an important clinical benefit
+                                  given other benefits of the novel intervention (such as milder side effect profile)')),
+                          fluidRow(
+                           column(4, sliderInput('rand_ratio', 'What is the randomization ratio?', min=1, max=3, value=1, step = 1)),
+                           column(4, 'If patients are randomized k:1 between experimental intervention and control, rand_ratio should be inputted as k.'),
+                           column(4, 'Example: if patients are randomized 1:1 between experimental and control, k=1. If patients are randomized 2:1 between experimental and control, k=2.')))
+                         ),
                 # Key results
-                fluidRow(box(title = 'Thresholds for positivity', status = "success", tableOutput("bounds"), width = 12))
+                fluidRow(box(title = 'Thresholds for positivity', status = "success", tableOutput("bounds"), width = 12)),
+                # Definitions
+                # fluidRow(box(title = 'Definitions', collapsed = FALSE, collapsible = TRUE, width = 12,
+                #           column(12, 'OS HR threshold for positivity: TBD', br(),
+                #                      'One-sided false positive error rate: TBD', br(),
+                #                      'Level of 2-sided CI needed to rule out delta null: TBD', br(),
+                #                      'Probability of meeting positivity threshold under delta alt: TBD', br(),
+                #                      'Probability of meeting positivity threshold under incremental benefit: TBD')))
         )
   )
 

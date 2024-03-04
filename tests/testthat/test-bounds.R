@@ -62,7 +62,7 @@ test_that("Table#3: Intermediate events", {
                # Probability of meeting positivity threshold under δalt
                c(0.9, 0.9, 0.905),
                tolerance = TOLERANCE)
-  expect_equal(as.numeric(res$summary$'Probability of meeting positivity threshold under marginal HR'),
+  expect_equal(as.numeric(res$summary$'Probability of meeting positivity threshold under incremental benefit'),
                # Probability of meeting positivity threshold under HR = 0.95
                c(0.682, 0.615 , 0.512),
                tolerance = TOLERANCE)
@@ -97,7 +97,7 @@ test_that("Table#4: Example 2", {
                # Probability of meeting positivity threshold under δalt
                c(0.750, 0.750, 0.681),
                tolerance = TOLERANCE)
-  expect_equal(as.numeric(res$summary$'Probability of meeting positivity threshold under marginal HR'),
+  expect_equal(as.numeric(res$summary$'Probability of meeting positivity threshold under incremental benefit'),
                # Probability of meeting positivity threshold under HR = 1
                c(0.705 , 0.694, 0.601),
                tolerance = TOLERANCE)
@@ -132,7 +132,7 @@ test_that("Table#5: Example 2", {
   expect_equal(as.numeric(res$summary$'Probability of meeting positivity threshold under delta alt'),  # Probability of meeting positivity threshold under δalt
                c(0.9, 0.85),
                tolerance = TOLERANCE)
-  expect_equal(as.numeric(res$summary$'Probability of meeting positivity threshold under marginal HR'),
+  expect_equal(as.numeric(res$summary$'Probability of meeting positivity threshold under incremental benefit'),
                # Probability of meeting positivity threshold under HR = 0.95
                c(0.714 , 0.558),
                tolerance = TOLERANCE)
