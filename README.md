@@ -1,4 +1,3 @@
-
 # monitOS: Monitoring overall survival in pivotal trials in indolent cancers
 
 <!-- badges: start -->
@@ -13,7 +12,7 @@ feasible to accrue given the clinical and drug development setting. The proposed
 transparent discussions between stakeholders focusing on the risks of erroneous decisions and what might 
 be an acceptable trade-off between power and the false positive error rate. 
 
-Monitoring guidelines assume that the hazard ratio (HR) can adequately summarize the size of the benefits and harms of the experimental intervention vs control on overall survival (OS). Furthermore, guidelines assume that an OS HR < 1 is consistent with a beneficial effect of the intervention on OS (and smaller OS HRs <1 indicate increased efficacy). For more details about how OS monitoring guidelines are formulated, please refer to [arxiv paper](https://arxiv.org/).
+Monitoring guidelines assume that the hazard ratio (HR) can adequately summarize the size of the benefits and harms of the experimental intervention vs control on overall survival (OS). Furthermore, guidelines assume that an OS HR < 1 is consistent with a beneficial effect of the intervention on OS (and smaller OS HRs <1 indicate increased efficacy). For more details about how OS monitoring guidelines are formulated, please refer to [arxiv paper](https://arxiv.org/abs/2310.20658).
 
 ## Installation
 
@@ -21,6 +20,15 @@ You can install the development version of monitOS like so:
 
 ``` r
 # install.packages('monitOS')
+```
+
+
+## Shiny app
+
+To run the integrated shiny app, simply call the wrapper function using:
+
+``` r
+monitOS::run_app()
 ```
 
 ## Example
