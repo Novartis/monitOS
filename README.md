@@ -22,6 +22,15 @@ You can install the development version of monitOS like so:
 # install.packages('monitOS')
 ```
 
+
+## Shiny app
+
+To run the integrated shiny app, simply call the wrapper function using:
+
+``` r
+monitOS::run_app()
+```
+
 ## Example
 
 This is a basic example which shows you how to solve a common problem:
