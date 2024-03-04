@@ -39,10 +39,14 @@ git checkout --orphan "release-$2" "$1"
 
 # pre-release cleanup
 cp "${DIR}/.Rprofile.release" .Rprofile
-rm -rf inst/release
 
-sed -i 's#"https://rspm.apps.dit-prdocp.novartis.net[^"]+"#"https://cloud.r-project.org"#' renv.lock
-sed -i "s/Version: .*/Version: $2/" DESCRIPTION
+sed -i .bak 's#"https://rspm.apps.dit-prdocp.novartis.net[^"]+"#"https://cloud.r-project.org"#' renv.lock
+sed -i .bak "s/Version: .*/Version: $2/" DESCRIPTION
+
+rm -f *.bak
+rm -rf inst/release
+rm -f cran-comments.md
+rm -f CRAN-SUBMISSION
 
 # commit to release branch
 git add --all .
