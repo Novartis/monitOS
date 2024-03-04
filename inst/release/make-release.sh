@@ -3,12 +3,7 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 set -e
 
-if [ -z "$1" ]; then
-    echo "Usage: $0 <version-commit> <version-number>"
-    exit 1
-fi
-
-if [ -z "$2" ]; then
+if [ -z "$1" ] || [ -z "$2" ]; then
     echo "Usage: $0 <version-commit> <version-number>"
     exit 1
 fi
@@ -18,6 +13,21 @@ if [ -z "$(git status --porcelain)" ]; then
   echo "No uncommitted changes, proceeding"
 else 
   echo "Uncommitted changes, please commit or stash before proceeding"
+  exit 1
+fi
+
+# ensure tags don't exist yet
+if git rev-parse -q --verify "refs/tags/$2" >/dev/null; then
+  echo "Tag $2 already exists"
+  exit 1
+fi
+if git rev-parse -q --verify "refs/tags/v$2-release" >/dev/null; then
+  echo "Tag $2 already exists"
+  exit 1
+fi
+# ensure release branch doesn't exist yet
+if git rev-parse -q --verify "refs/heads/release-$2" >/dev/null; then
+  echo "Branch release-$2 already exists"
   exit 1
 fi
 
