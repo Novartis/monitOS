@@ -28,7 +28,7 @@ git tag -a "$2" $(git show-ref -s $1 | head -1) -m "Main commit of released vers
 git checkout --orphan "release-$2" "$1"
 
 # pre-release cleanup
-cp ${DIR}/.Rprofile.release .Rprofile
+cp "${DIR}/.Rprofile.release" .Rprofile
 rm -rf inst/release
 
 sed -i renv.lock 's#"https://rspm.apps.dit-prdocp.novartis.net[^"]+"#"https://cloud.r-project.org"#'
