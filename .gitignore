@@ -50,3 +50,6 @@ inst/doc
 
 # Shiny
 **/rsconnect/
+
+# vim
+*.swp
