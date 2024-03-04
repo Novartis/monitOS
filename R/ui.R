@@ -4,14 +4,15 @@
 #' @importFrom glue glue
 #' @import shiny shinydashboard
 app_ui <- function(request){
+  # require(shinydashboard)
 
-  dashboardPage(
+  shinydashboard::dashboardPage(
     skin = "blue",
-    dashboardHeader(title = "Monitoring OS"),
+    shinydashboard::dashboardHeader(title = "Monitoring OS"),
     # Creating tabs
-    dashboardSidebar(disable = TRUE),
+    shinydashboard::dashboardSidebar(disable = TRUE),
     # Define body
-    dashboardBody(
+    shinydashboard::dashboardBody(
      fluidRow(box(title='Context', with=12, collapsed = FALSE, collapsible = TRUE, width = 12,
                   'These guidelines are meant to provide a pragmatic, yet rigorous, help to drug developers and decision makers,
                   since they are shaped by three fundamental ingredients: the clinically determined margin of detriment on OS that
