@@ -41,7 +41,7 @@ git checkout --orphan "release-$2" "$1"
 cp "${DIR}/.Rprofile.release" .Rprofile
 rm -rf inst/release
 
-sed -i renv.lock 's#"https://rspm.apps.dit-prdocp.novartis.net[^"]+"#"https://cloud.r-project.org"#'
+sed -i 's#"https://rspm.apps.dit-prdocp.novartis.net[^"]+"#"https://cloud.r-project.org"#' renv.lock
 sed -i "s/Version: .*/Version: $2/" DESCRIPTION
 
 # commit to release branch
