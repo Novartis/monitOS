@@ -1,7 +1,7 @@
 # How to create a release and push to GitHub
 
 1. Ensure all changes to be released are in `main`.
-2. Ensure `NEWS.md` is up to date.
+2. Ensure `NEWS.md` is up to date and that docs are built and up to date.
 3. Create release branch and tag. This creates a new branch off main with a particular version and
    cleans up some Novartis-specific content.
 
