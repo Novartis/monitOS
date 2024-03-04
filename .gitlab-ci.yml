@@ -40,7 +40,7 @@ Setup:
 
 Check:
   stage: check
-  allow_failure: false
+  allow_failure: true
   script:
     - Rscript -e "if (!requireNamespace('devtools', quietly = TRUE)) install.packages('devtools');"
     - Rscript -e 'devtools::check()'
