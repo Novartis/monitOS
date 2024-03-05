@@ -19,7 +19,9 @@
 /*.Rcheck/
 
 # RStudio files
-.Rproj.user/
+.Rproj.user
+paths
+public/
 
 # produced vignettes
 vignettes/*.html
@@ -38,12 +40,15 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+.Rproj.user
 
-# pkgdown site
-docs/
+# images
+*.jpeg
+inst/doc
 
-# translation temp files
-po/*~
 
-# RStudio Connect folder
-rsconnect/
+# Shiny
+**/rsconnect/
+
+# vim
+*.swp

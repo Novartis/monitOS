@@ -1,0 +1,16 @@
+^renv$
+^renv\.lock$
+^.*\.Rproj$
+^\.Rproj\.user$
+^LICENSE\.md$
+^\.gitlab-ci\.yml$
+^cran-comments\.md$
+^CRAN-SUBMISSION$
+^app\.R$
+^R/rsconnect$
+^rsconnect$
+^\.covrignore$
+^public$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
