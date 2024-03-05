@@ -1,0 +1,34 @@
+Package: monitOS
+Title: Monitoring Overall Survival in Pivotal Trials in Indolent Cancers
+Version: 0.1.4
+Authors@R: c(
+    person("Thomas", "Fleming", email = "fleming@seattlebiostat.com", role ="ctb"),
+    person("Lisa", "Hampson", email = "lisa.hampson@novartis.com", role ="aut"),
+    person("Bharani", "Bharani-Dharan", email = "bharani.bharani-dharan@novartis.com", role ="ctb"),
+    person("Frank", "Bretz", email = "frank.bretz@novartis.com", role = "ctb"),
+    person("Arunava", "Chakravartty", email = "arunava.chakravartty@novartis.com", role = "ctb"),
+    person("Thibaud", "Coroller", email = "thibaud.coroller@novartis.com", role = c("aut", "cre")),
+    person("Evanthia", "Koukouli", email = "evanthia.koukouli@novartis.com", role = "aut"),
+    person("Janet", "Wittes", email = "janet@wittesllc.com", role = "ctb"),
+    person("Nigel", "Yateman", email = "nigel.yateman@novartis.com", role = "ctb"),
+    person("Emmanuel", "Zuber", email = "emmanuel.zuber@novartis.com", role = "ctb"),
+    person("Novartis", "Pharma AG", role = "cph")
+          )
+Description: These guidelines are meant to provide a pragmatic, yet rigorous, help to drug developers and decision makers, since they are shaped by three fundamental ingredients: the clinically determined margin of detriment on OS that is unacceptably high (delta null); the benefit on OS that is plausible given the mechanism of action of the novel intervention (delta alt); and the quantity of information (i.e. survival events) it is feasible to accrue given the clinical and drug development setting. The proposed guidelines facilitate transparent discussions between stakeholders focusing on the risks of erroneous decisions and what might be an acceptable trade-off between power and the false positive error rate. 
+License: GPL (>= 3)
+Maintainer: Thibaud Coroller <thibaud.coroller@novartis.com>
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Imports:
+    stats,
+    glue,
+    shiny,
+    shinydashboard,
+Suggests:
+    testthat (>= 3.0.0),
+    covr,
+    knitr,
+    rmarkdown,
+    pkgdown
+VignetteBuilder: knitr
