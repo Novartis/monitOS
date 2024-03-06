@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="index.html">monitOS</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.4</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,28 +60,28 @@
 <div class="page-header"><h1 id="monitos-monitoring-overall-survival-in-pivotal-trials-in-indolent-cancers">monitOS: Monitoring overall survival in pivotal trials in indolent cancers<a class="anchor" aria-label="anchor" href="#monitos-monitoring-overall-survival-in-pivotal-trials-in-indolent-cancers"></a>
 </h1></div>
 <!-- badges: start -->
-<!-- badges: end --><p>These guidelines are meant to provide a pragmatic, yet rigorous, help to drug developers and decision makers, since they are shaped by three fundamental ingredients: the clinically determined margin of detriment on OS that is unacceptably high (δnull); the benefit on OS that is plausible given the mechanism of action of the novel intervention (δalt); and the quantity of information (i.e. events, expected number of survival events, at primary and final analysis) it is feasible to accrue given the clinical and drug development setting. The proposed guidelines facilitate transparent discussions between stakeholders focusing on the risks of erroneous decisions and what might be an acceptable trade-off between power and the false positive error rate.</p>
-<p>Monitoring guidelines assume that the hazard ratio (HR) can adequately summarize the size of the benefits and harms of the experimental intervention vs control on overall survival (OS). Furthermore, guidelines assume that an OS HR &lt; 1 is consistent with a beneficial effect of the intervention on OS (and smaller OS HRs &lt;1 indicate increased efficacy). For more details about how OS monitoring guidelines are formulated, please refer to <a href="https://arxiv.org/" class="external-link">arxiv paper</a>.</p>
+
+<p>These guidelines are meant to provide a pragmatic, yet rigorous, help to drug developers and decision makers, since they are shaped by three fundamental ingredients: the clinically determined margin of detriment on OS that is unacceptably high (δnull); the benefit on OS that is plausible given the mechanism of action of the novel intervention (δalt); and the quantity of information (i.e. events, expected number of survival events, at primary and final analysis) it is feasible to accrue given the clinical and drug development setting. The proposed guidelines facilitate transparent discussions between stakeholders focusing on the risks of erroneous decisions and what might be an acceptable trade-off between power and the false positive error rate.</p>
+<p>Monitoring guidelines assume that the hazard ratio (HR) can adequately summarize the size of the benefits and harms of the experimental intervention vs control on overall survival (OS). Furthermore, guidelines assume that an OS HR &lt; 1 is consistent with a beneficial effect of the intervention on OS (and smaller OS HRs &lt;1 indicate increased efficacy). For more details about how OS monitoring guidelines are formulated, please refer to <a href="https://arxiv.org/abs/2310.20658" class="external-link">arxiv paper</a>.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <p>You can install the development version of monitOS like so:</p>
-<div class="sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'monitOS'</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># install.packages('monitOS')</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="shiny-app">Shiny app<a class="anchor" aria-label="anchor" href="#shiny-app"></a>
 </h2>
-<p>To run the integrated Shiny app (recommended), simply use the following line:</p>
-<div class="sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">monitOS</span><span class="op">)</span></span>
-<span><span class="fu">monitOS</span><span class="fu">::</span><span class="fu"><a href="reference/run_app.html">run_app</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>To run the integrated shiny app, simply call the wrapper function using:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">monitOS</span><span class="fu">::</span><span class="fu"><a href="reference/run_app.html">run_app</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
 <p>This is a basic example which shows you how to solve a common problem:</p>
-<div class="sourceCode"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">monitOS</span><span class="op">)</span></span>
 <span><span class="co"># Example 01: OS monitoring guideline retrospectively applied to Motivating Example 1</span></span>
 <span><span class="co"># with delta null = 1.3, delta alt = 0.80, gamma_FA = 0.025 and  beta_PA = 0.10.</span></span>
