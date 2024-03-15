@@ -1,6 +1,7 @@
 Package: monitOS
 Title: Monitoring Overall Survival in Pivotal Trials in Indolent Cancers
-Version: 0.1.4
+URL: https://opensource.nibr.com/monitOS/
+Version: 0.1.5
 Authors@R: c(
     person("Thomas", "Fleming", email = "fleming@seattlebiostat.com", role ="ctb"),
     person("Lisa", "Hampson", email = "lisa.hampson@novartis.com", role ="aut"),

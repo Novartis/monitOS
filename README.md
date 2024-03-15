@@ -19,7 +19,7 @@ Monitoring guidelines assume that the hazard ratio (HR) can adequately summarize
 You can install the development version of monitOS like so:
 
 ``` r
-# install.packages('monitOS')
+install.packages('monitOS')
 ```
 
 

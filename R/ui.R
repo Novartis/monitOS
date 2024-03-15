@@ -3,6 +3,7 @@
 #' @param request generic shiny var
 #' @importFrom glue glue
 #' @import shiny shinydashboard
+# nocov start
 app_ui <- function(request){
   # require(shinydashboard)
 
@@ -71,15 +72,9 @@ app_ui <- function(request){
                          ),
                 # Key results
                 fluidRow(box(title = 'Thresholds for positivity', status = "success", tableOutput("bounds"), width = 12)),
-                # Definitions
-                # fluidRow(box(title = 'Definitions', collapsed = FALSE, collapsible = TRUE, width = 12,
-                #           column(12, 'OS HR threshold for positivity: TBD', br(),
-                #                      'One-sided false positive error rate: TBD', br(),
-                #                      'Level of 2-sided CI needed to rule out delta null: TBD', br(),
-                #                      'Probability of meeting positivity threshold under delta alt: TBD', br(),
-                #                      'Probability of meeting positivity threshold under incremental benefit: TBD')))
         )
   )
 
 }
+# nocov end
 

@@ -3,6 +3,7 @@
 #' @param input generic shiny var
 #' @param output generic shiny var
 #' @param session generic shiny var
+# nocov start
 app_server <- function(input, output, session) {
   wrap <-
     function(X, decimal = 3)
@@ -57,3 +58,4 @@ app_server <- function(input, output, session) {
   output$bounds <- renderTable(react()$summary[,-c(6, 7)])
 
 }
+# nocov end
