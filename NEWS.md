@@ -1,11 +1,19 @@
 # monitOS 0.1.5
 
--   Added coverage ignore for `Shiny` app
--   Added package website to `DESCRIPTION`
--   Edited text in `README`
--   Fixed bug deploying `Shiny` app (import error)
+## Improvements
+
+-   Improved package coverage report (excluding shiny app files)
+-   Improved website interface
+-   Updated `DESCRIPTION`, added website URL
+-   Improved `README`
+
+## Bug Fixes
+
+-   Fixed bug deploying `Shiny` app (relative import error)
 
 # monitOS 0.1.4 \| `2024-03-05`
+
+## Improvements
 
 -   Added a `NEWS.md` file to track changes to the package.
 -   Added `Shiny` section in `README.md` file.
