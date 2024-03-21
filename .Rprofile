@@ -5,11 +5,11 @@ if (!identical(Sys.getenv("CI", unset = ""), "")) {
   message("Running on CI/CD")
   Sys.setenv(
     "RENV_PATHS_CACHE" = "~/.renv/cache",
-    "RENV_PATHS_LIBRARY_ROOT" =  "~/.renv/library"
+    "RENV_PATHS_LIBRARY_ROOT" = "~/.renv/library"
   )
 
   # Configure better repo choice with binaries for CI/CD
-  repos <-  c(
+  repos <- c(
     CRAN = "https://rspm.apps.dit-prdocp.novartis.net/validated-R-4.1.0/latest",
     RSPM = "https://rspm.apps.dit-prdocp.novartis.net/exploratory/__linux__/focal/latest"
   )
@@ -25,7 +25,7 @@ if (!identical(Sys.getenv("CI", unset = ""), "")) {
     # Local
     Sys.setenv(
       "RENV_PATHS_CACHE" = "~/.renv/cache",
-      "RENV_PATHS_LIBRARY_ROOT" =  "~/.renv/library"
+      "RENV_PATHS_LIBRARY_ROOT" = "~/.renv/library"
     )
   }
 
@@ -41,4 +41,3 @@ if (Sys.getenv("LOAD_MONITOS_PKG") != "") {
   message("Loading monitOS package locally")
   devtools::load_all(".")
 }
-
