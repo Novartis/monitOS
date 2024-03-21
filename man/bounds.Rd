@@ -64,20 +64,24 @@ intervention on OS (and smaller OS HRs <1 indicate increased efficacy).
 \examples{
 # Example 01: OS monitoring guideline retrospectively applied to Motivating Example 1
 # with delta null = 1.3, delta alt = 0.80, gamma_FA = 0.025 and  beta_PA = 0.10.
-bounds(events=c(60, 89, 110, 131, 178),
-        power_int=0.9,  # beta_PA
-        falsepos=0.025, # gamma_FA
-        hr_null = 1.3,  # delta_null
-        hr_alt = 0.8,   # delta_alt
-        rand_ratio = 1, # rand_ratio
-        hr_marg_benefit = NULL)
+bounds(
+  events = c(60, 89, 110, 131, 178),
+  power_int = 0.9, # beta_PA
+  falsepos = 0.025, # gamma_FA
+  hr_null = 1.3, # delta_null
+  hr_alt = 0.8, # delta_alt
+  rand_ratio = 1, # rand_ratio
+  hr_marg_benefit = NULL
+)
 # Example 02: OS monitoring guideline applied to Motivating Example 2
 # with delta null = 4/3, delta alt = 0.7, gamma_FA = 0.20 and beta_PA = 0.1.
-bounds(events=c(60, 89, 110, 131, 178),
-       power_int=0.9,  # beta_PA
-       falsepos=0.025, # gamma_FA
-       hr_null = 1.3,  # delta_null
-       hr_alt = 0.8,   # delta_alt
-       rand_ratio = 1, # rand_ratio
-       hr_marg_benefit = 0.95)
+bounds(
+  events = c(60, 89, 110, 131, 178),
+  power_int = 0.9, # beta_PA
+  falsepos = 0.025, # gamma_FA
+  hr_null = 1.3, # delta_null
+  hr_alt = 0.8, # delta_alt
+  rand_ratio = 1, # rand_ratio
+  hr_marg_benefit = 0.95
+)
 }

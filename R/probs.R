@@ -14,16 +14,17 @@ meeting_probs <-
            rand_ratio = 1) {
     events <- summary$Deaths
     info <-
-      rand_ratio * events / ((rand_ratio + 1) ^ 2) # Fisher's information for log-HR at each analysis
+      rand_ratio * events / ((rand_ratio + 1)^2) # Fisher's information for log-HR at each analysis
     se <-
       sqrt(1 / info) # asymptotic standard error for log-HR at each analysis
     prob <- list()
     for (i in 1:length(events)) {
       prob[i] <-
         pnorm(lhr_pos[i],
-              mean = lhr_target,
-              sd = se[i],
-              lower.tail = TRUE)
+          mean = lhr_target,
+          sd = se[i],
+          lower.tail = TRUE
+        )
     }
     return(as.numeric(prob))
   }

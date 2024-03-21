@@ -3,15 +3,18 @@
 #' @param input generic shiny var
 #' @param output generic shiny var
 #' @param session generic shiny var
+# nocov start
 app_server <- function(input, output, session) {
   wrap <-
-    function(X, decimal = 3)
+    function(X, decimal = 3) {
       return(paste(round(X, decimal), collapse = ","))
+    }
   unwrap <-
-    function(X)
+    function(X) {
       return(as.numeric(unlist(strsplit(
         gsub(" ", "", X), ","
       ))))
+    }
 
   # Core reactive function - OCs plots & results
   react <- reactive({
@@ -21,7 +24,7 @@ app_server <- function(input, output, session) {
     updateTextInput(session, "events", value = wrap(events))
 
     # boundaries
-    boundaries = bounds(
+    boundaries <- bounds(
       events = events,
       power_int = input$power_int,
       falsepos = input$falsepos,
@@ -32,7 +35,7 @@ app_server <- function(input, output, session) {
     )
 
 
-    hr_pos = exp(boundaries$lhr_pos)
+    hr_pos <- exp(boundaries$lhr_pos)
     updateTextInput(session, "hr_pos", value = wrap(hr_pos))
 
 
@@ -49,11 +52,10 @@ app_server <- function(input, output, session) {
     # ) # Optional
     # names(boundaries$summary) <- columns
 
-  return(boundaries)
-
+    return(boundaries)
   })
 
   # Rendering
-  output$bounds <- renderTable(react()$summary[,-c(6, 7)])
-
+  output$bounds <- renderTable(react()$summary[, -c(6, 7)])
 }
+# nocov end
