@@ -42,7 +42,7 @@ calc_predictive <- function(lhr_con, events) {
     pred_pos[i] <- pnorm(
       lhr_con[nstage] * sqrt(info[nstage]),
       mean = lhr_con[i] * sqrt(info[i]) * sqrt(info[nstage] /
-                                                 info[i]),
+        info[i]),
       sd = sqrt((info[nstage] - info[i]) / info[i])
     )
   }

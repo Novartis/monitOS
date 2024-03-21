@@ -4,11 +4,11 @@
     "Repositories": [
       {
         "Name": "CRAN",
-        "URL": "https://cloud.r-project.org"
+        "URL": "https://rspm.apps.dit-prdocp.novartis.net/validated-R-4.1.0/latest"
       },
       {
         "Name": "RSPM",
-        "URL": "https://cloud.r-project.org"
+        "URL": "https://rspm.apps.dit-prdocp.novartis.net/exploratory/latest"
       }
     ]
   },

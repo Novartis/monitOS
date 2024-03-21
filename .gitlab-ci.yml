@@ -1,0 +1,97 @@
+stages:          # List of stages for jobs, and their order of execution
+  - setup
+  - check
+  - coverage
+  - rhub
+  - shiny
+  - deploy_pages
+
+before_script: ## Check this part
+
+  - export http_proxy=http://proxy.eu.novartis.net:2010/
+  - export https_proxy=http://proxy.eu.novartis.net:2010/
+  - export NOT_CRAN=true
+  - export CCACHE_DIR=/tmp
+  - export PATH=/usr/lib/ccache:$PATH
+
+
+# <DON'T REMOVE!>
+variables:
+  RENV_PATHS_CACHE: "~/.renv/cache"
+  RENV_PATHS_LIBRARY_ROOT: "~/.renv/library"
+
+# <DON'T REMOVE!>
+cache:
+  key: ${CI_JOB_NAME}
+  paths:
+    - ${RENV_PATHS_CACHE}
+    - ${RENV_PATHS_LIBRARY}
+
+Setup:
+  stage: setup
+  script:
+    - >
+      if [ ! -d "$RENV_PATHS_CACHE" ]; then
+        mkdir -p $RENV_PATHS_CACHE;
+        echo "Installing RENV_PATHS_CACHE in ${RENV_PATHS_CACHE}...";
+      fi
+    - Rscript -e "if (!requireNamespace('renv', quietly = TRUE)) install.packages('renv');"
+    - Rscript -e "renv::restore();"
+
+Check:
+  stage: check
+  allow_failure: true
+  script:
+    - Rscript -e "if (!requireNamespace('devtools', quietly = TRUE)) install.packages('devtools');"
+    - Rscript -e 'devtools::check()'
+
+Coverage:
+  stage: coverage
+  only:
+    - main
+    - dev
+  allow_failure: true
+  script:
+    - Rscript -e "if (!requireNamespace('covr', quietly = TRUE)) install.packages('covr');"
+    - Rscript -e "if (!requireNamespace('DT', quietly = TRUE)) install.packages('DT');"
+    - Rscript -e 'covr::gitlab(quiet = FALSE)'
+
+RHUB:
+  stage: rhub
+  only:
+    - main
+    - dev
+  script:
+    - Rscript -e "if (!requireNamespace('devtools', quietly = TRUE)) install.packages('devtools');"
+    - Rscript -e "if (!requireNamespace('rhub', quietly = TRUE)) install.packages('rhub');"
+    - Rscript -e "rhub::validate_email(email = $RHUB_EMAIL, token = $RHUB_TOKEN);"
+    - Rscript -e "devtools::check_rhub()"
+
+Shiny:
+  stage: shiny
+  only:
+    - shiny
+  allow_failure: true
+  script:
+    - Rscript -e 'source("inst/shiny/deploy.R"); deploy_app_rsc()'
+
+pages:
+  stage: deploy_pages
+  script:
+    - echo "We are on branch $CI_COMMIT_REF_NAME"
+    - mkdir -p public/$CI_COMMIT_REF_NAME
+    - Rscript -e "if (!requireNamespace('pkgdown', quietly = TRUE)) install.packages('pkgdown');"
+    - Rscript -e "if (!requireNamespace('devtools', quietly = TRUE)) install.packages('devtools');"
+    - Rscript -e "devtools::build('.')"
+    - export LOAD_MONITOS_PKG=TRUE
+    - Rscript -e "pkgdown::build_site(override = list(destination = 'public/$CI_COMMIT_REF_NAME'))"
+  artifacts:
+    name: "$CI_COMMIT_REF_NAME"
+    paths:
+      - public
+    expire_in: never
+  only:
+    - dev
+    - main
+  except:
+    - schedules

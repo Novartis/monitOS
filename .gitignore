@@ -19,6 +19,7 @@
 /*.Rcheck/
 
 # RStudio files
+.Rproj.user/
 .Rproj.user
 paths
 public/
@@ -52,3 +53,4 @@ inst/doc
 
 # vim
 *.swp
+docs

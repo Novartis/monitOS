@@ -5,6 +5,7 @@
 #' @import shiny
 #' @export
 #' @return No return value, runs shiny app
+# nocov start
 run_app <- function() {
   shinyApp(
     ui = app_ui,
@@ -15,4 +16,4 @@ run_app <- function() {
     # uiPattern = uiPattern
   )
 }
-
+# nocov end
