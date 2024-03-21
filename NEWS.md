@@ -1,9 +1,9 @@
 # monitOS 0.1.5
 
 -   Improved package coverage report (excluding shiny app files)
--   Improved website interface
 -   Improved `DESCRIPTION`, added website URL, screenshot Shiny app
 -   Improved `README`
+-   Improved code style using `styler`
 -   Fixed bug deploying `Shiny` app (relative import error)
 
 # monitOS 0.1.4
