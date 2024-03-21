@@ -1,9 +1,3 @@
----
-editor_options: 
-  markdown: 
-    wrap: 72
----
-
 # monitOS: Monitoring overall survival in pivotal trials in indolent cancers
 
 <!-- badges: start -->
