@@ -1,0 +1,10 @@
+pandoc: 3.1.2
+pkgdown: 2.0.7
+pkgdown_sha: ~
+articles:
+  monitOS: monitOS.html
+last_built: 2024-03-21T14:21Z
+urls:
+  reference: https://opensource.nibr.com/monitOS/reference
+  article: https://opensource.nibr.com/monitOS/articles
+
