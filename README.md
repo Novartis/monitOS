@@ -26,10 +26,6 @@ The recommended way to use `monitOS` is to run its integrated shiny app. It can 
 monitOS::run_app()
 ```
 
-The shiny app, as seen below, is designed to guide users through their trial designs.
-
-![](docs/shiny.png)
-
 ## Examples
 
 These are basic examples on using `monitOS`:
