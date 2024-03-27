@@ -1,38 +1,14 @@
----
-editor_options: 
-  markdown: 
-    wrap: 72
----
-
 # monitOS: Monitoring overall survival in pivotal trials in indolent cancers
 
 <!-- badges: start -->
 
-[![CRAN
-status](https://www.r-pkg.org/badges/version/monitOS)](https://CRAN.R-project.org/package=monitOS)
+[![CRAN status](https://www.r-pkg.org/badges/version/monitOS)](https://CRAN.R-project.org/package=monitOS)
 
 <!-- badges: end -->
 
-These guidelines are meant to provide a pragmatic, yet rigorous, help to
-drug developers and decision makers, since they are shaped by three
-fundamental ingredients: the clinically determined margin of detriment
-on OS that is unacceptably high (`δnull`); the benefit on OS that is
-plausible given the mechanism of action of the novel intervention
-(`δalt`); and the quantity of information (i.e. events, expected number
-of survival events, at primary and final analysis) it is feasible to
-accrue given the clinical and drug development setting. The proposed
-guidelines facilitate transparent discussions between stakeholders
-focusing on the risks of erroneous decisions and what might be an
-acceptable trade-off between power and the false positive error rate.
+These guidelines are meant to provide a pragmatic, yet rigorous, help to drug developers and decision makers, since they are shaped by three fundamental ingredients: the clinically determined margin of detriment on OS that is unacceptably high (`δnull`); the benefit on OS that is plausible given the mechanism of action of the novel intervention (`δalt`); and the quantity of information (i.e. events, expected number of survival events, at primary and final analysis) it is feasible to accrue given the clinical and drug development setting. The proposed guidelines facilitate transparent discussions between stakeholders focusing on the risks of erroneous decisions and what might be an acceptable trade-off between power and the false positive error rate.
 
-Monitoring guidelines assume that the hazard ratio (HR) can adequately
-summarize the size of the benefits and harms of the experimental
-intervention vs control on overall survival (OS). Furthermore,
-guidelines assume that an OS HR \< 1 is consistent with a beneficial
-effect of the intervention on OS (and smaller OS HRs \<1 indicate
-increased efficacy). For more details about how OS monitoring guidelines
-are formulated, please refer to [arxiv
-paper](https://arxiv.org/abs/2310.20658).
+Monitoring guidelines assume that the hazard ratio (HR) can adequately summarize the size of the benefits and harms of the experimental intervention vs control on overall survival (OS). Furthermore, guidelines assume that an OS HR \< 1 is consistent with a beneficial effect of the intervention on OS (and smaller OS HRs \<1 indicate increased efficacy). For more details about how OS monitoring guidelines are formulated, please refer to our [paper](https://arxiv.org/abs/2310.20658).
 
 ## Installation
 
@@ -44,17 +20,15 @@ install.packages('monitOS')
 
 ## Shiny app
 
-The recommended way to use `monitOS` is to run its integrated shiny app.
-It can done simply call the wrapper function using:
+The recommended way to use `monitOS` is to run its integrated shiny app. It can done simply call the wrapper function using:
 
 ``` r
 monitOS::run_app()
 ```
 
-The shiny app, as seen below, is designed to guide users through their
-trial designs.
+The shiny app, as seen below, is designed to guide users through their trial designs.
 
-![](docs/shiny.png)
+![](man/figures/shiny.png)
 
 ## Examples
 
