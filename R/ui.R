@@ -5,11 +5,10 @@
 #' @import shiny shinydashboard
 # nocov start
 app_ui <- function(request) {
-  # require(shinydashboard)
-
+  require(shinydashboard)
   shinydashboard::dashboardPage(
     skin = "blue",
-    shinydashboard::dashboardHeader(title = "Monitoring OS"),
+    dashboardHeader(title = "Monitoring OS"),
     # Creating tabs
     shinydashboard::dashboardSidebar(disable = TRUE),
     # Define body

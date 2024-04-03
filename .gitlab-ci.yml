@@ -3,7 +3,6 @@ stages:          # List of stages for jobs, and their order of execution
   - check
   - coverage
   - rhub
-  - shiny
   - deploy_pages
 
 before_script: ## Check this part
@@ -67,13 +66,13 @@ RHUB:
     - Rscript -e "rhub::validate_email(email = $RHUB_EMAIL, token = $RHUB_TOKEN);"
     - Rscript -e "devtools::check_rhub()"
 
-Shiny:
-  stage: shiny
-  only:
-    - shiny
-  allow_failure: true
-  script:
-    - Rscript -e 'source("inst/shiny/deploy.R"); deploy_app_rsc()'
+# Shiny:
+#   stage: shiny
+#   only:
+#     - dev
+#   allow_failure: true
+#   script:
+#     - Rscript -e 'source("inst/shiny/deploy.R"); deploy_app_rsc()'
 
 pages:
   stage: deploy_pages
