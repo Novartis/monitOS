@@ -13,4 +13,5 @@
 ^public$
 ^_pkgdown\.yml$
 ^docs$
+^inst$
 ^pkgdown$
