@@ -20,7 +20,7 @@ Terminology follows the manuscript "Monitoring Overall Survival in Pivotal Trial
     
     <a class="navbar-brand me-2" href="../index.html">monitOS</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -132,13 +132,15 @@ intervention on OS (and smaller OS HRs &lt;1 indicate increased efficacy).</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Example 01: OS monitoring guideline retrospectively applied to Motivating Example 1</span></span></span>
 <span class="r-in"><span><span class="co"># with delta null = 1.3, delta alt = 0.80, gamma_FA = 0.025 and  beta_PA = 0.10.</span></span></span>
-<span class="r-in"><span><span class="fu">bounds</span><span class="op">(</span>events<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">89</span>, <span class="fl">110</span>, <span class="fl">131</span>, <span class="fl">178</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>        power_int<span class="op">=</span><span class="fl">0.9</span>,  <span class="co"># beta_PA</span></span></span>
-<span class="r-in"><span>        falsepos<span class="op">=</span><span class="fl">0.025</span>, <span class="co"># gamma_FA</span></span></span>
-<span class="r-in"><span>        hr_null <span class="op">=</span> <span class="fl">1.3</span>,  <span class="co"># delta_null</span></span></span>
-<span class="r-in"><span>        hr_alt <span class="op">=</span> <span class="fl">0.8</span>,   <span class="co"># delta_alt</span></span></span>
-<span class="r-in"><span>        rand_ratio <span class="op">=</span> <span class="fl">1</span>, <span class="co"># rand_ratio</span></span></span>
-<span class="r-in"><span>        hr_marg_benefit <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">bounds</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  events <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">89</span>, <span class="fl">110</span>, <span class="fl">131</span>, <span class="fl">178</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  power_int <span class="op">=</span> <span class="fl">0.9</span>, <span class="co"># beta_PA</span></span></span>
+<span class="r-in"><span>  falsepos <span class="op">=</span> <span class="fl">0.025</span>, <span class="co"># gamma_FA</span></span></span>
+<span class="r-in"><span>  hr_null <span class="op">=</span> <span class="fl">1.3</span>, <span class="co"># delta_null</span></span></span>
+<span class="r-in"><span>  hr_alt <span class="op">=</span> <span class="fl">0.8</span>, <span class="co"># delta_alt</span></span></span>
+<span class="r-in"><span>  rand_ratio <span class="op">=</span> <span class="fl">1</span>, <span class="co"># rand_ratio</span></span></span>
+<span class="r-in"><span>  hr_marg_benefit <span class="op">=</span> <span class="cn">NULL</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $lhr_null</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.2623643</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -182,13 +184,15 @@ intervention on OS (and smaller OS HRs &lt;1 indicate increased efficacy).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co"># Example 02: OS monitoring guideline applied to Motivating Example 2</span></span></span>
 <span class="r-in"><span><span class="co"># with delta null = 4/3, delta alt = 0.7, gamma_FA = 0.20 and beta_PA = 0.1.</span></span></span>
-<span class="r-in"><span><span class="fu">bounds</span><span class="op">(</span>events<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">89</span>, <span class="fl">110</span>, <span class="fl">131</span>, <span class="fl">178</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>       power_int<span class="op">=</span><span class="fl">0.9</span>,  <span class="co"># beta_PA</span></span></span>
-<span class="r-in"><span>       falsepos<span class="op">=</span><span class="fl">0.025</span>, <span class="co"># gamma_FA</span></span></span>
-<span class="r-in"><span>       hr_null <span class="op">=</span> <span class="fl">1.3</span>,  <span class="co"># delta_null</span></span></span>
-<span class="r-in"><span>       hr_alt <span class="op">=</span> <span class="fl">0.8</span>,   <span class="co"># delta_alt</span></span></span>
-<span class="r-in"><span>       rand_ratio <span class="op">=</span> <span class="fl">1</span>, <span class="co"># rand_ratio</span></span></span>
-<span class="r-in"><span>       hr_marg_benefit <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">bounds</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  events <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">89</span>, <span class="fl">110</span>, <span class="fl">131</span>, <span class="fl">178</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  power_int <span class="op">=</span> <span class="fl">0.9</span>, <span class="co"># beta_PA</span></span></span>
+<span class="r-in"><span>  falsepos <span class="op">=</span> <span class="fl">0.025</span>, <span class="co"># gamma_FA</span></span></span>
+<span class="r-in"><span>  hr_null <span class="op">=</span> <span class="fl">1.3</span>, <span class="co"># delta_null</span></span></span>
+<span class="r-in"><span>  hr_alt <span class="op">=</span> <span class="fl">0.8</span>, <span class="co"># delta_alt</span></span></span>
+<span class="r-in"><span>  rand_ratio <span class="op">=</span> <span class="fl">1</span>, <span class="co"># rand_ratio</span></span></span>
+<span class="r-in"><span>  hr_marg_benefit <span class="op">=</span> <span class="fl">0.95</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $lhr_null</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.2623643</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>

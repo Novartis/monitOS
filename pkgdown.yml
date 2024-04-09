@@ -3,8 +3,8 @@ pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   monitOS: monitOS.html
-last_built: 2024-03-06T16:48Z
+last_built: 2024-04-09T11:06Z
 urls:
-  reference: https://tcoroller.github.io/monitOS//reference
-  article: https://tcoroller.github.io/monitOS//articles
+  reference: https://opensource.nibr.com/monitOS//reference
+  article: https://opensource.nibr.com/monitOS//articles
 
