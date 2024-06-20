@@ -4,6 +4,7 @@
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/monitOS)](https://CRAN.R-project.org/package=monitOS)
+[![](https://cranlogs.r-pkg.org/badges/monitOS)](https://cran.r-project.org/package=monitOS)
 
 <!-- badges: end -->
 
