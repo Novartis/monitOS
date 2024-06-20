@@ -1,7 +1,7 @@
 Package: monitOS
 Title: Monitoring Overall Survival in Pivotal Trials in Indolent Cancers
 URL: https://opensource.nibr.com/monitOS/
-Version: 0.1.5
+Version: 0.1.6
 Authors@R: c(
     person("Thomas", "Fleming", email = "fleming@seattlebiostat.com", role ="ctb"),
     person("Lisa", "Hampson", email = "lisa.hampson@novartis.com", role ="aut"),
@@ -21,6 +21,8 @@ Maintainer: Thibaud Coroller <thibaud.coroller@novartis.com>
 URL: https://opensource.nibr.com/monitOS/, https://github.com/Novartis/monitOS
 BugReports: https://github.com/Novartis/monitOS/issues
 Encoding: UTF-8
+URL: https://opensource.nibr.com/monitOS/, https://github.com/Novartis/monitOS
+BugReports: https://github.com/Novartis/monitOS/issues
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Imports:
