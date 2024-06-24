@@ -54,3 +54,5 @@ inst/doc
 # vim
 *.swp
 docs
+/doc/
+/Meta/

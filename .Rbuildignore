@@ -15,3 +15,5 @@
 ^docs$
 ^inst$
 ^pkgdown$
+^doc$
+^Meta$
