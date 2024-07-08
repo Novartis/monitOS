@@ -206,7 +206,7 @@ if (!is.null(checkPath)) {
   incompleteFun("No `R CMD check` output available.")
 }
 
-errors <- system(sprtinf("grep --include 00check.log -rnwP 'Status: \\d ERROR' %s", checkPath), intern=T)
+errors <- system(sprintf("grep --include 00check.log -rnwP 'Status: \\d ERROR' %s", checkPath), intern=T)
 
 if (length(errors) > 0) {
   incompleteFun("The check log contains at least one ERROR.")
