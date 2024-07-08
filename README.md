@@ -41,8 +41,6 @@ These are basic example taken from our [paper](https://www.tandfonline.com/doi/f
 - **Example 01:** OS monitoring guideline retrospectively applied to Motivating Example 1, with `delta null` = 1.3, `delta alt` = 0.80, `gamma_FA` = 0.025 and  `beta_PA` = 0.10.
 
 ``` r
-library(monitOS)
-
 >>> bounds(events=c(60, 89, 110, 131, 178),
            power_int=0.9,  # βPA
            falsepos=0.025,  # γFA
