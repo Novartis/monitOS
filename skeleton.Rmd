@@ -35,19 +35,7 @@ as well as details w.r.t. ownership:
 title <- "monitOS" 
 
 # the names of the main package developers
-devs <- c(
-    person("Thomas", "Fleming", email = "fleming@seattlebiostat.com", role ="ctb"),
-    person("Lisa", "Hampson", email = "lisa.hampson@novartis.com", role ="aut"),
-    person("Bharani", "Bharani-Dharan", email = "bharani.bharani-dharan@novartis.com", role ="ctb"),
-    person("Frank", "Bretz", email = "frank.bretz@novartis.com", role = "ctb"),
-    person("Arunava", "Chakravartty", email = "arunava.chakravartty@novartis.com", role = "ctb"),
-    person("Thibaud", "Coroller", email = "thibaud.coroller@novartis.com", role = c("aut", "cre")),
-    person("Evanthia", "Koukouli", email = "evanthia.koukouli@novartis.com", role = "aut"),
-    person("Janet", "Wittes", email = "janet@wittesllc.com", role = "ctb"),
-    person("Nigel", "Yateman", email = "nigel.yateman@novartis.com", role = "ctb"),
-    person("Emmanuel", "Zuber", email = "emmanuel.zuber@novartis.com", role = "ctb"),
-    person("Novartis", "Pharma AG", role = "cph")
-          )
+devs <- "Thibaud Coroller"
 # the url of the package repo
 repo <- "https://github.com/Novartis/monitOS"
 
@@ -206,7 +194,7 @@ Packages must provide evidence of a successful `R CMD check`.
 # provide the path to the <PACKAGE>.Rcheck folder, which is the output of
 # R CMD check
 
-checkPath <- NULL
+checkPath <- '.'
 ```
 
 <!-- Do NOT modify this section. -->
@@ -234,8 +222,8 @@ xfun::embed_file(paste0(PACKAGE, "-checkResults.zip"))
 # either provide the path to the package source so that coverage can be calculated
 # or provide the path to a report (set the other one NULL)
 
-pkgPath <- NULL # the path to the repo files
-reportPath <- NULL
+pkgPath <- '.' # the path to the repo files
+reportPath <- '.'
 ```
 
 <!-- Do NOT modify this section. -->
