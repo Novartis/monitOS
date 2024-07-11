@@ -5,14 +5,13 @@
 #' @import shiny shinydashboard
 # nocov start
 app_ui <- function(request) {
-  require(shinydashboard)
-  shinydashboard::dashboardPage(
+  dashboardPage(
     skin = "blue",
     dashboardHeader(title = "Monitoring OS"),
     # Creating tabs
-    shinydashboard::dashboardSidebar(disable = TRUE),
+    dashboardSidebar(disable = TRUE),
     # Define body
-    shinydashboard::dashboardBody(
+    dashboardBody(
       fluidRow(box(
         title = "Context", with = 12, collapsed = FALSE, collapsible = TRUE, width = 12,
         "These guidelines are meant to provide a pragmatic, yet rigorous, help to drug developers and decision makers,

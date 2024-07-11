@@ -86,21 +86,8 @@ when it is working as intended. Requirements should be written from a user's per
 and give insight into potential contexts of use.
 
 <!-- $ Please populate this section with requirements.
-Example (requirements as table):
 
-|ID | Requirement |
-|:---|:-------------|
-Req-1 | The package should correctly compute the dose limiting toxicity (DLT) as a function of dose of two drugs given historical information on the toxicity profiles from single agent trials as per the methodology outlined in XY. |
-Req-2 | ... |
-
----
-
-Example (requirements as subheadings):
-
-## Requirement 1: Dual combination trial with historical information
-The package should correctly compute the dose limiting toxicity as a function of dose of two drugs given historical information on the toxicity profiles from single agent trials as per the methodology outlined in XY.
-
-## Requirement 2: ...
+These guidelines are meant to provide a pragmatic, yet rigorous, help to drug developers and decision makers, since they are shaped by three fundamental ingredients: the clinically determined margin of detriment on OS that is unacceptably high (δnull); the benefit on OS that is plausible given the mechanism of action of the novel intervention (δalt); and the quantity of information (i.e. events, expected number of survival events, at primary and final analysis) it is feasible to accrue given the clinical and drug development setting. The proposed guidelines facilitate transparent discussions between stakeholders focusing on the risks of erroneous decisions and what might be an acceptable trade-off between power and the false positive error rate.
 
 -->
 
@@ -165,8 +152,8 @@ the [foreseen use cases](#description), stated [requirements](#requirements) and
 <!-- $ Please provide an overview of which function(alitie)s of the package will be tested and how, 
 referencing requirement or risk IDs where applicable. 
 
-Example:
-Functions X and Y (and associated low-level functions) pertaining to requirements A and B, respectively, are covered by simple unit tests that ensure the acceptance of valid inputs (positive testing) and rejection of invalid inputs (negative testing), commensurate with the identified LOW risk priority. Function Z, which is associated with HIGH risk priority, is further covered by multiple computationally intensive tests that compare the computed outputs to benchmark cases, confirming their correctness. These tests, which require access to a high-performance computing cluster, is performed separately and the results are provided in this report [below](#extraTests).
+We tested all our functions against published clinical trials information. The code replicates all (5) tables from our peer-reviewed papers to ensure reproducibility. 
+
 ...
 
 -->
@@ -176,9 +163,16 @@ Functions X and Y (and associated low-level functions) pertaining to requirement
 <!-- $ Please provide an overview of performed code review activities. Name reviewers, their qualifications, and what they reviewed. 
 Provide links to merge requests or similar where appropriate. Code reviews should have been performed _for the version of the package in question_. State clearly when a review was performed for a different version and outline why this is acceptable.
 
-Example (use a format of your choice: bullet lists, tables, subsections...):
-- Reviewer alpha has a PhD in biostatistics and is a trial statistician; they performed code review of functions X and Y pertaining to the statistical methodology used (cf. merge request [!123](link-to-merge-request))
-- Reviewer beta has a computer science degree and reviewed the numerical implementation of the algorithm in function Z.
+Three people were involved in the code development and review process of the code:
+- Thibaud Coroller, PhD: Data scientist
+- Evanthia Koukouli, PhD: Trial statistician
+- Lisa Hampson, PhD: Statistical consultant
+
+Additionally, 
+
+- Dominic Magirr, PhD: Statistical consultant performed code review for existing regulatory question(s) using the package, validated code outputs and scientific method.
+
+In all the process of code development, best practices were followed. Code was tested and reviewed before any push to `main` branch. Code also passed CRAN guidelines and is hosted since Winter 2023. 
 ...
 -->
 
