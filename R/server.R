@@ -3,6 +3,7 @@
 #' @param input generic shiny var
 #' @param output generic shiny var
 #' @param session generic shiny var
+#' @import shiny
 # nocov start
 app_server <- function(input, output, session) {
   require(monitOS)

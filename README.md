@@ -29,7 +29,6 @@ It can done simply call the wrapper function using:
 ``` r
 monitOS::run_app()
 ```
-
 The shiny app, as seen below, is designed to guide users through their trial designs.
 
 ![](man/figures/shiny.png)
