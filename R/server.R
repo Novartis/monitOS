@@ -6,7 +6,7 @@
 #' @import shiny
 # nocov start
 app_server <- function(input, output, session) {
-  require(monitOS)
+  require(shiny)
   wrap <-
     function(X, decimal = 3) {
       return(paste(round(X, decimal), collapse = ","))

@@ -5,7 +5,7 @@
 #' @import shiny shinydashboard
 # nocov start
 app_ui <- function(request) {
-  dashboardPage(
+  shinydashboard::dashboardPage(
     skin = "blue",
     dashboardHeader(title = "Monitoring OS"),
     # Creating tabs
