@@ -1,12 +1,9 @@
 # monitOS 0.1.6
 
--   Fixed import issue for `Shiny`
--   Improved `README` with package metrics, screenshot and improved example
--   Changed `Licence` to `MIT`.
--   Added spell checking to package.
--   Added github issues link `BugReport` and website link to `URL` in `Description.
--   Fix import issue with `shiny` dependency.
--   Added peer reviewed paper link (https://www.tandfonline.com/doi/full/10.1080/19466315.2024.2365648)
+- Changed `Licence` to `MIT`.
+- Added spell checking to package.
+- Added github issues link `BugReport` and website link to `URL` in `Description.
+- Fix import issue with `shiny` dependency.
 
 # monitOS 0.1.5
 
