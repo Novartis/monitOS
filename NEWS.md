@@ -4,6 +4,8 @@
 - Added spell checking to package.
 - Added github issues link `BugReport` and website link to `URL` in `Description.
 - Fix import issue with `shiny` dependency.
+- Fix bug returning `inf` values in Shiny app.
+- Added new `badges` to packages
 
 # monitOS 0.1.5
 
