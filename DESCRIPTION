@@ -2,7 +2,7 @@ Package: monitOS
 Title: Monitoring Overall Survival in Pivotal Trials in Indolent Cancers
 URL: https://opensource.nibr.com/monitOS/, https://github.com/Novartis/monitOS
 BugReports: https://github.com/Novartis/monitOS/issues
-Version: 0.1.5
+Version: 0.1.6
 Authors@R: c(
     person("Thomas", "Fleming", email = "fleming@seattlebiostat.com", role ="ctb"),
     person("Lisa", "Hampson", email = "lisa.hampson@novartis.com", role ="aut"),
@@ -21,7 +21,7 @@ License: MIT + file LICENSE
 Maintainer: Thibaud Coroller <thibaud.coroller@novartis.com>
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 Imports:
     stats,
     glue,

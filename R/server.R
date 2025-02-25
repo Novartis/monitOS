@@ -6,7 +6,6 @@
 #' @import shiny
 # nocov start
 app_server <- function(input, output, session) {
-  require(shiny)
   wrap <-
     function(X, decimal = 3) {
       return(paste(round(X, decimal), collapse = ","))
@@ -14,7 +13,8 @@ app_server <- function(input, output, session) {
   unwrap <-
     function(X) {
       return(as.numeric(unlist(strsplit(
-        gsub(" ", "", X), ","
+        gsub(" ", "", X),
+        ","
       ))))
     }
 
@@ -36,10 +36,8 @@ app_server <- function(input, output, session) {
       hr_marg_benefit = input$hr_marg_benefit
     )
 
-
     hr_pos <- exp(boundaries$lhr_pos)
     updateTextInput(session, "hr_pos", value = wrap(hr_pos))
-
 
     # Update column names
     # columns <- c(
