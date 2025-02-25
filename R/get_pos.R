@@ -51,7 +51,7 @@ find_pos <- function(
   fn <- pnorm(log_pos_thld, mean = lhr_alt, sd = se1, lower.tail = FALSE)
 
   log_pos_fa <- qnorm(
-    1 - input$falsepos,
+    1 - 0.05,
     mean = lhr_null,
     sd = se2,
     lower.tail = FALSE

@@ -7,6 +7,7 @@
 #' @param lhr_null scalar - minumum unacceptable OS log-HR
 #' @param events vector length K - number of OS events at each look at the data
 #' @importFrom stats pnorm
+#' @export
 #' @return vector of length K - continuation thresholds expressed on posterior probability scale
 calc_posterior <- function(lhr_con, lhr_null, events) {
   info <-
@@ -28,6 +29,7 @@ calc_posterior <- function(lhr_con, lhr_null, events) {
 #' @return vector of length K-1: continuation thresholds at analyses k=1, ..., K-1 expressed on scale of
 #' posterior predictive probability of ruling out lhr_null at final OS analysis
 #' @importFrom stats pnorm
+#' @export
 calc_predictive <- function(lhr_con, events) {
   nstage <- length(events)
   info <-
@@ -41,8 +43,12 @@ calc_predictive <- function(lhr_con, events) {
   for (i in 1:(nstage - 1)) {
     pred_pos[i] <- pnorm(
       lhr_con[nstage] * sqrt(info[nstage]),
-      mean = lhr_con[i] * sqrt(info[i]) * sqrt(info[nstage] /
-        info[i]),
+      mean = lhr_con[i] *
+        sqrt(info[i]) *
+        sqrt(
+          info[nstage] /
+            info[i]
+        ),
       sd = sqrt((info[nstage] - info[i]) / info[i])
     )
   }

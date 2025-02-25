@@ -54,20 +54,21 @@
 #'   rand_ratio = 1, # rand_ratio
 #'   hr_marg_benefit = 0.95
 #' )
-bounds <- function(events,
-                   # OS events at each analysis
-                   power_int = 0.9,
-                   # 1-Beta PA, what power do we want to not flag a safety concern at an interim analysis if the true OS HR equals our target alternative?
-                   falsepos = 0.025,
-                   # Gamme FA, What is the (one-sided) type I error rate that we will accept at the final analysis?
-                   hr_null = 1.3,
-                   # Delta null, what is the minimum unacceptable OS HR?
-                   hr_alt = 0.9,
-                   # Delta alt, what is a plausible alternative OS HR consistent with OS benefit?
-                   rand_ratio = 1,
-                   # for every patient randomized to control, rand_ratio patients are allocated to experimental intervention
-                   hr_marg_benefit = NULL
-                   # evaluate probability of meeting positivity thresholds under a second plausible beneficial effect of treatment on OS (HR = hr_marg_benefit)
+bounds <- function(
+  events,
+  # OS events at each analysis
+  power_int = 0.9,
+  # 1-Beta PA, what power do we want to not flag a safety concern at an interim analysis if the true OS HR equals our target alternative?
+  falsepos = 0.025,
+  # Gamme FA, What is the (one-sided) type I error rate that we will accept at the final analysis?
+  hr_null = 1.3,
+  # Delta null, what is the minimum unacceptable OS HR?
+  hr_alt = 0.9,
+  # Delta alt, what is a plausible alternative OS HR consistent with OS benefit?
+  rand_ratio = 1,
+  # for every patient randomized to control, rand_ratio patients are allocated to experimental intervention
+  hr_marg_benefit = NULL
+  # evaluate probability of meeting positivity thresholds under a second plausible beneficial effect of treatment on OS (HR = hr_marg_benefit)
 ) {
   # Log scale
   lhr_null <- log(hr_null)
@@ -89,9 +90,8 @@ bounds <- function(events,
   # assuming we want marginal power = power_int to 'rule out' hr_Lnull at required
   # evidentiary level when true OS HR = hr_alt
   gamma <-
-    2 * (1 - pnorm(((
-      lhr_null - lhr_alt
-    ) / se[1:(nstage - 1)]) - qnorm(power_int)))
+    2 *
+    (1 - pnorm(((lhr_null - lhr_alt) / se[1:(nstage - 1)]) - qnorm(power_int)))
   falsepos_all <- c(gamma / 2, falsepos)
   CI_level_monit_null <- 100 * (1 - 2 * falsepos_all)
   power_all <-
@@ -112,14 +112,26 @@ bounds <- function(events,
   summary$"One-sided false positive error rate" <- round(falsepos_all, 3)
 
   # Level of 2-sided CI needed to rule out δnull at given analysis (%)
-  summary$"Level of 2-sided CI needed to rule out delta null" <- round(pmax(0, CI_level_monit_null), 0)
+  summary$"Level of 2-sided CI needed to rule out delta null" <- round(
+    pmax(0, CI_level_monit_null),
+    0
+  )
 
   # Probability of meeting positivity threshold under plausible OS benefit
-  summary$"Probability of meeting positivity threshold under delta alt" <- round(power_all, 3)
+  summary$"Probability of meeting positivity threshold under delta alt" <- round(
+    power_all,
+    3
+  )
 
   # Pr(true OS HR >= detrimental OS HR | current data)
-  summary$"Posterior probability the true OS HR exceeds delta null given the data" <- round(post_pos, 3)
-  summary$"Predictive probability the OS HR estimate at Final Analysis does not exceed the positivity threshold" <- c(round(pred_pos * 100, 3), NA)
+  summary$"Posterior probability the true OS HR exceeds delta null given the data" <- round(
+    post_pos,
+    3
+  )
+  summary$"Predictive probability the OS HR estimate at Final Analysis does not exceed the positivity threshold" <- c(
+    round(pred_pos * 100, 3),
+    NA
+  )
 
   if (!is.null(hr_marg_benefit)) {
     # calculate the probability of meeting positivity thresholds under lhr_marg_benefit
