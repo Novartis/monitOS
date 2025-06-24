@@ -84,7 +84,7 @@ $summary
 
 
 # Example 02: OS monitoring guideline applied to Motivating Example 2
-# with delta null = 4/3, delta alt = 0.7, gamma_FA = 0.20, beta_PA = 0.1, 
+# with delta null = 4/3, delta alt = 0.7, gamma_FA = 0.20, beta_PA = 0.1,
 # randomization ratio 2 and 0.95 HR marginal benefit
 >>> bounds(events=c(60, 89, 110, 131, 178),
            power_int=0.9,  # βPA

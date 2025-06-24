@@ -33,4 +33,3 @@ bounds(
   rand_ratio = 2, # rand_ratio
   hr_marg_benefit = 0.95
 ) # Marginal HR benefit
-

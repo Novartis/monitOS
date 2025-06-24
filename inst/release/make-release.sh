@@ -9,9 +9,9 @@ if [ -z "$1" ] || [ -z "$2" ]; then
 fi
 cd "$(git rev-parse --show-toplevel)"
 
-if [ -z "$(git status --porcelain)" ]; then 
+if [ -z "$(git status --porcelain)" ]; then
   echo "No uncommitted changes, proceeding"
-else 
+else
   echo "Uncommitted changes, please commit or stash before proceeding"
   exit 1
 fi
