@@ -1,0 +1,19 @@
+default_language_version:
+  python: R
+
+repos:
+  # >>>>> Base precommits <<<<<<
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-json
+      - id: check-yaml
+      - id: check-toml
+      - id: check-docstring-first
+      - id: check-executables-have-shebangs
+      - id: check-case-conflict
+      - id: check-added-large-files
+        args: ["--maxkb=1000", "--enforce-all"]
+      - id: detect-private-key

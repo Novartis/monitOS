@@ -5,6 +5,7 @@
 [![CRAN](https://www.r-pkg.org/badges/version-ago/monitOS)](https://CRAN.R-project.org/package=monitOS)
 [![Stats](https://cranlogs.r-pkg.org/badges/grand-total/monitOS?color=brightgreen)](https://CRAN.R-project.org/package=monitOS)
 [![Paper](https://img.shields.io/badge/SBR-Monitoring_Overall_Survival_in_Pivotal_Trials_in_Indolent_Cancers-blue)](https://www.tandfonline.com/doi/full/10.1080/19466315.2024.2365648)
+[![CodeFactor](https://www.codefactor.io/repository/github/novartis/monitos/badge/main)](https://www.codefactor.io/repository/github/novartis/monitos/overview/main)
 <!-- [![Preprint](https://img.shields.io/badge/arXiv-Monitoring_Overall_Survival_in_Pivotal_Trials_in_Indolent_Cancers-blue)](https://arxiv.org/abs/2310.20658) -->
 
 

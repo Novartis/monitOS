@@ -2,7 +2,7 @@
 % Please edit documentation in R/posteriors.R
 \name{calc_predictive}
 \alias{calc_predictive}
-\title{Title"}
+\title{Calculate posterior predictive probability of ruling out lhr_null at final OS analysis}
 \usage{
 calc_predictive(lhr_con, events)
 }
@@ -18,4 +18,9 @@ posterior predictive probability of ruling out lhr_null at final OS analysis
 \description{
 Calculates the posterior predictive probability of 'ruling out' lhr_null at final OS analysis
 given current estimate of OS log-HR is lhr_cont_k, for k=1, ..., K-1
+}
+\examples{
+lhr_con <- c(0.2, 0.15, 0.1)
+events <- c(100, 200, 300)
+calc_predictive(lhr_con, events)
 }
