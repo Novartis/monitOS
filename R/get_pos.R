@@ -31,14 +31,13 @@
 #'
 #' @export
 find_pos <- function(
-  pos_thld,
-  events,
-  rand_ratio,
-  hr_null,
-  hr_alt,
-  which.crit,
-  targ
-) {
+    pos_thld,
+    events,
+    rand_ratio,
+    hr_null,
+    hr_alt,
+    which.crit,
+    targ) {
   log_pos_thld <- log(pos_thld)
   lhr_null <- log(hr_null)
   lhr_alt <- log(hr_alt)
@@ -59,8 +58,7 @@ find_pos <- function(
   pred_prob <- calc_predictive(c(log_pos_thld, log_pos_fa), events)
 
   # Switch based on criterion
-  switch(
-    which.crit,
+  switch(which.crit,
     `1` = {
       # search for the positivity threshold such that false positive/false negative equals required value
       return((fp / fn) - targ)
