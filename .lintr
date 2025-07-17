@@ -1,0 +1,10 @@
+linters: linters_with_defaults(
+    line_length_linter(130),
+    commented_code_linter = NULL) # see vignette("lintr")
+encoding: "UTF-8"
+exclusions: list(
+    "inst/",
+    "R/ui.R",
+    "R/server.R",
+    "R/runApp.R"
+  )

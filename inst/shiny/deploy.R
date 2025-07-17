@@ -15,9 +15,6 @@ deploy_app_rsc <- function() {
   message("App successfully deployed ...")
 }
 
-
-
-
 # add_connect_server <- function() {
 #   if (!(Sys.getenv("CONNECT_SERVER") %in% rsconnect::servers()$url)) {
 #     message("Adding server")

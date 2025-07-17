@@ -1,13 +1,13 @@
 # detect if you are using OSX
-if (Sys.info()["sysname"] == "Darwin") {
-  # Set the proxy for OSX
-  Sys.setenv(
-    HTTP_PROXY = "http://proxy.eu.novartis.net:2010",
-    HTTPS_PROXY = "http://proxy.eu.novartis.net:2010",
-    http_proxy = "http://proxy.eu.novartis.net:2010",
-    https_proxy = "http://proxy.eu.novartis.net:2010"
-  )
-}
+# if (Sys.info()["sysname"] == "Darwin") {
+#   # Set the proxy for OSX
+#   Sys.setenv(
+#     HTTP_PROXY = "http://proxy.eu.novartis.net:2010",
+#     HTTPS_PROXY = "http://proxy.eu.novartis.net:2010",
+#     http_proxy = "http://proxy.eu.novartis.net:2010",
+#     https_proxy = "http://proxy.eu.novartis.net:2010"
+#   )
+# }
 
 # source("renv/activate.R")
 

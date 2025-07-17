@@ -4,7 +4,7 @@
 #' OS log-HR given the estimate of the log-hr at analysis k equals lhr_con.k (i.e. the estimate
 #' is equal to the stage k 'continuation threshold').
 #' @param lhr_con vector of length K (# number of looks at OS data) containing 'continuation' thresholds on log-HR scale
-#' @param lhr_null scalar - minumum unacceptable OS log-HR
+#' @param lhr_null scalar - minimum unacceptable OS log-HR
 #' @param events vector length K - number of OS events at each look at the data
 #' @importFrom stats pnorm
 #' @export
@@ -22,8 +22,7 @@ calc_posterior <- function(lhr_con, lhr_null, events) {
 
   # calculating Pr(log-hr >= lhr_null | theta.hat.k = lk)
   # where lk is the threshold (for the partial likelihood estimate of the OS log-HR) for 'continuation'
-  post <- 1 - pnorm((lhr_null - lhr_con) / se)
-  return(post)
+  1 - pnorm((lhr_null - lhr_con) / se)
 }
 
 #' @title Calculate posterior predictive probability of ruling out lhr_null at final OS analysis
@@ -42,6 +41,7 @@ calc_posterior <- function(lhr_con, lhr_null, events) {
 #' calc_predictive(lhr_con, events)
 calc_predictive <- function(lhr_con, events) {
   nstage <- length(events)
+
   info <-
     events / 4 # Fisher's information for log-HR at each analysis
 
@@ -60,5 +60,4 @@ calc_predictive <- function(lhr_con, events) {
       sd = sqrt((info[nstage] - info[i]) / info[i])
     )
   }
-  return(pred_pos)
 }

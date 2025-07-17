@@ -7,7 +7,7 @@
 #' @param rand_ratio Numeric. The randomization ratio.
 #' @param hr_null Numeric. The hazard ratio under the null hypothesis.
 #' @param hr_alt Numeric. The hazard ratio under the alternative hypothesis.
-#' @param which.crit Integer. The criterion to be used for finding the positivity threshold:
+#' @param which_crit Integer. The criterion to be used for finding the positivity threshold:
 #'   \itemize{
 #'     \item 1: False positive / False negative equals required value.
 #'     \item 2: False positive / (False negative + False positive) equals required value.
@@ -25,54 +25,65 @@
 #'   rand_ratio = 1,
 #'   hr_null = 1,
 #'   hr_alt = 1.5,
-#'   which.crit = 1,
+#'   which_crit = 1,
 #'   targ = 0.05
 #' )
 #'
 #' @export
 find_pos <- function(
-    pos_thld,
-    events,
-    rand_ratio,
-    hr_null,
-    hr_alt,
-    which.crit,
-    targ) {
+  pos_thld,
+  events,
+  rand_ratio,
+  hr_null,
+  hr_alt,
+  which_crit,
+  targ
+) {
   log_pos_thld <- log(pos_thld)
   lhr_null <- log(hr_null)
   lhr_alt <- log(hr_alt)
-  info1 <- rand_ratio * events[1] / ((rand_ratio + 1)^2) # Fisher's information for log-HR at each analysis
-  se1 <- sqrt(1 / info1) # asymptotic standard error for log-HR at each analysis
-  info2 <- rand_ratio * events[2] / ((rand_ratio + 1)^2) # Fisher's information for log-HR at each analysis
-  se2 <- sqrt(1 / info2) # asymptotic standard error for log-HR at each analysis
+
+  # Fisher's information for log-HR at each analysis
+  info1 <- rand_ratio * events[1] / ((rand_ratio + 1)^2)
+
+  # asymptotic standard error for log-HR at each analysis
+  se1 <- sqrt(1 / info1)
+
+  # Fisher's information for log-HR at each analysis
+  info2 <- rand_ratio * events[2] / ((rand_ratio + 1)^2)
+
+  # asymptotic standard error for log-HR at each analysis
+  se2 <- sqrt(1 / info2)
 
   fp <- pnorm(log_pos_thld, mean = lhr_null, sd = se1, lower.tail = TRUE)
   fn <- pnorm(log_pos_thld, mean = lhr_alt, sd = se1, lower.tail = FALSE)
 
+  # positivity threshold FA
   log_pos_fa <- qnorm(
     1 - 0.05,
     mean = lhr_null,
     sd = se2,
     lower.tail = FALSE
-  ) # positivity threshold FA
+  )
   pred_prob <- calc_predictive(c(log_pos_thld, log_pos_fa), events)
 
   # Switch based on criterion
-  switch(which.crit,
+  switch(
+    which_crit,
     `1` = {
       # search for the positivity threshold such that false positive/false negative equals required value
-      return((fp / fn) - targ)
+      as.numeric((fp / fn) - targ)
     },
     `2` = {
       # search for the positivity threshold such that false positive/(false negative + false pos) equals required value
-      return((fp / (fp + fn)) - targ)
+      as.numeric((fp / (fp + fn)) - targ)
     },
     `3` = {
-      return(fp - targ)
+      as.numeric(fp - targ)
     },
     `4` = {
       # search for the positivity threshold such that pred prob equals required value
-      return(pred_prob - targ)
+      as.numeric(pred_prob - targ)
     }
   )
 }
