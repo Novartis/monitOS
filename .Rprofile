@@ -9,7 +9,7 @@
 #   )
 # }
 
-# source("renv/activate.R")
+source("renv/activate.R")
 
 # options(vsc.browser = FALSE)
 # if (!identical(Sys.getenv("CI", unset = ""), "")) {
