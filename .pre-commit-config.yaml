@@ -18,18 +18,13 @@ repos:
   - repo: https://github.com/lorenzwalthert/precommit
     rev: v0.4.3.9009
     hooks:
-    -   id: style-files
-        args: [--style_pkg=styler, --style_fun=tidyverse_style]
     -   id: use-tidy-description
     -   id: lintr
-        args: [--warn_only, --lintr_config=.lintr]
         verbose: true
         files: ^(R/).*\.(R|r|Rmd|rmd)$
         exclude: ^R/(ui\.R|server\.R|runApp\.R)$
     -   id: readme-rmd-rendered
-    # -   id: parsable-R
     -   id: no-browser-statement
-    -   id: no-debug-statement
     -   id: pkgdown
 
   - repo: https://github.com/codespell-project/codespell
@@ -38,6 +33,7 @@ repos:
       - id: codespell
         args: ["--write-changes"]  # Automatically fix spelling errors if only one suggestion
         files: ^.*\.(R|md|Rmd)$  # Only apply to R and Markdown files
+
 ci:
     autoupdate_schedule: monthly
     skip: [pkgdown]

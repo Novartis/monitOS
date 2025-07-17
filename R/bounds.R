@@ -111,8 +111,8 @@ bounds <- function(
   lhr_pos <- lhr_null - qnorm(1 - falsepos_all) * se
 
   # Given the positivity thresholds, re-express these via Bayesian metrics
-  post_pos <- calc_posterior(lhr_pos, lhr_null, events)
-  pred_pos <- calc_predictive(lhr_pos, events)
+  post_pos <- monitOS::calc_posterior(lhr_pos, lhr_null, events)
+  pred_pos <- monitOS::calc_predictive(lhr_pos, events)
 
   summary <- data.frame("Deaths" = events)
 
@@ -148,7 +148,7 @@ bounds <- function(
     # calculate the probability of meeting positivity thresholds under lhr_marg_benefit
     summary$"Probability of meeting positivity threshold under incremental benefit" <-
       round(
-        meeting_probs(
+        monitOS::meeting_probs(
           summary = summary,
           lhr_pos = lhr_pos,
           lhr_target = log(hr_marg_benefit),

@@ -4,7 +4,7 @@
 \alias{find_pos}
 \title{Find Positivity Threshold}
 \usage{
-find_pos(pos_thld, events, rand_ratio, hr_null, hr_alt, which.crit, targ)
+find_pos(pos_thld, events, rand_ratio, hr_null, hr_alt, which_crit, targ)
 }
 \arguments{
 \item{pos_thld}{Numeric. The initial positivity threshold.}
@@ -17,7 +17,7 @@ find_pos(pos_thld, events, rand_ratio, hr_null, hr_alt, which.crit, targ)
 
 \item{hr_alt}{Numeric. The hazard ratio under the alternative hypothesis.}
 
-\item{which.crit}{Integer. The criterion to be used for finding the positivity threshold:
+\item{which_crit}{Integer. The criterion to be used for finding the positivity threshold:
 \itemize{
 \item 1: False positive / False negative equals required value.
 \item 2: False positive / (False negative + False positive) equals required value.
@@ -40,7 +40,7 @@ find_pos(
   rand_ratio = 1,
   hr_null = 1,
   hr_alt = 1.5,
-  which.crit = 1,
+  which_crit = 1,
   targ = 0.05
 )
 

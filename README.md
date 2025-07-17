@@ -9,12 +9,14 @@
 <!-- [![Preprint](https://img.shields.io/badge/arXiv-Monitoring_Overall_Survival_in_Pivotal_Trials_in_Indolent_Cancers-blue)](https://arxiv.org/abs/2310.20658) -->
 
 
-
 <!-- badges: end -->
 
 These guidelines are meant to provide a pragmatic, yet rigorous, help to drug developers and decision makers, since they are shaped by three fundamental ingredients: the clinically determined margin of detriment on OS that is unacceptably high (`δnull`); the benefit on OS that is plausible given the mechanism of action of the novel intervention (`δalt`); and the quantity of information (i.e. events, expected number of survival events, at primary and final analysis) it is feasible to accrue given the clinical and drug development setting. The proposed guidelines facilitate transparent discussions between stakeholders focusing on the risks of erroneous decisions and what might be an acceptable trade-off between power and the false positive error rate.
 
 Monitoring guidelines assume that the hazard ratio (HR) can adequately summarize the size of the benefits and harms of the experimental intervention vs control on overall survival (OS). Furthermore, guidelines assume that an OS HR \< 1 is consistent with a beneficial effect of the intervention on OS (and smaller OS HRs \<1 indicate increased efficacy). For more details about how OS monitoring guidelines are formulated, please refer to our [**paper**](https://www.tandfonline.com/doi/full/10.1080/19466315.2024.2365648).
+
+
+If you find this repository useful, please consider giving a star! ⭐
 
 ## Installation
 

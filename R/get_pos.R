@@ -65,7 +65,7 @@ find_pos <- function(
     sd = se2,
     lower.tail = FALSE
   )
-  pred_prob <- calc_predictive(c(log_pos_thld, log_pos_fa), events)
+  pred_prob <- monitOS::calc_predictive(c(log_pos_thld, log_pos_fa), events)
 
   # Switch based on criterion
   switch(

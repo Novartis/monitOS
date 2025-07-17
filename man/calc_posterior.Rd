@@ -9,7 +9,7 @@ calc_posterior(lhr_con, lhr_null, events)
 \arguments{
 \item{lhr_con}{vector of length K (# number of looks at OS data) containing 'continuation' thresholds on log-HR scale}
 
-\item{lhr_null}{scalar - minumum unacceptable OS log-HR}
+\item{lhr_null}{scalar - minimum unacceptable OS log-HR}
 
 \item{events}{vector length K - number of OS events at each look at the data}
 }
