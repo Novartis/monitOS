@@ -32,5 +32,4 @@ Suggests:
     knitr,
     rmarkdown,
     pkgdown
-VignetteBuilder: knitr
 Language: en-US

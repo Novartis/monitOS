@@ -44,6 +44,10 @@ sed -i .bak 's#"https://rspm.apps.dit-prdocp.novartis.net[^"]+"#"https://cloud.r
 sed -i .bak "s/Version: .*/Version: $2/" DESCRIPTION
 
 rm -rf .gitlab-ci.yml
+rm -rf .lintr
+rm -rf .github
+rm -rf .pre-commit-config.yaml
+rm -rf air.toml
 rm -f *.bak
 rm -rf inst/release
 rm -f cran-comments.md
