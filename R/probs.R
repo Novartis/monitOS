@@ -9,6 +9,7 @@
 #' between experimental and control, k=2.
 #'
 #' @return Array. Probabilities of meeting positivity threshold under target HR
+#' @export
 meeting_probs <-
   function(summary, lhr_pos, lhr_target = 1, rand_ratio = 1) {
     events <- summary$Deaths
