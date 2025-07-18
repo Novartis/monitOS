@@ -13,8 +13,10 @@ meeting_probs(summary, lhr_pos, lhr_target = 1, rand_ratio = 1)
 
 \item{lhr_target}{Scalar. Target log HR to calculate the probability of meeting positivity thresholds}
 
-\item{rand_ratio}{Integer. If patients are randomized k:1 between experimental intervention and control, rand_ratio should be inputted as k.
-Example: if patients are randomized 1:1 between experimental and control, k=1. If patients are randomized 2:1 between experimental and control, k=2.}
+\item{rand_ratio}{Integer. If patients are randomized k:1 between experimental intervention and control,
+rand_ratio should be inputted as k.
+Example: if patients are randomized 1:1 between experimental and control, k=1. If patients are randomized 2:1
+between experimental and control, k=2.}
 }
 \value{
 Array. Probabilities of meeting positivity threshold under target HR

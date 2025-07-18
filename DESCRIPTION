@@ -1,7 +1,8 @@
 Package: monitOS
 Title: Monitoring Overall Survival in Pivotal Trials in Indolent Cancers
-URL: https://opensource.nibr.com/monitOS/
-Version: 0.1.5
+URL: https://opensource.nibr.com/monitOS/, https://github.com/Novartis/monitOS
+BugReports: https://github.com/Novartis/monitOS/issues
+Version: 0.1.6
 Authors@R: c(
     person("Thomas", "Fleming", email = "fleming@seattlebiostat.com", role ="ctb"),
     person("Lisa", "Hampson", email = "lisa.hampson@novartis.com", role ="aut"),
@@ -15,12 +16,12 @@ Authors@R: c(
     person("Emmanuel", "Zuber", email = "emmanuel.zuber@novartis.com", role = "ctb"),
     person("Novartis", "Pharma AG", role = "cph")
           )
-Description: These guidelines are meant to provide a pragmatic, yet rigorous, help to drug developers and decision makers, since they are shaped by three fundamental ingredients: the clinically determined margin of detriment on OS that is unacceptably high (delta null); the benefit on OS that is plausible given the mechanism of action of the novel intervention (delta alt); and the quantity of information (i.e. survival events) it is feasible to accrue given the clinical and drug development setting. The proposed guidelines facilitate transparent discussions between stakeholders focusing on the risks of erroneous decisions and what might be an acceptable trade-off between power and the false positive error rate. 
-License: GPL (>= 3)
+Description: These guidelines are meant to provide a pragmatic, yet rigorous, help to drug developers and decision makers, since they are shaped by three fundamental ingredients: the clinically determined margin of detriment on OS that is unacceptably high (delta null); the benefit on OS that is plausible given the mechanism of action of the novel intervention (delta alt); and the quantity of information (i.e. survival events) it is feasible to accrue given the clinical and drug development setting. The proposed guidelines facilitate transparent discussions between stakeholders focusing on the risks of erroneous decisions and what might be an acceptable trade-off between power and the false positive error rate.
+License: MIT + file LICENSE
 Maintainer: Thibaud Coroller <thibaud.coroller@novartis.com>
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 Imports:
     stats,
     glue,
@@ -28,8 +29,7 @@ Imports:
     shinydashboard,
 Suggests:
     testthat (>= 3.0.0),
-    covr,
     knitr,
     rmarkdown,
     pkgdown
-VignetteBuilder: knitr
+Language: en-US

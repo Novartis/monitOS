@@ -3,6 +3,7 @@
 #' @param input generic shiny var
 #' @param output generic shiny var
 #' @param session generic shiny var
+#' @import shiny
 # nocov start
 app_server <- function(input, output, session) {
   wrap <-
@@ -12,7 +13,8 @@ app_server <- function(input, output, session) {
   unwrap <-
     function(X) {
       return(as.numeric(unlist(strsplit(
-        gsub(" ", "", X), ","
+        gsub(" ", "", X),
+        ","
       ))))
     }
 
@@ -34,10 +36,8 @@ app_server <- function(input, output, session) {
       hr_marg_benefit = input$hr_marg_benefit
     )
 
-
     hr_pos <- exp(boundaries$lhr_pos)
     updateTextInput(session, "hr_pos", value = wrap(hr_pos))
-
 
     # Update column names
     # columns <- c(

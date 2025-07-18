@@ -2,17 +2,14 @@
 % Please edit documentation in R/posteriors.R
 \name{calc_posterior}
 \alias{calc_posterior}
-\title{Function which calculates for k=1, ..., K, Pr(log-HR >= lhr_null | theta.hat.k = lhr_con.k)
-i.e. the posterior probability the true OS log-hr exceeds the minimum unacceptable
-OS log-HR given the estimate of the log-hr at analysis k equals lhr_con.k (i.e. the estimate
-is equal to the stage k 'continuation threshold').}
+\title{Function which calculates for k=1, ..., K, Pr(log-HR >= lhr_null | theta.hat.k = lhr_con.k)}
 \usage{
 calc_posterior(lhr_con, lhr_null, events)
 }
 \arguments{
 \item{lhr_con}{vector of length K (# number of looks at OS data) containing 'continuation' thresholds on log-HR scale}
 
-\item{lhr_null}{scalar - minumum unacceptable OS log-HR}
+\item{lhr_null}{scalar - minimum unacceptable OS log-HR}
 
 \item{events}{vector length K - number of OS events at each look at the data}
 }
@@ -20,8 +17,13 @@ calc_posterior(lhr_con, lhr_null, events)
 vector of length K - continuation thresholds expressed on posterior probability scale
 }
 \description{
-Function which calculates for k=1, ..., K, Pr(log-HR >= lhr_null | theta.hat.k = lhr_con.k)
 i.e. the posterior probability the true OS log-hr exceeds the minimum unacceptable
 OS log-HR given the estimate of the log-hr at analysis k equals lhr_con.k (i.e. the estimate
 is equal to the stage k 'continuation threshold').
+}
+\examples{
+lhr_con <- c(0.2, 0.15, 0.1)
+lhr_null <- 0.25
+events <- c(100, 200, 300)
+calc_posterior(lhr_con, lhr_null, events)
 }

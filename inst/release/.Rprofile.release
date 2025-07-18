@@ -1,8 +1,5 @@
 source("renv/activate.R")
-<<<<<<< HEAD
 
 if (Sys.getenv("LOAD_MONITOS_PACKAGE") == "true") {
   devtools::load_all(".")
 }
-=======
->>>>>>> dev

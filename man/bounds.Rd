@@ -19,17 +19,23 @@ bounds(
 
 \item{power_int}{Scalar. Marginal power required at the Primary Analysis when true hazard ratio (HR) is hr_alt.}
 
-\item{falsepos}{Scalar. Marginal one-sided false positive error rate we are prepared to tolerate at the Final Analysis. Determines the  positivity threshold at Final Analysis}
+\item{falsepos}{Scalar. Marginal one-sided false positive error rate we are prepared to tolerate at the Final Analysis.
+Determines the positivity threshold at Final Analysis}
 
 \item{hr_null}{Scalar. The unacceptably large detrimental effect of treatment on OS we want to rule out (on HR scale)}
 
 \item{hr_alt}{Scalar. Plausible clinically relevant beneficial effect of treatment on OS (on HR scale)}
 
-\item{rand_ratio}{Integer. If patients are randomized k:1 between experimental intervention and control, rand_ratio should be inputted as k.
-Example: if patients are randomized 1:1 between experimental and control, k=1. If patients are randomized 2:1 between experimental and control, k=2.}
+\item{rand_ratio}{Integer. If patients are randomized k:1 between experimental intervention and control, rand_ratio
+should be inputted as k.
+Example: if patients are randomized 1:1 between experimental and control, k=1. If patients are randomized 2:1
+between experimental and control, k=2.}
 
-\item{hr_marg_benefit}{Scalar. We may be uncertain about what a plausible beneficial effect of treatment on OS is. User can enter a second plausible OS benefit (on HR scale)
-and function will evaluate the probability we meet the positivity threshold at each analysis under this HR. This second OS benefit will usually be closer to 1 than hr_alt.}
+\item{hr_marg_benefit}{Scalar. We may be uncertain about what a plausible beneficial effect of treatment on OS is.
+User can enter a (on HR scale) and function will evaluate the probability we meet the positivity threshold
+at each analysis under
+this HR. This second OS benefit will
+usually be closer to 1 than hr_alt.}
 }
 \value{
 List that contains:
@@ -49,17 +55,18 @@ List that contains:
 }
 }
 \description{
-OS monitoring guidelines as proposed in manuscript "Monitoring Overall Survival in Pivotal Trials in Indolent Cancers".
-Calculate thresholds for positivity that can be used at an analysis to judge whether emerging
+OS monitoring guidelines as proposed in manuscript "Monitoring Overall Survival in Pivotal Trials in
+Indolent Cancers". Calculate thresholds for positivity that can be used at an analysis to judge whether emerging
 evidence about the effect of treatment on OS is concerning or not. The threshold for positivity at any given analysis
 is the value below which the observed hazard ratio must be in order to provide sufficient reassurance that the effect
 on OS does not reach the selected unacceptable level of detriment (the margin hr_null).
-Terminology follows the manuscript "Monitoring Overall Survival in Pivotal Trials in Indolent Cancers", publication submitted
+Terminology follows the manuscript "Monitoring Overall Survival in Pivotal Trials in Indolent Cancers"
 }
 \details{
-Monitoring guidelines assume that the hazard ratio (HR) can adequately summarize the size of the benefits and harms of the experimental
-intervention vs control on overall survival (OS). Furthermore, guidelines assume that an OS HR < 1 is consistent with a beneficial effect of the
-intervention on OS (and smaller OS HRs <1 indicate increased efficacy).
+Monitoring guidelines assume that the hazard ratio (HR) can adequately summarize the size of the benefits
+and harms of the experimental
+intervention vs control on overall survival (OS). Furthermore, guidelines assume that an OS HR < 1 is consistent
+with a beneficial effect of the intervention on OS (and smaller OS HRs <1 indicate increased efficacy).
 }
 \examples{
 # Example 01: OS monitoring guideline retrospectively applied to Motivating Example 1

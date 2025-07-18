@@ -9,9 +9,9 @@ if [ -z "$1" ] || [ -z "$2" ]; then
 fi
 cd "$(git rev-parse --show-toplevel)"
 
-if [ -z "$(git status --porcelain)" ]; then 
+if [ -z "$(git status --porcelain)" ]; then
   echo "No uncommitted changes, proceeding"
-else 
+else
   echo "Uncommitted changes, please commit or stash before proceeding"
   exit 1
 fi
@@ -44,6 +44,10 @@ sed -i .bak 's#"https://rspm.apps.dit-prdocp.novartis.net[^"]+"#"https://cloud.r
 sed -i .bak "s/Version: .*/Version: $2/" DESCRIPTION
 
 rm -rf .gitlab-ci.yml
+rm -rf .lintr
+rm -rf .github
+rm -rf .pre-commit-config.yaml
+rm -rf air.toml
 rm -f *.bak
 rm -rf inst/release
 rm -f cran-comments.md
