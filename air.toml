@@ -7,4 +7,3 @@ persistent-line-breaks = true
 exclude = []
 default-exclude = true
 skip = []
-
