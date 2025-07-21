@@ -1,51 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://opensource.nibr.com/monitOS//404.html</loc>
-  </url>
-  <url>
-    <loc>https://opensource.nibr.com/monitOS//LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://opensource.nibr.com/monitOS//LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://opensource.nibr.com/monitOS//articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://opensource.nibr.com/monitOS//articles/monitOS.html</loc>
-  </url>
-  <url>
-    <loc>https://opensource.nibr.com/monitOS//authors.html</loc>
-  </url>
-  <url>
-    <loc>https://opensource.nibr.com/monitOS//index.html</loc>
-  </url>
-  <url>
-    <loc>https://opensource.nibr.com/monitOS//news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://opensource.nibr.com/monitOS//reference/app_server.html</loc>
-  </url>
-  <url>
-    <loc>https://opensource.nibr.com/monitOS//reference/app_ui.html</loc>
-  </url>
-  <url>
-    <loc>https://opensource.nibr.com/monitOS//reference/bounds.html</loc>
-  </url>
-  <url>
-    <loc>https://opensource.nibr.com/monitOS//reference/calc_posterior.html</loc>
-  </url>
-  <url>
-    <loc>https://opensource.nibr.com/monitOS//reference/calc_predictive.html</loc>
-  </url>
-  <url>
-    <loc>https://opensource.nibr.com/monitOS//reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://opensource.nibr.com/monitOS//reference/meeting_probs.html</loc>
-  </url>
-  <url>
-    <loc>https://opensource.nibr.com/monitOS//reference/run_app.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https:/opensource.nibr.com/monitOS/404.html</loc></url>
+<url><loc>https:/opensource.nibr.com/monitOS/LICENSE-text.html</loc></url>
+<url><loc>https:/opensource.nibr.com/monitOS/articles/index.html</loc></url>
+<url><loc>https:/opensource.nibr.com/monitOS/articles/monitOS.html</loc></url>
+<url><loc>https:/opensource.nibr.com/monitOS/authors.html</loc></url>
+<url><loc>https:/opensource.nibr.com/monitOS/index.html</loc></url>
+<url><loc>https:/opensource.nibr.com/monitOS/news/index.html</loc></url>
+<url><loc>https:/opensource.nibr.com/monitOS/reference/app_server.html</loc></url>
+<url><loc>https:/opensource.nibr.com/monitOS/reference/app_ui.html</loc></url>
+<url><loc>https:/opensource.nibr.com/monitOS/reference/bounds.html</loc></url>
+<url><loc>https:/opensource.nibr.com/monitOS/reference/calc_posterior.html</loc></url>
+<url><loc>https:/opensource.nibr.com/monitOS/reference/calc_predictive.html</loc></url>
+<url><loc>https:/opensource.nibr.com/monitOS/reference/find_pos.html</loc></url>
+<url><loc>https:/opensource.nibr.com/monitOS/reference/index.html</loc></url>
+<url><loc>https:/opensource.nibr.com/monitOS/reference/meeting_probs.html</loc></url>
+<url><loc>https:/opensource.nibr.com/monitOS/reference/run_app.html</loc></url>
 </urlset>
+
