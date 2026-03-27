@@ -1,6 +1,8 @@
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 name: pkgdown
@@ -26,7 +28,13 @@ jobs:
         run: |
           Rscript -e 'shinylive::export("inst/shinylive-app", "docs/shinylive-app")'
 
+      - name: Build pkgdown site (PR preview — no deploy)
+        if: github.event_name == 'pull_request'
+        run: |
+          LOAD_MONITOS_PACKAGE=true Rscript -e "pkgdown::build_site(new_process = FALSE)"
+
       - name: Deploy documentation
+        if: github.event_name != 'pull_request'
         run: |
           git config --local user.name "$GITHUB_ACTOR"
           git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
