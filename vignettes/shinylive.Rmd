@@ -21,7 +21,7 @@ entirely in your browser using WebAssembly — no R installation or server
 required.
 
 <iframe
-  src="https://nicaise.github.io/monitOS/shinylive-app/"
+  src="https://opensource.nibr.com/monitOS/shinylive-app/"
   style="border: 1px solid #dee2e6; border-radius: 4px; width: 100%; height: 800px;"
   allow="cross-origin-isolated"
   loading="lazy"
@@ -32,7 +32,7 @@ required.
 <p>
   The interactive app requires JavaScript. Please enable JavaScript in your
   browser or visit the
-  <a href="https://nicaise.github.io/monitOS/shinylive-app/">standalone app</a>
+  <a href="https://opensource.nibr.com/monitOS/shinylive-app/">standalone app</a>
   directly.
 </p>
 </noscript>
