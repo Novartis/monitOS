@@ -8,23 +8,15 @@ navbar:
     left:
       - intro
       - reference
-      - articles
-      - app
+      - shiny
       - news
     right:
       - search
       - github
   components:
-    app:
-      text: App
+    shiny:
+      text: Shiny
       href: shinylive-app/index.html
-    articles:
-      text: Articles
-      menu:
-        - text: Getting Started
-          href: articles/monitOS.html
-        - text: Interactive App (Shinylive)
-          href: articles/shinylive.html
     github:
       icon: fab fa-github
       href: https://github.com/Novartis/monitOS
