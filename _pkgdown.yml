@@ -9,11 +9,15 @@ navbar:
       - intro
       - reference
       - articles
+      - app
       - news
     right:
       - search
       - github
   components:
+    app:
+      text: App
+      href: shinylive-app/index.html
     articles:
       text: Articles
       menu:
