@@ -58,7 +58,10 @@ find_pos <- function(
   fp <- pnorm(log_pos_thld, mean = lhr_null, sd = se1, lower.tail = TRUE)
   fn <- pnorm(log_pos_thld, mean = lhr_alt, sd = se1, lower.tail = FALSE)
 
-  # positivity threshold FA
+
+  # Positivity threshold at Final Analysis, using a fixed one-sided
+
+  # false positive error rate of 0.05 (conventional significance level)
   log_pos_fa <- qnorm(
     1 - 0.05,
     mean = lhr_null,

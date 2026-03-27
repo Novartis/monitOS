@@ -9,11 +9,7 @@
 run_app <- function() {
   shinyApp(
     ui = app_ui,
-    server = app_server,
-    # onStart = onStart,
-    # options = options,
-    # enableBookmarking = enableBookmarking,
-    # uiPattern = uiPattern
+    server = app_server
   )
 }
 # nocov end

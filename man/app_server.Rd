@@ -2,17 +2,19 @@
 % Please edit documentation in R/server.R
 \name{app_server}
 \alias{app_server}
-\title{Shiny app server}
+\title{Shiny app server function}
 \usage{
 app_server(input, output, session)
 }
 \arguments{
-\item{input}{generic shiny var}
+\item{input}{Shiny input object containing UI widget values.}
 
-\item{output}{generic shiny var}
+\item{output}{Shiny output object for rendering results.}
 
-\item{session}{generic shiny var}
+\item{session}{Shiny session object for updating UI elements.}
 }
 \description{
-Shiny app server
+Server-side logic for the monitOS Shiny dashboard. Computes OS
+monitoring boundaries reactively based on user inputs and renders the
+summary table of positivity thresholds.
 }

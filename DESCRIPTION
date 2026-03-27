@@ -2,7 +2,7 @@ Package: monitOS
 Title: Monitoring Overall Survival in Pivotal Trials in Indolent Cancers
 URL: https://opensource.nibr.com/monitOS/, https://github.com/Novartis/monitOS
 BugReports: https://github.com/Novartis/monitOS/issues
-Version: 0.1.6
+Version: 0.2.0
 Authors@R: c(
     person("Thomas", "Fleming", email = "fleming@seattlebiostat.com", role ="ctb"),
     person("Lisa", "Hampson", email = "lisa.hampson@novartis.com", role ="aut"),
@@ -31,5 +31,7 @@ Suggests:
     testthat (>= 3.0.0),
     knitr,
     rmarkdown,
-    pkgdown
+    pkgdown,
+    shinylive
+VignetteBuilder: knitr
 Language: en-US

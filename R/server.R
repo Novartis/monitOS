@@ -1,8 +1,12 @@
-#' Shiny app server
+#' Shiny app server function
 #'
-#' @param input generic shiny var
-#' @param output generic shiny var
-#' @param session generic shiny var
+#' @description Server-side logic for the monitOS Shiny dashboard. Computes OS
+#'   monitoring boundaries reactively based on user inputs and renders the
+#'   summary table of positivity thresholds.
+#'
+#' @param input Shiny input object containing UI widget values.
+#' @param output Shiny output object for rendering results.
+#' @param session Shiny session object for updating UI elements.
 #' @import shiny
 # nocov start
 app_server <- function(input, output, session) {
@@ -20,12 +24,9 @@ app_server <- function(input, output, session) {
 
   # Core reactive function - OCs plots & results
   react <- reactive({
-    # Parse as vectors
-
     events <- c(unwrap(input$eventPA), input$eventOS)
     updateTextInput(session, "events", value = wrap(events))
 
-    # boundaries
     boundaries <- bounds(
       events = events,
       power_int = input$power_int,
@@ -39,23 +40,12 @@ app_server <- function(input, output, session) {
     hr_pos <- exp(boundaries$lhr_pos)
     updateTextInput(session, "hr_pos", value = wrap(hr_pos))
 
-    # Update column names
-    # columns <- c(
-    #   'Deaths',
-    #   'OS HR threshold for positivity',
-    #   'One-sided false positive error rate',
-    #   'Level of 2-sided CI needed to rule out delta null',
-    #   'Probability of meeting positivity threshold under delta alt',
-    #   'Posterior probability the true OS HR exceeds delta null given the data',
-    #   'Predictive probability the OS HR estimate at Final Analysis does not exceed the positivity threshold',
-    #   'Probability of meeting positivity threshold under incremental test benefit'
-    # ) # Optional
-    # names(boundaries$summary) <- columns
-
     return(boundaries)
   })
 
-  # Rendering
+  # Exclude posterior and predictive probability columns (cols 6, 7) from the
+  # displayed table — these Bayesian metrics are computed internally but not
+  # shown in the dashboard UI to keep the summary concise.
   output$bounds <- renderTable(react()$summary[, -c(6, 7)])
 }
 # nocov end

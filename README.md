@@ -28,15 +28,15 @@ install.packages('monitOS')
 
 ## Shiny app
 
-The recommended way to use `monitOS` is to run its integrated shiny app.
-It can done simply call the wrapper function using:
+The recommended way to use `monitOS` is via the interactive app — available
+directly in your browser (no R needed) or locally:
+
+- 🌐 **[Try it online (Shinylive)](https://opensource.nibr.com/monitOS/shinylive-app/)** — runs entirely in your browser via WebAssembly, no installation required.
+- 💻 **Run locally** with R:
 
 ``` r
 monitOS::run_app()
 ```
-The shiny app, as seen below, is designed to guide users through their trial designs.
-
-![](man/figures/shiny.png)
 
 ## Examples
 

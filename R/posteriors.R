@@ -47,17 +47,13 @@ calc_predictive <- function(lhr_con, events) {
 
   # calculating Pr(ZK <= lK*sqrt(info.K) | Z.k = sqrt(info.k)*lk)
   # where lk is the OS log-HR threshold for 'continuation' at analysis k
-  pred_pos <- vector(mode = "numeric", length = (nstage - 1))
-  for (i in 1:(nstage - 1)) {
-    pred_pos[i] <- pnorm(
+  pred_pos <- vapply(1:(nstage - 1), function(i) {
+    pnorm(
       lhr_con[nstage] * sqrt(info[nstage]),
-      mean = lhr_con[i] *
-        sqrt(info[i]) *
-        sqrt(
-          info[nstage] /
-            info[i]
-        ),
+      mean = lhr_con[i] * sqrt(info[i]) * sqrt(info[nstage] / info[i]),
       sd = sqrt((info[nstage] - info[i]) / info[i])
     )
-  }
+  }, numeric(1))
+
+  return(pred_pos)
 }

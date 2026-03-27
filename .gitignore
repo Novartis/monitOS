@@ -57,3 +57,11 @@ docs
 /doc/
 /Meta/
 *.DS_Store
+
+# LLMs
+.claude/
+CLAUDE.md
+.github/
+.specify/
+.vscode/
+specs/

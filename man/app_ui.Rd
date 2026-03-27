@@ -2,13 +2,16 @@
 % Please edit documentation in R/ui.R
 \name{app_ui}
 \alias{app_ui}
-\title{Shiny app UI}
+\title{Shiny app UI definition}
 \usage{
 app_ui(request)
 }
 \arguments{
-\item{request}{generic shiny var}
+\item{request}{Shiny internal request object for bookmarking support.}
 }
 \description{
-Shiny app UI
+User interface for the monitOS Shiny dashboard. Provides an
+interactive form for specifying OS monitoring parameters (delta null, delta
+alt, event counts, error rates) and displays the resulting positivity
+thresholds.
 }

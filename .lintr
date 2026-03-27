@@ -1,6 +1,6 @@
 linters: linters_with_defaults(
-    line_length_linter(130),
-    commented_code_linter = NULL) # see vignette("lintr")
+    line_length_linter(80),
+    commented_code_linter = NULL)
 encoding: "UTF-8"
 exclusions: list(
     "inst/",
