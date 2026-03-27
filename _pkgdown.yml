@@ -50,3 +50,5 @@ reference:
     desc: Interactive Shiny dashboard for OS monitoring.
     contents:
       - run_app
+      - app_server
+      - app_ui
