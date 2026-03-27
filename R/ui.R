@@ -1,6 +1,11 @@
-#' Shiny app UI
+#' Shiny app UI definition
 #'
-#' @param request generic shiny var
+#' @description User interface for the monitOS Shiny dashboard. Provides an
+#'   interactive form for specifying OS monitoring parameters (delta null, delta
+#'   alt, event counts, error rates) and displays the resulting positivity
+#'   thresholds.
+#'
+#' @param request Shiny internal request object for bookmarking support.
 #' @importFrom glue glue
 #' @import shiny shinydashboard
 # nocov start
@@ -14,7 +19,6 @@ app_ui <- function(request) {
     dashboardBody(
       fluidRow(box(
         title = "Context",
-        with = 12,
         collapsed = FALSE,
         collapsible = TRUE,
         width = 12,
@@ -33,7 +37,7 @@ app_ui <- function(request) {
         width = 12,
         status = "primary",
         " Monitoring guidelines assume that the hazard ratio (HR) can adequately summarize the size of the benefits and harms of the experimental intervention vs control on overall survival (OS). Furthermore, guidelines assume that an OS HR < 1 is consistent with a beneficial effect of the intervention on OS (and smaller OS HRs <1 indicate increased efficacy). For more details about how OS monitoring guidelines are formulated, please refer to ",
-        tags$a(href = "https://arxiv.org/", "monitOS paper")
+        tags$a(href = "https://www.tandfonline.com/doi/full/10.1080/19466315.2024.2365648", "monitOS paper")
       )),
       fluidRow(
         box(

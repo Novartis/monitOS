@@ -1,3 +1,52 @@
 url: https://opensource.nibr.com/monitOS/
 template:
   bootstrap: 5
+  bootswatch: cosmo
+
+navbar:
+  structure:
+    left:
+      - intro
+      - reference
+      - articles
+      - news
+    right:
+      - search
+      - github
+  components:
+    articles:
+      text: Articles
+      menu:
+        - text: Getting Started
+          href: articles/monitOS.html
+        - text: Interactive App (Shinylive)
+          href: articles/shinylive.html
+    github:
+      icon: fab fa-github
+      href: https://github.com/Novartis/monitOS
+      aria-label: GitHub
+
+articles:
+  - title: Getting Started
+    contents:
+      - monitOS
+  - title: Interactive Tools
+    contents:
+      - shinylive
+
+reference:
+  - title: OS Monitoring Boundaries
+    desc: Core statistical functions for computing positivity thresholds.
+    contents:
+      - bounds
+      - find_pos
+  - title: Bayesian Metrics
+    desc: Posterior and predictive probability calculations.
+    contents:
+      - calc_posterior
+      - calc_predictive
+      - meeting_probs
+  - title: Shiny App
+    desc: Interactive Shiny dashboard for OS monitoring.
+    contents:
+      - run_app
