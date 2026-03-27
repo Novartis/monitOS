@@ -18,11 +18,10 @@ jobs:
       - uses: r-lib/actions/setup-r@v2
         with:
           use-public-rspm: true
-      - uses: r-lib/actions/setup-renv@v2
-
-      - name: Install shinylive
-        run: |
-          Rscript -e 'install.packages("shinylive")'
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::pkgdown, any::shinylive
+          needs: website
 
       - name: Export shinylive app
         run: |
