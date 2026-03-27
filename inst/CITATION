@@ -1,0 +1,32 @@
+citHeader("To cite monitOS in publications, please use:")
+
+bibentry(
+  bibtype  = "Article",
+  title    = "Monitoring Overall Survival in Pivotal Trials in Indolent Cancers",
+  author   = c(
+    person("Thomas R.", "Fleming"),
+    person("Lisa V.",   "Hampson"),
+    person("Bharani",   "Bharani-Dharan"),
+    person("Frank",     "Bretz"),
+    person("Arunava",   "Chakravartty"),
+    person("Thibaud",   "Coroller"),
+    person("Evanthia",  "Koukouli"),
+    person("Janet",     "Wittes"),
+    person("Nigel",     "Yateman"),
+    person("Emmanuel",  "Zuber")
+  ),
+  journal  = "Statistics in Biopharmaceutical Research",
+  year     = "2025",
+  volume   = "17",
+  number   = "2",
+  pages    = "161--172",
+  doi      = "10.1080/19466315.2024.2365648",
+  url      = "https://www.tandfonline.com/doi/full/10.1080/19466315.2024.2365648",
+  textVersion = paste(
+    "Fleming TR, Hampson LV, Bharani-Dharan B, Bretz F, Chakravartty A,",
+    "Coroller T, Koukouli E, Wittes J, Yateman N, Zuber E (2025).",
+    "Monitoring Overall Survival in Pivotal Trials in Indolent Cancers.",
+    "Statistics in Biopharmaceutical Research, 17(2), 161-172.",
+    "doi:10.1080/19466315.2024.2365648"
+  )
+)
