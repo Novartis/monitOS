@@ -794,17 +794,25 @@ ui <- bslib::page_fluid(
 
 server <- function(input, output, session) {
   primary_defaults <- c(28, 42)
+  primary_values <- reactiveVal(primary_defaults)
   primary_count <- reactiveVal(length(primary_defaults))
   value_or <- function(x, fallback) if (is.null(x)) fallback else x
 
-  get_primary_events <- function(n) {
-    vapply(seq_len(n), function(i) {
-      input[[paste0("eventPA_", i)]]
+  get_primary_events <- function(n, fallback = primary_values()) {
+    observed <- vapply(seq_len(n), function(i) {
+      value_or(input[[paste0("eventPA_", i)]], NA_real_)
     }, numeric(1))
+
+    if (length(fallback) < n) {
+      fallback <- c(fallback, rep(NA_real_, n - length(fallback)))
+    }
+
+    ifelse(is.na(observed), fallback[seq_len(n)], observed)
   }
 
   output$primary_events_ui <- renderUI({
     n <- primary_count()
+    current_values <- get_primary_events(n)
 
     div(
       class = "event-row-list",
@@ -812,14 +820,21 @@ server <- function(input, output, session) {
         div(
           class = "event-row",
           div(class = "event-row-label", paste("Interim analysis", i)),
-          numericInput(
-            inputId = paste0("eventPA_", i),
-            label = NULL,
-            value = value_or(
-              isolate(input[[paste0("eventPA_", i)]]),
-              value_or(primary_defaults[i], NA_real_)
+          div(
+            class = "event-row-control",
+            numericInput(
+              inputId = paste0("eventPA_", i),
+              label = NULL,
+              value = current_values[i],
+              min = 1
             ),
-            min = 1
+            if (n > 1) {
+              actionLink(
+                inputId = paste0("remove_event_row_", i),
+                label = "Remove",
+                class = "event-remove-link"
+              )
+            }
           )
         )
       })
@@ -827,7 +842,24 @@ server <- function(input, output, session) {
   })
 
   observeEvent(input$add_event_row, {
+    current <- get_primary_events(primary_count())
+    primary_values(c(current, NA_real_))
     primary_count(primary_count() + 1)
+  })
+
+  observe({
+    n <- primary_count()
+
+    lapply(seq_len(n), function(i) {
+      observeEvent(input[[paste0("remove_event_row_", i)]], {
+        current <- get_primary_events(primary_count())
+        if (length(current) > 1) {
+          updated <- current[-i]
+          primary_values(updated)
+          primary_count(length(updated))
+        }
+      }, ignoreInit = TRUE)
+    })
   })
 
   summary_data <- reactive({

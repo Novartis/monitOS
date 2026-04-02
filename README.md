@@ -34,8 +34,8 @@ library(monitOS)
 
 The fastest way to explore the method is through the interactive app.
 
-- Try it in the browser: <https://opensource.nibr.com/monitOS/shinylive-app/>
-- Run it locally in R:
+- 🌐 **[Try it online (Shinylive)](https://opensource.nibr.com/monitOS/shinylive-app/)** — runs entirely in your browser via WebAssembly, no installation required.
+- 💻 **Run locally** with R:
 
 ```r
 monitOS::run_app()
