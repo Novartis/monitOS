@@ -10,8 +10,7 @@ app_ui(request)
 \item{request}{Shiny internal request object for bookmarking support.}
 }
 \description{
-User interface for the monitOS Shiny dashboard. Provides an
-interactive form for specifying OS monitoring parameters (delta null, delta
-alt, event counts, error rates) and displays the resulting positivity
-thresholds.
+User interface for the monitOS Shiny application. Provides a
+branded, guided workflow for setting OS monitoring parameters and
+reviewing the resulting positivity thresholds.
 }

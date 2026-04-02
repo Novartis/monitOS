@@ -14,7 +14,7 @@ app_server(input, output, session)
 \item{session}{Shiny session object for updating UI elements.}
 }
 \description{
-Server-side logic for the monitOS Shiny dashboard. Computes OS
+Server-side logic for the monitOS Shiny application. Computes OS
 monitoring boundaries reactively based on user inputs and renders the
 summary table of positivity thresholds.
 }

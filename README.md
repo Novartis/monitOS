@@ -1,131 +1,135 @@
-# monitOS: Monitoring overall survival in pivotal trials in indolent cancers
+# monitOS
 
 <!-- badges: start -->
-
 [![CRAN](https://www.r-pkg.org/badges/version-ago/monitOS)](https://CRAN.R-project.org/package=monitOS)
 [![Stats](https://cranlogs.r-pkg.org/badges/grand-total/monitOS?color=brightgreen)](https://CRAN.R-project.org/package=monitOS)
 [![Paper](https://img.shields.io/badge/SBR-Monitoring_Overall_Survival_in_Pivotal_Trials_in_Indolent_Cancers-blue)](https://www.tandfonline.com/doi/full/10.1080/19466315.2024.2365648)
-<!-- [![Preprint](https://img.shields.io/badge/arXiv-Monitoring_Overall_Survival_in_Pivotal_Trials_in_Indolent_Cancers-blue)](https://arxiv.org/abs/2310.20658) -->
-
-
 <!-- badges: end -->
 
-These guidelines are meant to provide a pragmatic, yet rigorous, help to drug developers and decision makers, since they are shaped by three fundamental ingredients: the clinically determined margin of detriment on OS that is unacceptably high (`δnull`); the benefit on OS that is plausible given the mechanism of action of the novel intervention (`δalt`); and the quantity of information (i.e. events, expected number of survival events, at primary and final analysis) it is feasible to accrue given the clinical and drug development setting. The proposed guidelines facilitate transparent discussions between stakeholders focusing on the risks of erroneous decisions and what might be an acceptable trade-off between power and the false positive error rate.
+`monitOS` helps clinical teams define **positivity thresholds** for monitoring overall survival (OS) in pivotal trials for indolent cancers.
 
-Monitoring guidelines assume that the hazard ratio (HR) can adequately summarize the size of the benefits and harms of the experimental intervention vs control on overall survival (OS). Furthermore, guidelines assume that an OS HR \< 1 is consistent with a beneficial effect of the intervention on OS (and smaller OS HRs \<1 indicate increased efficacy). For more details about how OS monitoring guidelines are formulated, please refer to our [**paper**](https://www.tandfonline.com/doi/full/10.1080/19466315.2024.2365648).
+It turns a small set of trial assumptions into a table of operating characteristics you can use at interim and final analyses:
 
+- the **unacceptable detrimental effect** on OS you want to rule out (`hr_null`)
+- the **plausible beneficial effect** on OS you still consider realistic (`hr_alt`)
+- the **deaths expected at each analysis** (`events`)
 
-If you find this repository useful, please consider giving a star! ⭐
+The framework is described in the [monitOS paper](https://www.tandfonline.com/doi/full/10.1080/19466315.2024.2365648).
 
-## Installation
+## Install and launch
 
-You can install the development version of `monitOS` like so:
+Install from CRAN:
 
-``` r
-install.packages('monitOS')
+```r
+install.packages("monitOS")
 ```
 
-## Shiny app
+Load the package:
 
-The recommended way to use `monitOS` is via the interactive app — available
-directly in your browser (no R needed) or locally:
+```r
+library(monitOS)
+```
 
-- 🌐 **[Try it online (Shinylive)](https://opensource.nibr.com/monitOS/shinylive-app/)** — runs entirely in your browser via WebAssembly, no installation required.
-- 💻 **Run locally** with R:
+## Use the app
 
-``` r
+The fastest way to explore the method is through the interactive app.
+
+- Try it in the browser: <https://opensource.nibr.com/monitOS/shinylive-app/>
+- Run it locally in R:
+
+```r
 monitOS::run_app()
 ```
 
-## Examples
+## What the inputs mean
 
-These are basic examples on using `monitOS`:
+`monitOS` is driven by a few clinically meaningful choices.
 
-``` r
+| Concept | Argument | What it means |
+| --- | --- | --- |
+| Unacceptable OS detriment | `hr_null` | The smallest OS HR that would already be too harmful to accept |
+| Plausible OS benefit | `hr_alt` | The OS HR that still represents a realistic beneficial effect |
+| Planned deaths | `events` | Cumulative deaths expected at each analysis |
+| Final-analysis false positive rate | `falsepos` | One-sided error rate tolerated at the final analysis |
+| Primary-analysis power | `power_int` | Required power at the primary analysis when the true OS HR equals `hr_alt` |
+| Randomization ratio | `rand_ratio` | Experimental-to-control allocation ratio |
+| Incremental-benefit scenario | `hr_marg_benefit` | Optional weaker-benefit scenario used for sensitivity analysis |
+
+Key convention: **OS HR < 1 indicates benefit**.
+
+## Quick start
+
+This minimal example creates positivity thresholds for three planned analyses:
+
+```r
 library(monitOS)
-# Example 01: OS monitoring guideline retrospectively applied to Motivating Example 1
-# with delta null = 1.3, delta alt = 0.80, gamma_FA = 0.025 and  beta_PA = 0.10.
->>> bounds(events=c(60, 89, 110, 131, 178),
-           power_int=0.9,  # βPA
-           falsepos=0.025,  # γFA
-           hr_null = 1.3,  # δnull
-           hr_alt = 0.8,   # δalt
-           rand_ratio = 1,
-           hr_marg_benefit = NULL)
 
-$lhr_null
-[1] 0.2623643
+plan <- bounds(
+  events = c(60, 110, 178),
+  power_int = 0.90,
+  falsepos = 0.025,
+  hr_null = 1.30,
+  hr_alt = 0.80
+)
 
-$lhr_alt
-[1] -0.2231436
-
-$lhr_pos
-[1]  0.107751640  0.048544837  0.021238743  0.000795809 -0.031446759
-
-$summary
-  Deaths OS HR threshold for positivity One-sided false positive error rate Level of 2-sided CI needed to rule out delta null
-1     60                          1.114                               0.275                                                45
-2     89                          1.050                               0.157                                                69
-3    110                          1.021                               0.103                                                79
-4    131                          1.001                               0.067                                                87
-5    178                          0.969                               0.025                                                95
-  Probability of meeting positivity threshold under delta alt Posterior probability the true OS HR exceeds delta null given the data
-1                                                         0.9                                                                  0.275
-2                                                         0.9                                                                  0.157
-3                                                         0.9                                                                  0.103
-4                                                         0.9                                                                  0.067
-5                                                         0.9                                                                  0.025
-  Predictive probability the OS HR estimate at Final Analysis does not exceed the positivity threshold
-1                                                                                               25.394
-2                                                                                               29.681
-3                                                                                               32.744
-4                                                                                               35.977
-5                                                                                                   NA
-
-
-
-# Example 02: OS monitoring guideline applied to Motivating Example 2
-# with delta null = 4/3, delta alt = 0.7, gamma_FA = 0.20, beta_PA = 0.1,
-# randomization ratio 2 and 0.95 HR marginal benefit
->>> bounds(events=c(60, 89, 110, 131, 178),
-           power_int=0.9,  # βPA
-           falsepos=0.025,  # γFA
-           hr_null = 1.3,  # δnull
-           hr_alt = 0.8,   # δalt
-           rand_ratio = 2, # rand_ratio
-           hr_marg_benefit = 0.95)  # Marginal HR benefit
-$lhr_null
-[1] 0.2623643
-
-$lhr_alt
-[1] -0.2231436
-
-$lhr_pos
-[1]  0.12782380  0.06502550  0.03606302  0.01438001 -0.04926939
-
-$summary
-  Deaths OS HR threshold for positivity One-sided false positive error rate Level of 2-sided CI needed to rule out delta null
-1     60                          1.136                               0.312                                                38
-2     89                          1.067                               0.190                                                62
-3    110                          1.037                               0.132                                                74
-4    131                          1.014                               0.090                                                82
-5    178                          0.952                               0.025                                                95
-  Probability of meeting positivity threshold under delta alt Posterior probability the true OS HR exceeds delta null given the data
-1                                                       0.900                                                                  0.301
-2                                                       0.900                                                                  0.176
-3                                                       0.900                                                                  0.118
-4                                                       0.900                                                                  0.078
-5                                                       0.863                                                                  0.019
-  Predictive probability the OS HR estimate at Final Analysis does not exceed the positivity threshold
-1                                                                                               19.978
-2                                                                                               22.290
-3                                                                                               23.453
-4                                                                                               23.921
-5                                                                                                   NA
-  Probability of meeting positivity threshold under incremental benefit
-1                                                                 0.743
-2                                                                 0.698
-3                                                                 0.667
-4                                                                 0.638
-5                                                                 0.505
+plan$summary
 ```
+
+What to look for:
+
+- `OS HR threshold for positivity` tells you the largest observed OS HR that still provides enough reassurance at each analysis.
+- `One-sided false positive error rate` shows the tolerated error at each stage.
+- `Level of 2-sided CI needed to rule out delta null` tells you the confidence level needed to exclude the unacceptable detriment.
+
+## Example 1: Standard 1:1 design
+
+```r
+library(monitOS)
+
+fl_trial <- bounds(
+  events = c(50, 80, 110, 140, 175),
+  power_int = 0.90,
+  falsepos = 0.025,
+  hr_null = 1.30,
+  hr_alt = 0.80,
+  rand_ratio = 1
+)
+
+fl_trial$summary
+```
+
+Interpretation: as evidence accumulates, the positivity threshold typically becomes more stringent. Early analyses may tolerate an observed OS HR slightly above 1, while the final analysis usually requires a threshold below 1.
+
+## Example 2: Unequal randomization with sensitivity analysis
+
+```r
+library(monitOS)
+
+cll_trial <- bounds(
+  events = c(60, 95, 130, 165, 200),
+  power_int = 0.90,
+  falsepos = 0.025,
+  hr_null = 1.25,
+  hr_alt = 0.80,
+  rand_ratio = 2,
+  hr_marg_benefit = 0.95
+)
+
+cll_trial$summary
+```
+
+This adds an incremental-benefit column showing how often the monitoring thresholds would still be met if the true OS effect were more modest than the main alternative.
+
+## Need help?
+
+- Package vignette: <https://opensource.nibr.com/monitOS/articles/monitOS.html>
+- Interactive app: <https://opensource.nibr.com/monitOS/shinylive-app/>
+- Function reference:
+
+```r
+?bounds
+?run_app
+```
+
+- Paper: <https://www.tandfonline.com/doi/full/10.1080/19466315.2024.2365648>
+- Issues and questions: <https://github.com/Novartis/monitOS/issues>

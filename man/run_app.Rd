@@ -10,6 +10,6 @@ run_app()
 No return value, runs shiny app
 }
 \description{
-Runs the shiny app to guide user choice adequate settings to calculate
-the positivity thresholds to monitor overall survival (OS)
+Runs the Shiny application for exploring positivity thresholds
+to monitor overall survival (OS).
 }

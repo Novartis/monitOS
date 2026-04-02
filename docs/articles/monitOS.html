@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>monitOS • monitOS</title>
+<title>Getting Started with monitOS • monitOS</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="monitOS">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Getting Started with monitOS">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -52,7 +52,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
-      <h1>monitOS</h1>
+      <h1>Getting Started with monitOS</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/Novartis/monitOS/blob/HEAD/vignettes/monitOS.Rmd" class="external-link"><code>vignettes/monitOS.Rmd</code></a></small>
@@ -61,120 +61,333 @@
 
     
     
+<div class="section level2">
+<h2 id="what-is-monitos">What is monitOS?<a class="anchor" aria-label="anchor" href="#what-is-monitos"></a>
+</h2>
+<p><strong>monitOS</strong> provides statistical guidelines for
+monitoring overall survival (OS) in pivotal clinical trials for
+<strong>indolent cancers</strong> — slow-progressing diseases
+(e.g. follicular lymphoma, CLL, low-grade glioma) where experimental
+therapies are often evaluated against a watch-and-wait or
+standard-of-care control.</p>
+<p>The core problem: in indolent cancers, OS benefit is hard to prove in
+a reasonable timeframe, yet OS harm must not be obscured by surrogate
+endpoints. The package implements the framework of <a href="https://www.tandfonline.com/doi/full/10.1080/19466315.2024.2365648" class="external-link">Fleming
+et al. (2024)</a>, which defines a sequence of <strong>positivity
+thresholds</strong> — OS hazard ratio (HR) boundaries that must be met
+at each planned analysis to give sufficient reassurance that the
+experimental treatment does not cause unacceptable harm.</p>
+<blockquote>
+<p><strong>Key convention</strong>: HR &lt; 1 indicates benefit; HR ≥ 1
+indicates potential harm.</p>
+</blockquote>
+<hr>
+</div>
+<div class="section level2">
+<h2 id="core-parameters">Core parameters<a class="anchor" aria-label="anchor" href="#core-parameters"></a>
+</h2>
+<p>Three clinically-determined ingredients drive every monitoring
+plan:</p>
+<table class="table">
+<colgroup>
+<col width="33%">
+<col width="33%">
+<col width="33%">
+</colgroup>
+<thead><tr class="header">
+<th>Parameter</th>
+<th>Argument</th>
+<th>Meaning</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>δ_null</td>
+<td><code>hr_null</code></td>
+<td>The OS HR that is <strong>unacceptably harmful</strong> (e.g. 1.3 =
+30% excess mortality)</td>
+</tr>
+<tr class="even">
+<td>δ_alt</td>
+<td><code>hr_alt</code></td>
+<td>The OS HR that is <strong>plausibly beneficial</strong> given the
+mechanism of action (e.g. 0.80)</td>
+</tr>
+<tr class="odd">
+<td>Events</td>
+<td><code>events</code></td>
+<td>Cumulative OS deaths at each planned analysis</td>
+</tr>
+</tbody>
+</table>
+<p>Two error-rate parameters complete the design:</p>
+<table class="table">
+<colgroup>
+<col width="33%">
+<col width="33%">
+<col width="33%">
+</colgroup>
+<thead><tr class="header">
+<th>Parameter</th>
+<th>Argument</th>
+<th>Meaning</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>γ_FA</td>
+<td><code>falsepos</code></td>
+<td>One-sided false positive rate tolerated at the <strong>Final
+Analysis</strong> (typically 0.025)</td>
+</tr>
+<tr class="even">
+<td>β_PA</td>
+<td><code>power_int</code></td>
+<td>Statistical power at the <strong>Primary (interim) Analysis</strong>
+under δ_alt (typically 0.9)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</div>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://opensource.nibr.com/monitOS/">monitOS</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"monitOS"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># OS monitoring guideline retrospectively applied to Motivating Example 1</span></span>
-<span><span class="co"># with delta null = 1.3, delta alt = 0.80, gamma_FA = 0.025 and  beta_PA = 0.10.</span></span>
-<span><span class="fu"><a href="../reference/bounds.html">bounds</a></span><span class="op">(</span></span>
-<span>  events <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">89</span>, <span class="fl">110</span>, <span class="fl">131</span>, <span class="fl">178</span><span class="op">)</span>,</span>
-<span>  power_int <span class="op">=</span> <span class="fl">0.9</span>, <span class="co"># βPA</span></span>
-<span>  falsepos <span class="op">=</span> <span class="fl">0.025</span>, <span class="co"># γFA</span></span>
-<span>  hr_null <span class="op">=</span> <span class="fl">1.3</span>, <span class="co"># δnull</span></span>
-<span>  hr_alt <span class="op">=</span> <span class="fl">0.8</span>, <span class="co"># δalt</span></span>
-<span>  rand_ratio <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  hr_marg_benefit <span class="op">=</span> <span class="cn">NULL</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; $lhr_null</span></span>
-<span><span class="co">#&gt; [1] 0.2623643</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $lhr_alt</span></span>
-<span><span class="co">#&gt; [1] -0.2231436</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $lhr_pos</span></span>
-<span><span class="co">#&gt; [1]  0.107751640  0.048544837  0.021238743  0.000795809 -0.031446759</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $summary</span></span>
-<span><span class="co">#&gt;   Deaths OS HR threshold for positivity One-sided false positive error rate</span></span>
-<span><span class="co">#&gt; 1     60                          1.114                               0.275</span></span>
-<span><span class="co">#&gt; 2     89                          1.050                               0.157</span></span>
-<span><span class="co">#&gt; 3    110                          1.021                               0.103</span></span>
-<span><span class="co">#&gt; 4    131                          1.001                               0.067</span></span>
-<span><span class="co">#&gt; 5    178                          0.969                               0.025</span></span>
-<span><span class="co">#&gt;   Level of 2-sided CI needed to rule out delta null</span></span>
-<span><span class="co">#&gt; 1                                                45</span></span>
-<span><span class="co">#&gt; 2                                                69</span></span>
-<span><span class="co">#&gt; 3                                                79</span></span>
-<span><span class="co">#&gt; 4                                                87</span></span>
-<span><span class="co">#&gt; 5                                                95</span></span>
-<span><span class="co">#&gt;   Probability of meeting positivity threshold under delta alt</span></span>
-<span><span class="co">#&gt; 1                                                         0.9</span></span>
-<span><span class="co">#&gt; 2                                                         0.9</span></span>
-<span><span class="co">#&gt; 3                                                         0.9</span></span>
-<span><span class="co">#&gt; 4                                                         0.9</span></span>
-<span><span class="co">#&gt; 5                                                         0.9</span></span>
-<span><span class="co">#&gt;   Posterior probability the true OS HR exceeds delta null given the data</span></span>
-<span><span class="co">#&gt; 1                                                                  0.275</span></span>
-<span><span class="co">#&gt; 2                                                                  0.157</span></span>
-<span><span class="co">#&gt; 3                                                                  0.103</span></span>
-<span><span class="co">#&gt; 4                                                                  0.067</span></span>
-<span><span class="co">#&gt; 5                                                                  0.025</span></span>
-<span><span class="co">#&gt;   Predictive probability the OS HR estimate at Final Analysis does not exceed the positivity threshold</span></span>
-<span><span class="co">#&gt; 1                                                                                               25.394</span></span>
-<span><span class="co">#&gt; 2                                                                                               29.681</span></span>
-<span><span class="co">#&gt; 3                                                                                               32.744</span></span>
-<span><span class="co">#&gt; 4                                                                                               35.977</span></span>
-<span><span class="co">#&gt; 5                                                                                                   NA</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://opensource.nibr.com/monitOS/">monitOS</a></span><span class="op">)</span></span></code></pre></div>
+<hr>
+</div>
+<div class="section level2">
+<h2 id="scenario-1-standard-trial-follicular-lymphoma">Scenario 1 — Standard trial: Follicular Lymphoma<a class="anchor" aria-label="anchor" href="#scenario-1-standard-trial-follicular-lymphoma"></a>
+</h2>
+<div class="section level3">
+<h3 id="clinical-context">Clinical context<a class="anchor" aria-label="anchor" href="#clinical-context"></a>
+</h3>
+<p>A Phase 3 randomised trial evaluates a novel PI3Kδ inhibitor combined
+with standard immunochemotherapy (R-CHOP) versus R-CHOP alone in
+previously untreated Grade 1–2 follicular lymphoma — a classic indolent
+B-cell malignancy with a long natural history.</p>
+<ul>
+<li>
+<strong>Randomisation</strong>: 1:1 (experimental : control)<br>
+</li>
+<li>
+<strong>δ_null = 1.30</strong> — a 30% increase in mortality risk is
+deemed unacceptable for a population where watch-and-wait is a safe
+alternative<br>
+</li>
+<li>
+<strong>δ_alt = 0.80</strong> — a 20% reduction in mortality risk is
+plausible based on the mechanism and Phase 2 PFS data<br>
+</li>
+<li>
+<strong>5 analyses</strong> planned at 50, 80, 110, 140, and 175 OS
+events<br>
+</li>
+<li>
+<strong>γ_FA = 0.025</strong>, <strong>β_PA = 0.90</strong>
+</li>
+</ul>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># OS monitoring guideline applied to Motivating Example 2</span></span>
-<span><span class="co"># with delta null = 4/3, delta alt = 0.7, gamma_FA = 0.20, beta_PA = 0.1,</span></span>
-<span><span class="co"># randomization ratio 2 and 0.95 HR marginal benefit</span></span>
-<span><span class="fu"><a href="../reference/bounds.html">bounds</a></span><span class="op">(</span></span>
-<span>  events <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">89</span>, <span class="fl">110</span>, <span class="fl">131</span>, <span class="fl">178</span><span class="op">)</span>,</span>
-<span>  power_int <span class="op">=</span> <span class="fl">0.9</span>, <span class="co"># βPA</span></span>
-<span>  falsepos <span class="op">=</span> <span class="fl">0.025</span>, <span class="co"># γFA</span></span>
-<span>  hr_null <span class="op">=</span> <span class="fl">1.3</span>, <span class="co"># δnull</span></span>
-<span>  hr_alt <span class="op">=</span> <span class="fl">0.8</span>, <span class="co"># δalt</span></span>
-<span>  rand_ratio <span class="op">=</span> <span class="fl">2</span>, <span class="co"># rand_ratio</span></span>
-<span>  hr_marg_benefit <span class="op">=</span> <span class="fl">0.95</span></span>
-<span><span class="op">)</span> <span class="co"># Marginal HR benefit</span></span>
-<span><span class="co">#&gt; $lhr_null</span></span>
-<span><span class="co">#&gt; [1] 0.2623643</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $lhr_alt</span></span>
-<span><span class="co">#&gt; [1] -0.2231436</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $lhr_pos</span></span>
-<span><span class="co">#&gt; [1]  0.12782380  0.06502550  0.03606302  0.01438001 -0.04926939</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $summary</span></span>
+<code class="sourceCode R"><span><span class="va">fl_trial</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bounds.html">bounds</a></span><span class="op">(</span></span>
+<span>  events     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">80</span>, <span class="fl">110</span>, <span class="fl">140</span>, <span class="fl">175</span><span class="op">)</span>,</span>
+<span>  power_int  <span class="op">=</span> <span class="fl">0.90</span>,   <span class="co"># 90% power at primary analysis under δ_alt</span></span>
+<span>  falsepos   <span class="op">=</span> <span class="fl">0.025</span>,  <span class="co"># one-sided α at final analysis</span></span>
+<span>  hr_null    <span class="op">=</span> <span class="fl">1.30</span>,   <span class="co"># unacceptable OS harm threshold</span></span>
+<span>  hr_alt     <span class="op">=</span> <span class="fl">0.80</span>,   <span class="co"># plausible OS benefit</span></span>
+<span>  rand_ratio <span class="op">=</span> <span class="fl">1</span>       <span class="co"># 1:1 randomisation</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">fl_trial</span><span class="op">$</span><span class="va">summary</span></span>
 <span><span class="co">#&gt;   Deaths OS HR threshold for positivity One-sided false positive error rate</span></span>
-<span><span class="co">#&gt; 1     60                          1.136                               0.312</span></span>
-<span><span class="co">#&gt; 2     89                          1.067                               0.190</span></span>
-<span><span class="co">#&gt; 3    110                          1.037                               0.132</span></span>
-<span><span class="co">#&gt; 4    131                          1.014                               0.090</span></span>
-<span><span class="co">#&gt; 5    178                          0.952                               0.025</span></span>
+<span><span class="co">#&gt; 1     50                          1.150                               0.332</span></span>
+<span><span class="co">#&gt; 2     80                          1.065                               0.187</span></span>
+<span><span class="co">#&gt; 3    110                          1.021                               0.103</span></span>
+<span><span class="co">#&gt; 4    140                          0.993                               0.056</span></span>
+<span><span class="co">#&gt; 5    175                          0.967                               0.025</span></span>
 <span><span class="co">#&gt;   Level of 2-sided CI needed to rule out delta null</span></span>
-<span><span class="co">#&gt; 1                                                38</span></span>
-<span><span class="co">#&gt; 2                                                62</span></span>
-<span><span class="co">#&gt; 3                                                74</span></span>
-<span><span class="co">#&gt; 4                                                82</span></span>
+<span><span class="co">#&gt; 1                                                34</span></span>
+<span><span class="co">#&gt; 2                                                63</span></span>
+<span><span class="co">#&gt; 3                                                79</span></span>
+<span><span class="co">#&gt; 4                                                89</span></span>
 <span><span class="co">#&gt; 5                                                95</span></span>
 <span><span class="co">#&gt;   Probability of meeting positivity threshold under delta alt</span></span>
 <span><span class="co">#&gt; 1                                                       0.900</span></span>
 <span><span class="co">#&gt; 2                                                       0.900</span></span>
 <span><span class="co">#&gt; 3                                                       0.900</span></span>
 <span><span class="co">#&gt; 4                                                       0.900</span></span>
-<span><span class="co">#&gt; 5                                                       0.863</span></span>
+<span><span class="co">#&gt; 5                                                       0.895</span></span>
 <span><span class="co">#&gt;   Posterior probability the true OS HR exceeds delta null given the data</span></span>
-<span><span class="co">#&gt; 1                                                                  0.301</span></span>
-<span><span class="co">#&gt; 2                                                                  0.176</span></span>
+<span><span class="co">#&gt; 1                                                                  0.332</span></span>
+<span><span class="co">#&gt; 2                                                                  0.187</span></span>
+<span><span class="co">#&gt; 3                                                                  0.103</span></span>
+<span><span class="co">#&gt; 4                                                                  0.056</span></span>
+<span><span class="co">#&gt; 5                                                                  0.025</span></span>
+<span><span class="co">#&gt;   Predictive probability the OS HR estimate at Final Analysis does not exceed the positivity threshold</span></span>
+<span><span class="co">#&gt; 1                                                                                               23.425</span></span>
+<span><span class="co">#&gt; 2                                                                                               27.725</span></span>
+<span><span class="co">#&gt; 3                                                                                               31.742</span></span>
+<span><span class="co">#&gt; 4                                                                                               35.834</span></span>
+<span><span class="co">#&gt; 5                                                                                                   NA</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="interpreting-the-output">Interpreting the output<a class="anchor" aria-label="anchor" href="#interpreting-the-output"></a>
+</h3>
+<p>Each row corresponds to one planned analysis. The key columns
+are:</p>
+<ul>
+<li><p><strong>OS HR threshold for positivity</strong>: if the observed
+OS HR at that analysis is <em>at or below</em> this value, the treatment
+is considered reassuring (it does not appear to cause unacceptable
+harm). Notice thresholds tighten as evidence accumulates — from a
+lenient ~1.13 at 50 events down to ~0.97 at the Final Analysis.</p></li>
+<li><p><strong>One-sided false positive error rate</strong>: the
+cumulative Type I error spent at each analysis. Only the Final Analysis
+exhausts the full γ_FA = 0.025.</p></li>
+<li><p><strong>Posterior probability HR ≥ δ_null</strong>: the Bayesian
+probability that the <em>true</em> OS HR exceeds the unacceptable
+threshold, given the observed estimate equals the positivity boundary —
+a useful decision-support metric alongside the threshold
+itself.</p></li>
+<li><p><strong>Predictive probability (%)</strong>: at each interim, the
+probability that the Final Analysis will also meet its positivity
+threshold, <em>assuming the current trend continues</em>. This helps
+early stopping discussions.</p></li>
+</ul>
+<hr>
+</div>
+</div>
+<div class="section level2">
+<h2 id="scenario-2-edge-case-cll-maintenance-with-unequal-randomisation">Scenario 2 — Edge case: CLL Maintenance with Unequal
+Randomisation<a class="anchor" aria-label="anchor" href="#scenario-2-edge-case-cll-maintenance-with-unequal-randomisation"></a>
+</h2>
+<div class="section level3">
+<h3 id="clinical-context-1">Clinical context<a class="anchor" aria-label="anchor" href="#clinical-context-1"></a>
+</h3>
+<p>A Phase 3 trial evaluates a BCL-2 inhibitor maintenance strategy
+versus observation in patients with chronic lymphocytic leukaemia (CLL)
+who achieved response to first-line chemo-immunotherapy.</p>
+<p>This scenario introduces two complications common in real drug
+development:</p>
+<ol style="list-style-type: decimal">
+<li>
+<strong>2:1 randomisation</strong> — more patients are allocated to
+the experimental arm to accelerate safety and biomarker data
+collection.</li>
+<li>
+<strong>Marginal benefit sensitivity analysis</strong> — the sponsor
+wishes to understand monitoring performance under a <em>pessimistic</em>
+scenario where the drug provides only a modest 5% reduction in mortality
+(HR = 0.95), well below the expected HR = 0.80 used to size the
+trial.</li>
+</ol>
+<ul>
+<li>
+<strong>δ_null = 1.25</strong> — a tighter margin than Scenario 1
+because CLL patients already have a relatively good prognosis; even
+modest harm is unacceptable<br>
+</li>
+<li>
+<strong>δ_alt = 0.80</strong> — 20% OS improvement anticipated based
+on PFS phase 2 data<br>
+</li>
+<li>
+<strong>5 analyses</strong> at 60, 95, 130, 165, and 200 OS
+events<br>
+</li>
+<li>
+<strong>hr_marg_benefit = 0.95</strong> — the marginal benefit
+scenario to stress-test</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">cll_trial</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bounds.html">bounds</a></span><span class="op">(</span></span>
+<span>  events          <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">95</span>, <span class="fl">130</span>, <span class="fl">165</span>, <span class="fl">200</span><span class="op">)</span>,</span>
+<span>  power_int       <span class="op">=</span> <span class="fl">0.90</span>,</span>
+<span>  falsepos        <span class="op">=</span> <span class="fl">0.025</span>,</span>
+<span>  hr_null         <span class="op">=</span> <span class="fl">1.25</span>,   <span class="co"># tighter harm margin for CLL</span></span>
+<span>  hr_alt          <span class="op">=</span> <span class="fl">0.80</span>,</span>
+<span>  rand_ratio      <span class="op">=</span> <span class="fl">2</span>,      <span class="co"># 2:1 experimental : control</span></span>
+<span>  hr_marg_benefit <span class="op">=</span> <span class="fl">0.95</span>    <span class="co"># sensitivity: only 5% OS benefit</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">cll_trial</span><span class="op">$</span><span class="va">summary</span></span>
+<span><span class="co">#&gt;   Deaths OS HR threshold for positivity One-sided false positive error rate</span></span>
+<span><span class="co">#&gt; 1     60                          1.136                               0.364</span></span>
+<span><span class="co">#&gt; 2     95                          1.057                               0.221</span></span>
+<span><span class="co">#&gt; 3    130                          1.015                               0.132</span></span>
+<span><span class="co">#&gt; 4    165                          0.989                               0.078</span></span>
+<span><span class="co">#&gt; 5    200                          0.932                               0.025</span></span>
+<span><span class="co">#&gt;   Level of 2-sided CI needed to rule out delta null</span></span>
+<span><span class="co">#&gt; 1                                                27</span></span>
+<span><span class="co">#&gt; 2                                                56</span></span>
+<span><span class="co">#&gt; 3                                                74</span></span>
+<span><span class="co">#&gt; 4                                                84</span></span>
+<span><span class="co">#&gt; 5                                                95</span></span>
+<span><span class="co">#&gt;   Probability of meeting positivity threshold under delta alt</span></span>
+<span><span class="co">#&gt; 1                                                       0.900</span></span>
+<span><span class="co">#&gt; 2                                                       0.900</span></span>
+<span><span class="co">#&gt; 3                                                       0.900</span></span>
+<span><span class="co">#&gt; 4                                                       0.900</span></span>
+<span><span class="co">#&gt; 5                                                       0.845</span></span>
+<span><span class="co">#&gt;   Posterior probability the true OS HR exceeds delta null given the data</span></span>
+<span><span class="co">#&gt; 1                                                                  0.356</span></span>
+<span><span class="co">#&gt; 2                                                                  0.207</span></span>
 <span><span class="co">#&gt; 3                                                                  0.118</span></span>
-<span><span class="co">#&gt; 4                                                                  0.078</span></span>
+<span><span class="co">#&gt; 4                                                                  0.066</span></span>
 <span><span class="co">#&gt; 5                                                                  0.019</span></span>
 <span><span class="co">#&gt;   Predictive probability the OS HR estimate at Final Analysis does not exceed the positivity threshold</span></span>
-<span><span class="co">#&gt; 1                                                                                               19.978</span></span>
-<span><span class="co">#&gt; 2                                                                                               22.290</span></span>
-<span><span class="co">#&gt; 3                                                                                               23.453</span></span>
-<span><span class="co">#&gt; 4                                                                                               23.921</span></span>
+<span><span class="co">#&gt; 1                                                                                               17.887</span></span>
+<span><span class="co">#&gt; 2                                                                                               19.719</span></span>
+<span><span class="co">#&gt; 3                                                                                               20.324</span></span>
+<span><span class="co">#&gt; 4                                                                                               18.110</span></span>
 <span><span class="co">#&gt; 5                                                                                                   NA</span></span>
 <span><span class="co">#&gt;   Probability of meeting positivity threshold under incremental benefit</span></span>
 <span><span class="co">#&gt; 1                                                                 0.743</span></span>
-<span><span class="co">#&gt; 2                                                                 0.698</span></span>
-<span><span class="co">#&gt; 3                                                                 0.667</span></span>
-<span><span class="co">#&gt; 4                                                                 0.638</span></span>
-<span><span class="co">#&gt; 5                                                                 0.505</span></span></code></pre></div>
-  </main>
+<span><span class="co">#&gt; 2                                                                 0.689</span></span>
+<span><span class="co">#&gt; 3                                                                 0.640</span></span>
+<span><span class="co">#&gt; 4                                                                 0.595</span></span>
+<span><span class="co">#&gt; 5                                                                 0.448</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="key-observations-for-the-edge-case">Key observations for the edge case<a class="anchor" aria-label="anchor" href="#key-observations-for-the-edge-case"></a>
+</h3>
+<p><strong>Effect of unequal randomisation</strong>: The 2:1 allocation
+reduces the Fisher information per event compared to 1:1, requiring
+slightly higher observed thresholds (more room for the HR to be above 1
+while still passing). This is reflected in the positivity thresholds
+being fractionally higher than in Scenario 1 at equivalent event
+counts.</p>
+<p><strong>Marginal benefit column</strong>: The rightmost column shows
+the probability of meeting each positivity threshold if the true OS HR
+is only 0.95 — a scenario where the drug barely works. Even under this
+pessimistic assumption the monitoring thresholds are likely to be met at
+most analyses, providing reassurance that the monitoring plan does not
+require large OS benefit to conclude “no unacceptable harm.”</p>
+<hr>
+</div>
+</div>
+<div class="section level2">
+<h2 id="quick-reference">Quick reference<a class="anchor" aria-label="anchor" href="#quick-reference"></a>
+</h2>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Minimal call — all other arguments have sensible defaults</span></span>
+<span><span class="fu"><a href="../reference/bounds.html">bounds</a></span><span class="op">(</span>events <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">100</span>, <span class="fl">150</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Full call</span></span>
+<span><span class="fu"><a href="../reference/bounds.html">bounds</a></span><span class="op">(</span></span>
+<span>  events          <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">89</span>, <span class="fl">110</span>, <span class="fl">131</span>, <span class="fl">178</span><span class="op">)</span>,</span>
+<span>  power_int       <span class="op">=</span> <span class="fl">0.90</span>,</span>
+<span>  falsepos        <span class="op">=</span> <span class="fl">0.025</span>,</span>
+<span>  hr_null         <span class="op">=</span> <span class="fl">1.30</span>,</span>
+<span>  hr_alt          <span class="op">=</span> <span class="fl">0.80</span>,</span>
+<span>  rand_ratio      <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  hr_marg_benefit <span class="op">=</span> <span class="cn">NULL</span>   <span class="co"># omit or set to a scalar HR for sensitivity analysis</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>For an interactive version of these analyses, visit the <a href="https://opensource.nibr.com/monitOS/shinylive-app/">Shiny app</a>
+— no R installation required.</p>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 

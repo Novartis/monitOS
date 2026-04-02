@@ -1,7 +1,7 @@
 #' @title monitOS app
 #'
-#' @description Runs the shiny app to guide user choice adequate settings to calculate
-#' the positivity thresholds to monitor overall survival (OS)
+#' @description Runs the Shiny application for exploring positivity thresholds
+#' to monitor overall survival (OS).
 #' @import shiny
 #' @export
 #' @return No return value, runs shiny app
