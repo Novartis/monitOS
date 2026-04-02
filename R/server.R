@@ -10,77 +10,107 @@
 #' @import shiny
 # nocov start
 app_server <- function(input, output, session) {
-  primary_defaults <- c(28, 42)
-  primary_values <- reactiveVal(primary_defaults)
-  primary_count <- reactiveVal(length(primary_defaults))
-  value_or <- function(x, fallback) if (is.null(x)) fallback else x
+  primary_rows <- reactiveVal(list(
+    list(id = 1L, value = 28),
+    list(id = 2L, value = 42)
+  ))
+  next_primary_id <- reactiveVal(3L)
 
-  get_primary_events <- function(n, fallback = primary_values()) {
-    observed <- vapply(seq_len(n), function(i) {
-      value_or(input[[paste0("eventPA_", i)]], NA_real_)
+  get_primary_events <- function(rows = primary_rows()) {
+    vapply(rows, function(row) {
+      input_value <- input[[paste0("eventPA_", row$id)]]
+      if (is.null(input_value) || is.na(input_value)) row$value else input_value
     }, numeric(1))
-
-    if (length(fallback) < n) {
-      fallback <- c(fallback, rep(NA_real_, n - length(fallback)))
-    }
-
-    ifelse(is.na(observed), fallback[seq_len(n)], observed)
   }
 
   output$primary_events_ui <- renderUI({
-    n <- primary_count()
-    current_values <- get_primary_events(n)
+    rows <- primary_rows()
+    current_values <- get_primary_events(rows)
 
     div(
-      class = "event-row-list",
-      lapply(seq_len(n), function(i) {
-        div(
-          class = "event-row",
-          div(class = "event-row-label", paste("Interim analysis", i)),
+      class = "event-editor",
+      div(
+        class = "event-row-head",
+        div("Planned look"),
+        div("Deaths"),
+        div()
+      ),
+      div(
+        class = "event-row-list",
+        lapply(seq_along(rows), function(i) {
+          row <- rows[[i]]
           div(
-            class = "event-row-control",
-            numericInput(
-              inputId = paste0("eventPA_", i),
-              label = NULL,
-              value = current_values[i],
-              min = 1
-            ),
-            if (n > 1) {
-              actionLink(
-                inputId = paste0("remove_event_row_", i),
-                label = "Remove",
-                class = "event-remove-link"
+            class = "event-row",
+            div(class = "event-row-label", paste("Interim analysis", i)),
+            div(
+              class = "event-row-control",
+              numericInput(
+                inputId = paste0("eventPA_", row$id),
+                label = NULL,
+                value = current_values[i],
+                min = 1
               )
+            ),
+            if (length(rows) > 1) {
+              actionLink(
+                inputId = paste0("remove_event_row_", row$id),
+                label = HTML("&#10005;"),
+                class = "event-remove-link",
+                title = "Remove interim analysis"
+              )
+            } else {
+              div()
             }
           )
+        })
+      ),
+      div(
+        class = "event-footer",
+        actionLink(
+          "add_event_row",
+          HTML("+ Add interim analysis"),
+          class = "event-add-link"
         )
-      })
+      )
     )
   })
 
   observeEvent(input$add_event_row, {
-    current <- get_primary_events(primary_count())
-    primary_values(c(current, NA_real_))
-    primary_count(primary_count() + 1)
+    rows <- primary_rows()
+    current_values <- get_primary_events(rows)
+    updated_rows <- Map(function(row, value) {
+      row$value <- value
+      row
+    }, rows, current_values)
+    new_id <- next_primary_id()
+    updated_rows[[length(updated_rows) + 1]] <- list(id = new_id, value = NA_real_)
+    primary_rows(updated_rows)
+    next_primary_id(new_id + 1L)
   })
 
   observe({
-    n <- primary_count()
+    rows <- primary_rows()
 
-    lapply(seq_len(n), function(i) {
-      observeEvent(input[[paste0("remove_event_row_", i)]], {
-        current <- get_primary_events(primary_count())
-        if (length(current) > 1) {
-          updated <- current[-i]
-          primary_values(updated)
-          primary_count(length(updated))
+    lapply(rows, function(row) {
+      observeEvent(input[[paste0("remove_event_row_", row$id)]], {
+        current_rows <- primary_rows()
+        current_values <- get_primary_events(current_rows)
+        current_rows <- Map(function(existing_row, value) {
+          existing_row$value <- value
+          existing_row
+        }, current_rows, current_values)
+
+        if (length(current_rows) > 1) {
+          keep <- vapply(current_rows, function(existing_row) existing_row$id != row$id, logical(1))
+          primary_rows(current_rows[keep])
         }
       }, ignoreInit = TRUE)
     })
   })
 
   summary_data <- reactive({
-    primary_events <- get_primary_events(primary_count())
+    rows <- primary_rows()
+    primary_events <- get_primary_events(rows)
 
     validate(
       need(length(primary_events) > 0, "Enter at least one interim-analysis event count."),
@@ -90,7 +120,10 @@ app_server <- function(input, output, session) {
       need(input$eventOS >= max(primary_events), "Final-analysis deaths must be greater than or equal to the last interim analysis.")
     )
 
-    primary_values(primary_events)
+    primary_rows(Map(function(row, value) {
+      row$value <- value
+      row
+    }, rows, primary_events))
 
     summary <- bounds(
       events = c(primary_events, input$eventOS),
@@ -119,7 +152,7 @@ app_server <- function(input, output, session) {
   })
 
   output$analysis_count_summary <- renderText({
-    interim_n <- primary_count()
+    interim_n <- length(primary_rows())
     total_n <- interim_n + 1
     paste0(interim_n, " interim + 1 final analysis (", total_n, " total).")
   })

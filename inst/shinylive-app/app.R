@@ -283,21 +283,41 @@ app_css <- "
     margin-top: 0.35rem;
   }
 
+  .event-editor {
+    margin-top: 0.35rem;
+    padding: 0.65rem 0.7rem 0.45rem;
+    border: 1px solid rgba(22, 22, 22, 0.08);
+    border-radius: 14px;
+    background: rgba(252, 252, 252, 0.92);
+  }
+
+  .event-row-head,
+  .event-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 120px 32px;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .event-row-head {
+    padding: 0 0.2rem 0.35rem;
+    color: rgba(22, 22, 22, 0.52);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
   .event-row-list {
     display: grid;
-    gap: 0.75rem;
-    margin-top: 0.35rem;
+    gap: 0.4rem;
   }
 
   .event-row {
-    display: grid;
-    grid-template-columns: minmax(140px, 180px) minmax(0, 1fr);
-    gap: 0.9rem;
-    align-items: center;
-    padding: 0.75rem 0.9rem;
+    padding: 0.42rem 0.55rem;
     border: 1px solid rgba(22, 22, 22, 0.08);
-    border-radius: 14px;
-    background: rgba(255, 255, 255, 0.92);
+    border-radius: 10px;
+    background: #fff;
   }
 
   .event-row .shiny-input-container {
@@ -306,33 +326,35 @@ app_css <- "
 
   .event-row-label {
     color: rgba(22, 22, 22, 0.78);
-    font-size: 0.92rem;
-    font-weight: 600;
+    font-size: 0.9rem;
+    font-weight: 500;
     white-space: nowrap;
   }
 
-  .event-row .form-control {
-    max-width: 220px;
+  .event-row-control .form-control {
+    max-width: 120px;
+    height: 36px;
+    padding: 0.3rem 0.55rem;
   }
 
-  .event-actions {
+  .event-footer {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.65rem;
-    margin-top: 0.85rem;
+    justify-content: flex-start;
+    margin-top: 0.45rem;
+    padding: 0.15rem 0.15rem 0;
   }
 
-  .event-actions .btn {
-    border-radius: 999px;
-    padding: 0.38rem 0.82rem;
-    font-size: 0.9rem;
-    font-weight: 500;
+  .event-add-link {
+    color: var(--monitos-orange);
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
   }
 
-  .event-actions .btn-default {
-    border-color: rgba(22, 22, 22, 0.12);
-    background: #fff;
+  .event-add-link:hover,
+  .event-add-link:focus {
     color: var(--monitos-fg);
+    text-decoration: none;
   }
 
   .helper-copy {
@@ -440,16 +462,26 @@ app_css <- "
   }
 
   .event-remove-link {
-    display: inline-block;
-    margin-top: 0.35rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border: 1px solid rgba(22, 22, 22, 0.1);
+    border-radius: 999px;
     color: rgba(22, 22, 22, 0.56);
-    font-size: 0.86rem;
+    font-size: 0.82rem;
+    line-height: 1;
     text-decoration: none;
+    background: rgba(245, 245, 245, 0.9);
+    transition: color 120ms ease, border-color 120ms ease, background 120ms ease;
   }
 
   .event-remove-link:hover,
   .event-remove-link:focus {
     color: var(--monitos-orange);
+    border-color: rgba(255, 78, 0, 0.28);
+    background: rgba(255, 78, 0, 0.06);
   }
 
   .reference-links {
@@ -503,6 +535,10 @@ app_css <- "
     .event-row {
       grid-template-columns: 1fr;
       gap: 0.55rem;
+    }
+
+    .event-row-head {
+      display: none;
     }
 
     .hero-logo-shell {
@@ -642,7 +678,7 @@ ui <- bslib::page_fluid(
         div(
           class = "panel-card",
           span(class = "section-kicker", "Design inputs"),
-          h3("Event timing and decision thresholds"),
+          h3("Event timing"),
           div(
             class = "field-stack",
             div(
@@ -662,19 +698,23 @@ ui <- bslib::page_fluid(
               div(
                 tags$label(
                   `for` = "primary_events_ui",
-                  "How many deaths are expected at the interim analyses?"
+                  "Interim analysis schedule"
                 ),
                 uiOutput("primary_events_ui"),
-                div(
-                  class = "event-actions",
-                  actionButton("add_event_row", "Add interim")
-                ),
                 p(
                   class = "helper-copy",
-                  "Add one row per planned interim look."
+                  "Add one row per planned look, ordered by increasing deaths."
                 )
               )
-            ),
+            )
+          )
+        ),
+        div(
+          class = "panel-card",
+          span(class = "section-kicker", "Decision thresholds"),
+          h3("Statistical threshold settings"),
+          div(
+            class = "field-stack",
             div(
               class = "field-grid",
               div(
@@ -793,77 +833,107 @@ ui <- bslib::page_fluid(
 )
 
 server <- function(input, output, session) {
-  primary_defaults <- c(28, 42)
-  primary_values <- reactiveVal(primary_defaults)
-  primary_count <- reactiveVal(length(primary_defaults))
-  value_or <- function(x, fallback) if (is.null(x)) fallback else x
+  primary_rows <- reactiveVal(list(
+    list(id = 1L, value = 28),
+    list(id = 2L, value = 42)
+  ))
+  next_primary_id <- reactiveVal(3L)
 
-  get_primary_events <- function(n, fallback = primary_values()) {
-    observed <- vapply(seq_len(n), function(i) {
-      value_or(input[[paste0("eventPA_", i)]], NA_real_)
+  get_primary_events <- function(rows = primary_rows()) {
+    vapply(rows, function(row) {
+      input_value <- input[[paste0("eventPA_", row$id)]]
+      if (is.null(input_value) || is.na(input_value)) row$value else input_value
     }, numeric(1))
-
-    if (length(fallback) < n) {
-      fallback <- c(fallback, rep(NA_real_, n - length(fallback)))
-    }
-
-    ifelse(is.na(observed), fallback[seq_len(n)], observed)
   }
 
   output$primary_events_ui <- renderUI({
-    n <- primary_count()
-    current_values <- get_primary_events(n)
+    rows <- primary_rows()
+    current_values <- get_primary_events(rows)
 
     div(
-      class = "event-row-list",
-      lapply(seq_len(n), function(i) {
-        div(
-          class = "event-row",
-          div(class = "event-row-label", paste("Interim analysis", i)),
+      class = "event-editor",
+      div(
+        class = "event-row-head",
+        div("Planned look"),
+        div("Deaths"),
+        div()
+      ),
+      div(
+        class = "event-row-list",
+        lapply(seq_along(rows), function(i) {
+          row <- rows[[i]]
           div(
-            class = "event-row-control",
-            numericInput(
-              inputId = paste0("eventPA_", i),
-              label = NULL,
-              value = current_values[i],
-              min = 1
-            ),
-            if (n > 1) {
-              actionLink(
-                inputId = paste0("remove_event_row_", i),
-                label = "Remove",
-                class = "event-remove-link"
+            class = "event-row",
+            div(class = "event-row-label", paste("Interim analysis", i)),
+            div(
+              class = "event-row-control",
+              numericInput(
+                inputId = paste0("eventPA_", row$id),
+                label = NULL,
+                value = current_values[i],
+                min = 1
               )
+            ),
+            if (length(rows) > 1) {
+              actionLink(
+                inputId = paste0("remove_event_row_", row$id),
+                label = HTML("&#10005;"),
+                class = "event-remove-link",
+                title = "Remove interim analysis"
+              )
+            } else {
+              div()
             }
           )
+        })
+      ),
+      div(
+        class = "event-footer",
+        actionLink(
+          "add_event_row",
+          HTML("+ Add interim analysis"),
+          class = "event-add-link"
         )
-      })
+      )
     )
   })
 
   observeEvent(input$add_event_row, {
-    current <- get_primary_events(primary_count())
-    primary_values(c(current, NA_real_))
-    primary_count(primary_count() + 1)
+    rows <- primary_rows()
+    current_values <- get_primary_events(rows)
+    updated_rows <- Map(function(row, value) {
+      row$value <- value
+      row
+    }, rows, current_values)
+    new_id <- next_primary_id()
+    updated_rows[[length(updated_rows) + 1]] <- list(id = new_id, value = NA_real_)
+    primary_rows(updated_rows)
+    next_primary_id(new_id + 1L)
   })
 
   observe({
-    n <- primary_count()
+    rows <- primary_rows()
 
-    lapply(seq_len(n), function(i) {
-      observeEvent(input[[paste0("remove_event_row_", i)]], {
-        current <- get_primary_events(primary_count())
-        if (length(current) > 1) {
-          updated <- current[-i]
-          primary_values(updated)
-          primary_count(length(updated))
+    lapply(rows, function(row) {
+      observeEvent(input[[paste0("remove_event_row_", row$id)]], {
+        current_rows <- primary_rows()
+        current_values <- get_primary_events(current_rows)
+        current_rows <- Map(function(existing_row, value) {
+          existing_row$value <- value
+          existing_row
+        }, current_rows, current_values)
+
+        if (length(current_rows) > 1) {
+          keep <- vapply(current_rows, function(existing_row) existing_row$id != row$id, logical(1))
+          primary_rows(current_rows[keep])
         }
       }, ignoreInit = TRUE)
     })
   })
 
   summary_data <- reactive({
-    primary_events <- get_primary_events(primary_count())
+    rows <- primary_rows()
+    primary_events <- get_primary_events(rows)
 
     validate(
       need(length(primary_events) > 0, "Enter at least one interim-analysis event count."),
@@ -873,7 +943,10 @@ server <- function(input, output, session) {
       need(input$eventOS >= max(primary_events), "Final-analysis deaths must be greater than or equal to the last interim analysis.")
     )
 
-    primary_values(primary_events)
+    primary_rows(Map(function(row, value) {
+      row$value <- value
+      row
+    }, rows, primary_events))
 
     summary <- bounds(
       events = c(primary_events, input$eventOS),
@@ -902,7 +975,7 @@ server <- function(input, output, session) {
   })
 
   output$analysis_count_summary <- renderText({
-    interim_n <- primary_count()
+    interim_n <- length(primary_rows())
     total_n <- interim_n + 1
     paste0(interim_n, " interim + 1 final analysis (", total_n, " total).")
   })

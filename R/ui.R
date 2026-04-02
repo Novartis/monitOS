@@ -215,21 +215,41 @@ app_ui <- function(request) {
           margin-top: 0.35rem;
         }
 
+        .event-editor {
+          margin-top: 0.35rem;
+          padding: 0.65rem 0.7rem 0.45rem;
+          border: 1px solid rgba(22, 22, 22, 0.08);
+          border-radius: 14px;
+          background: rgba(252, 252, 252, 0.92);
+        }
+
+        .event-row-head,
+        .event-row {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) 120px 32px;
+          gap: 0.75rem;
+          align-items: center;
+        }
+
+        .event-row-head {
+          padding: 0 0.2rem 0.35rem;
+          color: rgba(22, 22, 22, 0.52);
+          font-size: 0.72rem;
+          font-weight: 600;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+        }
+
         .event-row-list {
           display: grid;
-          gap: 0.75rem;
-          margin-top: 0.35rem;
+          gap: 0.4rem;
         }
 
         .event-row {
-          display: grid;
-          grid-template-columns: minmax(140px, 180px) minmax(0, 1fr);
-          gap: 0.9rem;
-          align-items: center;
-          padding: 0.75rem 0.9rem;
+          padding: 0.42rem 0.55rem;
           border: 1px solid rgba(22, 22, 22, 0.08);
-          border-radius: 14px;
-          background: rgba(255, 255, 255, 0.92);
+          border-radius: 10px;
+          background: #fff;
         }
 
         .event-row .shiny-input-container {
@@ -238,33 +258,35 @@ app_ui <- function(request) {
 
         .event-row-label {
           color: rgba(22, 22, 22, 0.78);
-          font-size: 0.92rem;
-          font-weight: 600;
+          font-size: 0.9rem;
+          font-weight: 500;
           white-space: nowrap;
         }
 
-        .event-row .form-control {
-          max-width: 220px;
+        .event-row-control .form-control {
+          max-width: 120px;
+          height: 36px;
+          padding: 0.3rem 0.55rem;
         }
 
-        .event-actions {
+        .event-footer {
           display: flex;
-          flex-wrap: wrap;
-          gap: 0.65rem;
-          margin-top: 0.85rem;
+          justify-content: flex-start;
+          margin-top: 0.45rem;
+          padding: 0.15rem 0.15rem 0;
         }
 
-        .event-actions .btn {
-          border-radius: 999px;
-          padding: 0.38rem 0.82rem;
-          font-size: 0.9rem;
-          font-weight: 500;
+        .event-add-link {
+          color: var(--monitos-orange);
+          font-size: 0.88rem;
+          font-weight: 600;
+          text-decoration: none;
         }
 
-        .event-actions .btn-default {
-          border-color: rgba(22, 22, 22, 0.12);
-          background: #fff;
+        .event-add-link:hover,
+        .event-add-link:focus {
           color: var(--monitos-fg);
+          text-decoration: none;
         }
 
         .helper-copy {
@@ -372,16 +394,26 @@ app_ui <- function(request) {
         }
 
         .event-remove-link {
-          display: inline-block;
-          margin-top: 0.35rem;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 26px;
+          height: 26px;
+          border: 1px solid rgba(22, 22, 22, 0.1);
+          border-radius: 999px;
           color: rgba(22, 22, 22, 0.56);
-          font-size: 0.86rem;
+          font-size: 0.82rem;
+          line-height: 1;
           text-decoration: none;
+          background: rgba(245, 245, 245, 0.9);
+          transition: color 120ms ease, border-color 120ms ease, background 120ms ease;
         }
 
         .event-remove-link:hover,
         .event-remove-link:focus {
           color: var(--monitos-orange);
+          border-color: rgba(255, 78, 0, 0.28);
+          background: rgba(255, 78, 0, 0.06);
         }
 
         .reference-links {
@@ -435,6 +467,10 @@ app_ui <- function(request) {
           .event-row {
             grid-template-columns: 1fr;
             gap: 0.55rem;
+          }
+
+          .event-row-head {
+            display: none;
           }
 
           .hero-logo-shell {
@@ -562,7 +598,7 @@ app_ui <- function(request) {
           div(
             class = "panel-card",
             span(class = "section-kicker", "Design inputs"),
-            h3("Event timing and decision thresholds"),
+            h3("Event timing"),
             div(
               class = "field-stack",
               div(
@@ -581,20 +617,24 @@ app_ui <- function(request) {
                 ),
                 div(
                   tags$label(
-                    `for` = "primary_events_ui",
-                    "How many deaths are expected at the interim analyses?"
-                  ),
-                  uiOutput("primary_events_ui"),
-                  div(
-                    class = "event-actions",
-                    actionButton("add_event_row", "Add interim")
-                  ),
+                  `for` = "primary_events_ui",
+                  "Interim analysis schedule"
+                ),
+                uiOutput("primary_events_ui"),
                   p(
                     class = "helper-copy",
-                    "Add one row per planned interim look."
+                    "Add one row per planned look, ordered by increasing deaths."
                   )
                 )
-              ),
+              )
+            )
+          ),
+          div(
+            class = "panel-card",
+            span(class = "section-kicker", "Decision thresholds"),
+            h3("Statistical threshold settings"),
+            div(
+              class = "field-stack",
               div(
                 class = "field-grid",
                 div(
