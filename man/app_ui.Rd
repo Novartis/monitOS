@@ -4,10 +4,14 @@
 \alias{app_ui}
 \title{Shiny app UI definition}
 \usage{
-app_ui(request)
+app_ui(request = NULL, logo_src = NULL, register_resources = TRUE)
 }
 \arguments{
 \item{request}{Shiny internal request object for bookmarking support.}
+
+\item{logo_src}{Optional image source override for standalone exports.}
+
+\item{register_resources}{Whether to register local app resources.}
 }
 \description{
 User interface for the monitOS Shiny application. Provides a
