@@ -79,5 +79,8 @@ jsonlite::write_json(
   pretty = FALSE
 )
 
+unlink(docs_dir, recursive = TRUE, force = TRUE)
+shinylive::export(app_dir, docs_dir)
+
 message("Shinylive wrapper regenerated in ", app_dir)
-message("Published app manifest regenerated in ", file.path(docs_dir, "app.json"))
+message("Published Shinylive app exported to ", docs_dir)

@@ -29,7 +29,7 @@ jobs:
       - name: Build pkgdown site
         run: |
           LOAD_MONITOS_PACKAGE=true Rscript -e "pkgdown::build_site(new_process = FALSE)"
-          Rscript -e 'shinylive::export("inst/shinylive-app", "docs/shinylive-app")'
+          Rscript tools/build_shinylive.R
 
       - name: Deploy to GitHub Pages
         if: github.event_name != 'pull_request'

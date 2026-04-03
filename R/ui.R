@@ -7,15 +7,21 @@
 #' @param request Shiny internal request object for bookmarking support.
 #' @param logo_src Optional image source override for standalone exports.
 #' @param register_resources Whether to register local app resources.
+#' @param app_www_dir Optional local app asset directory.
 #' @import shiny
 #' @import bslib
 # nocov start
-app_ui <- function(request = NULL, logo_src = NULL, register_resources = TRUE) {
-  www_dir <- c(
-    system.file("app/www", package = "monitOS"),
+app_ui <- function(
+  request = NULL,
+  logo_src = NULL,
+  register_resources = TRUE,
+  app_www_dir = NULL
+) {
+  www_candidates <- c(
+    app_www_dir,
     file.path("inst", "app", "www")
   )
-  www_dir <- www_dir[nzchar(www_dir) & dir.exists(www_dir)][1]
+  www_dir <- www_candidates[nzchar(www_candidates) & dir.exists(www_candidates)][1]
 
   if (register_resources && !is.na(www_dir)) {
     suppressWarnings(shiny::addResourcePath("monitos-assets", www_dir))
