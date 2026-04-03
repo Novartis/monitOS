@@ -47,14 +47,11 @@ vignettes/*.pdf
 *.jpeg
 inst/doc
 
-
 # Shiny
 **/rsconnect/
 
 # vim
 *.swp
-docs
-/doc/
 /Meta/
 *.DS_Store
 
