@@ -3,14 +3,13 @@
 library(bslib)
 library(shiny)
 
-source("R/logo_data.R", local = TRUE)
 source("R/posteriors.R", local = TRUE)
 source("R/probs.R", local = TRUE)
 source("R/bounds.R", local = TRUE)
 source("R/ui.R", local = TRUE)
 source("R/server.R", local = TRUE)
 
-ui <- app_ui(logo_src = logo_src, register_resources = FALSE)
+ui <- app_ui()
 server <- app_server
 
 shinyApp(ui, server)

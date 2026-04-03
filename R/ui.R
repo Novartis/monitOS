@@ -5,36 +5,10 @@
 #'   reviewing the resulting positivity thresholds.
 #'
 #' @param request Shiny internal request object for bookmarking support.
-#' @param logo_src Optional image source override for standalone exports.
-#' @param register_resources Whether to register local app resources.
-#' @param app_www_dir Optional local app asset directory.
 #' @import shiny
 #' @import bslib
 # nocov start
-app_ui <- function(
-  request = NULL,
-  logo_src = NULL,
-  register_resources = TRUE,
-  app_www_dir = NULL
-) {
-  www_candidates <- c(
-    app_www_dir,
-    file.path("inst", "app", "www")
-  )
-  www_dir <- www_candidates[nzchar(www_candidates) & dir.exists(www_candidates)][1]
-
-  if (register_resources && !is.na(www_dir)) {
-    suppressWarnings(shiny::addResourcePath("monitos-assets", www_dir))
-  }
-
-  resolved_logo_src <- if (!is.null(logo_src)) {
-    logo_src
-  } else if (!is.na(www_dir)) {
-    "monitos-assets/logo.png"
-  } else {
-    NULL
-  }
-
+app_ui <- function(request = NULL) {
   theme <- bslib::bs_theme(
     version = 5,
     bg = "#FCFCFC",
@@ -97,10 +71,6 @@ app_ui <- function(
         }
 
         .hero-grid {
-          display: grid;
-          grid-template-columns: minmax(0, 1.5fr) minmax(220px, 0.7fr);
-          gap: 1.5rem;
-          align-items: center;
           position: relative;
           z-index: 1;
         }
@@ -132,21 +102,6 @@ app_ui <- function(
           font-size: 1rem;
           line-height: 1.65;
           color: rgba(22, 22, 22, 0.78);
-        }
-
-        .hero-logo-shell {
-          display: flex;
-          align-items: center;
-          justify-content: flex-end;
-          min-height: 180px;
-        }
-
-        .hero-logo {
-          width: min(100%, 380px);
-          padding: 0.9rem 1.1rem;
-          border-radius: 18px;
-          background: rgba(255, 255, 255, 0.82);
-          border: 1px solid rgba(22, 22, 22, 0.06);
         }
 
         .app-grid {
@@ -469,7 +424,6 @@ app_ui <- function(
         }
 
         @media (max-width: 991px) {
-          .hero-grid,
           .field-grid {
             grid-template-columns: 1fr;
           }
@@ -481,10 +435,6 @@ app_ui <- function(
 
           .event-row-head {
             display: none;
-          }
-
-          .hero-logo-shell {
-            justify-content: flex-start;
           }
 
           .results-card {
@@ -509,16 +459,6 @@ app_ui <- function(
                 "positivity thresholds for interim and final OS reviews."
               )
             )
-          ),
-          div(
-            class = "hero-logo-shell",
-            if (!is.null(resolved_logo_src)) {
-              tags$img(
-                src = resolved_logo_src,
-                alt = "Novartis",
-                class = "hero-logo"
-              )
-            }
           )
         )
       ),
