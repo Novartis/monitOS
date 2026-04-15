@@ -270,20 +270,36 @@ app_ui <- function(request = NULL) {
           position: sticky;
           top: 0;
           z-index: 5;
+          padding: 0.95rem 1rem 1rem;
           border-top-left-radius: 0;
           border-top-right-radius: 0;
+        }
+
+        .results-card .section-kicker {
+          margin-bottom: 0.35rem;
+        }
+
+        .results-card h2 {
+          margin-bottom: 0.35rem;
+          font-size: 1.35rem;
+        }
+
+        .results-card .inline-note {
+          margin-bottom: 0;
+          font-size: 0.86rem;
+          line-height: 1.4;
         }
 
         .summary-strip {
           display: grid;
           grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 0.75rem;
-          margin-top: 0.9rem;
+          gap: 0.55rem;
+          margin-top: 0.65rem;
         }
 
         .summary-item {
-          padding: 0.8rem 0.9rem;
-          border-radius: 14px;
+          padding: 0.55rem 0.7rem;
+          border-radius: 12px;
           background: rgba(245, 245, 245, 0.95);
           border: 1px solid rgba(22, 22, 22, 0.06);
         }
@@ -300,8 +316,8 @@ app_ui <- function(request = NULL) {
 
         .summary-item-value {
           color: var(--monitos-fg);
-          font-size: 0.96rem;
-          line-height: 1.45;
+          font-size: 0.9rem;
+          line-height: 1.35;
           font-weight: 600;
         }
 
@@ -315,8 +331,9 @@ app_ui <- function(request = NULL) {
         }
 
         .results-frame {
-          margin-top: 1rem;
-          overflow-x: auto;
+          margin-top: 0.75rem;
+          max-height: min(38vh, 18rem);
+          overflow: auto;
           border: 1px solid rgba(22, 22, 22, 0.08);
           border-radius: 16px;
           background: #fff;
@@ -325,24 +342,27 @@ app_ui <- function(request = NULL) {
         .results-card table {
           width: 100%;
           margin: 0;
-          font-size: 0.95rem;
+          font-size: 0.88rem;
         }
 
         .results-card thead th {
           position: sticky;
           top: 0;
           z-index: 1;
-          padding: 0.85rem 0.85rem;
+          padding: 0.6rem 0.65rem;
           border: 0;
           background: rgba(245, 245, 245, 0.98);
           color: var(--monitos-fg);
+          font-size: 0.78rem;
           font-weight: 700;
+          line-height: 1.3;
         }
 
         .results-card tbody td {
-          padding: 0.85rem;
+          padding: 0.6rem 0.65rem;
           vertical-align: top;
           border-color: rgba(22, 22, 22, 0.08);
+          line-height: 1.4;
         }
 
         .results-card tbody tr:nth-child(odd) td {
@@ -440,6 +460,10 @@ app_ui <- function(request = NULL) {
           .results-card {
             position: static;
           }
+
+          .results-frame {
+            max-height: none;
+          }
         }
       "))
     ),
@@ -495,7 +519,7 @@ app_ui <- function(request = NULL) {
             h2("Set assumptions, then review the threshold"),
             p(
               class = "inline-note",
-              "1. Set effect sizes. 2. Add interim event counts. 3. Review the final-analysis threshold and interim operating characteristics."
+              "1. Set effect sizes. 2. Add interim expected death counts. 3. Review the final-analysis threshold and interim operating characteristics."
             ),
             p(class = "helper-copy", "HR below 1 indicates benefit.")
           ),
@@ -521,7 +545,7 @@ app_ui <- function(request = NULL) {
                   class = "field-note",
                   tags$strong("Use for: "),
                   "choose the OS hazard ratio that would already be too harmful to accept. ",
-                  tags$em("Example: set delta null to 1.33 if any HR at or above 1.33 would be unacceptable.")
+                  tags$em("Example: set this to 1.33 if any HR at or above 1.33 would be unacceptable.")
                 )
               ),
               div(
@@ -540,7 +564,7 @@ app_ui <- function(request = NULL) {
                   class = "field-note",
                   tags$strong("Use for: "),
                   "reflect the benefit you could reasonably expect from prior evidence or mechanism of action. ",
-                  tags$em("Example: use 0.90 if a 10% OS hazard reduction would still be clinically meaningful.")
+                  tags$em("Example: use 0.90 if a 10% OS hazard reduction would still be a plausible beneficial effect.")
                 )
               )
             )
@@ -556,24 +580,24 @@ app_ui <- function(request = NULL) {
                 div(
                   numericInput(
                     "eventOS",
-                    "Deaths at final analysis",
+                    "Targeted deaths at final OS analysis",
                     value = 70,
                     min = 1
                   ),
                   p(
                     class = "helper-copy",
-                    "Use the longest feasible follow-up window for the final analysis."
+                    "Use the longest feasible follow-up window when setting the targeted deaths for the final OS analysis."
                   )
                 ),
                 div(
                   tags$label(
                   `for` = "primary_events_ui",
-                  "Interim analysis schedule"
+                  "Interim OS analysis schedule"
                 ),
                 uiOutput("primary_events_ui"),
                   p(
                     class = "helper-copy",
-                    "Add one row per planned look, ordered by increasing deaths."
+                    "Add one row per planned look, ordered by increasing expected deaths."
                   )
                 )
               )
@@ -601,8 +625,9 @@ app_ui <- function(request = NULL) {
                   class = "field-note",
                   tags$strong("Interpretation: "),
                   paste(
-                    "this controls the final-analysis reassurance threshold when the true OS HR",
-                    "is equal to your unacceptable detriment."
+                    "this controls the final-analysis threshold for positivity.",
+                    "It is the risk of being wrongly reassured when the true OS HR",
+                    "is in fact equal to your unacceptable detriment."
                   )
                 )
               ),
@@ -611,7 +636,7 @@ app_ui <- function(request = NULL) {
                 div(
                   sliderInput(
                     "power_int",
-                    "Required power at interim analyses under delta alt",
+                    "Required power at interim analyses under the plausible beneficial effect",
                     min = 0.7,
                     max = 1,
                     value = 0.9,
@@ -620,8 +645,16 @@ app_ui <- function(request = NULL) {
                 ),
                 div(
                   class = "field-note",
-                  tags$strong("Typical choice: "),
-                  "0.80 or 0.90, depending on how strict the primary-analysis reassurance should be."
+                  tags$strong("Interpretation: "),
+                  paste(
+                    "this controls the interim analysis threshold for positivity.",
+                    "It is the chance of being correctly reassured when the true OS HR",
+                    "is in fact equal to your plausible beneficial effect."
+                  ),
+                  tags$br(),
+                  tags$em(
+                    "Typical choices include 0.80 or 0.90, depending on the possible impact on the program of wrongly flagging a potential detriment at the interim OS analysis."
+                  )
                 )
               )
             )
@@ -647,7 +680,7 @@ app_ui <- function(request = NULL) {
                 div(
                   class = "field-note",
                   tags$strong("When to use: "),
-                  "use this when the drug may still be valuable under a smaller OS benefit than delta alt."
+                  "use this when the drug may still be valuable under a smaller OS benefit than your plausible beneficial effect."
                 )
               ),
               div(
@@ -681,9 +714,9 @@ app_ui <- function(request = NULL) {
                 tags$ul(
                   class = "list-tight",
                   tags$li("OS HR threshold for positivity: the observed HR must be at or below this value."),
-                  tags$li("One-sided false positive error rate: the tolerated risk of passing when the true effect equals delta null."),
-                  tags$li("Level of 2-sided CI needed to rule out delta null: the confidence level required to exclude the unacceptable detriment."),
-                  tags$li("Probability of meeting positivity threshold under delta alt: the chance of passing when the treatment effect equals your plausible benefit.")
+                  tags$li("One-sided false positive error rate: the tolerated risk of passing when the true effect equals your unacceptable detriment."),
+                  tags$li("Level of 2-sided CI needed to rule out the unacceptable detriment: the confidence level required to exclude that detriment."),
+                  tags$li("Probability of meeting positivity threshold under the plausible beneficial effect: the chance of passing when the treatment effect equals your plausible beneficial effect.")
                 )
               )
             ),
