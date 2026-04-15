@@ -1,0 +1,10 @@
+pandoc: 3.1.11
+pkgdown: 2.2.0
+pkgdown_sha: ~
+articles:
+  monitOS: monitOS.html
+  shinylive: shinylive.html
+last_built: 2026-04-15T19:24Z
+urls:
+  reference: https://opensource.nibr.com/monitOS/reference
+  article: https://opensource.nibr.com/monitOS/articles
