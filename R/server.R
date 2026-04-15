@@ -32,7 +32,7 @@ app_server <- function(input, output, session) {
       div(
         class = "event-row-head",
         div("Planned look"),
-        div("Deaths"),
+        div("Expected deaths"),
         div()
       ),
       div(
@@ -113,11 +113,14 @@ app_server <- function(input, output, session) {
     primary_events <- get_primary_events(rows)
 
     validate(
-      need(length(primary_events) > 0, "Enter at least one interim-analysis event count."),
-      need(all(!is.na(primary_events)), "Every interim-analysis row needs a numeric death count."),
-      need(!is.na(input$eventOS), "Final-analysis deaths must be numeric."),
-      need(all(diff(primary_events) >= 0), "Interim-analysis deaths should increase across planned looks."),
-      need(input$eventOS >= max(primary_events), "Final-analysis deaths must be greater than or equal to the last interim analysis.")
+      need(length(primary_events) > 0, "Enter at least one interim-analysis expected death count."),
+      need(all(!is.na(primary_events)), "Every interim-analysis row needs a numeric expected death count."),
+      need(!is.na(input$eventOS), "Targeted deaths at final OS analysis must be numeric."),
+      need(all(diff(primary_events) >= 0), "Interim-analysis expected deaths should increase across planned looks."),
+      need(
+        input$eventOS >= max(primary_events),
+        "Targeted deaths at final OS analysis must be greater than or equal to the last interim analysis."
+      )
     )
 
     primary_rows(Map(function(row, value) {
@@ -136,7 +139,12 @@ app_server <- function(input, output, session) {
     )$summary
 
     ci_col <- "Level of 2-sided CI needed to rule out delta null"
+    alt_col <- "Probability of meeting positivity threshold under delta alt"
     summary[[ci_col]] <- paste0(summary[[ci_col]], "%")
+    names(summary)[names(summary) == ci_col] <-
+      "Level of 2-sided CI needed to rule out the unacceptable detriment"
+    names(summary)[names(summary) == alt_col] <-
+      "Probability of meeting positivity threshold under the plausible beneficial effect"
 
     summary[, setdiff(seq_along(summary), c(6, 7)), drop = FALSE]
   })
